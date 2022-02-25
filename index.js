@@ -10,10 +10,10 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 var db_config = {
-    host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'chat'
+    host: 'eu-cdbr-west-02.cleardb.net',
+      user: 'be80ed191fa5a6',
+      password: '8c6a5f7a',
+      database: 'heroku_0e924455f0af756'
   };
 
 app.set("view engine","ejs");
