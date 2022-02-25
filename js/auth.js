@@ -51,7 +51,7 @@ signup_user_form.addEventListener("submit",(e)=>{
     
     if(username && password){
         sign_btn.disabled = true;
-        fetch("http://"+window.location.host+"/signup",{
+        fetch("https://"+window.location.host+"/signup",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ login_user_form.addEventListener("submit",(e)=>{
 
     
     if(username && password){
-        fetch("http://"+window.location.host+"/login",{
+        fetch("https://"+window.location.host+"/login",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
