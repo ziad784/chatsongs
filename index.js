@@ -26,7 +26,7 @@ app.use(session({
     saveUninitialized: true
 }))
 app.use(cors({
-    origin:["http://localhost:3001/"],
+    origin:["http://localhost:3001/","https://chatsongs.herokuapp.com/"],
     methods:["POST","GET"]
 }));
 
