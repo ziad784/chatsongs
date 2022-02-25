@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شات رنات للجوال</title>
+    <link rel="icon" href="./imgs/prv1.png" ">
+    <link rel="stylesheet" href="./css/index.css">
+</head>
+<body>
+
+
+    <div class="create_room_popup" id="create_room_popup">
+        <div class="create_room_cont">
+            <div class="top_menu">
+                <div class="left">
+                    <div><i class="fa-solid fa-comments"></i> <span>إنشاء غرفه جديدة</span></div>
+                </div>
+
+                <div class="right">
+                    <div class="close" id="create_room_popup_close_btn"><i class="fa-solid fa-xmark"></i></div>
+                </div>
+            </div>
+
+            <div class="form">
+
+                <input type="text" placeholder="عنوان الغرفه">
+                <input type="text" placeholder="الوصف">
+                <input type="text" placeholder="رساله الترحيب">
+                <input type="text" placeholder="كلمه المرور">
+                <div class="input">
+                    <input type="text" placeholder="الوصف">
+                    <input type="checkbox" >
+                    <label >تثبيت الغرفه</label>
+                </div>
+
+                <button><i class="fa-solid fa-plus"></i> <span>(20)إنشاء الغرفه</span></button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="sidebar" id="available_sidebar">
+        <div class="sidebar_cont">
+            <div class="top_menu">
+                <div class="sidebar_name">المتواجدين</div>
+                <div class="close" id="available_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="search">
+                <input type="text" placeholder=".. البحث" autocomplete="off">
+            </div>
+
+            <div class="bg-brown-red">
+                المتواجدين في الغرفه
+                    
+            </div>
+
+            <div class="available_users">
+                <div class="user">
+                   <div class="flex">
+                        <div class="bar"></div>
+                        <div class="img user_img" data-name="name"><img width="44" height="100%" src="./imgs/pic.png" alt="profile photo"></div>
+                        <div style="margin-left: 5px;">
+                            <div>name</div>
+                            <div class="status-gray" style="color: gray;font-size: 14px;">(غير مسجل)</div>
+                        </div>
+                   </div>
+
+                   <div class="flag">
+                    <span style="color: gray;font-size: 11px;">#477</span>
+                        <img src="https://flagcdn.com/16x12/eg.png" alt="Flag photo">
+                        
+                   </div>
+
+                </div>
+            </div>
+
+            <div class="bg-brown-red">
+                المتواجدين في الدردشه
+                    
+            </div>
+
+        </div>
+    </div>
+
+    <div class="sidebar" id="private_chat_sidebar">
+        <div class="sidebar_cont">
+            <div class="top_menu">
+                <div class="sidebar_name">المحادثات الخاصه</div>
+                <div class="close" id="private_chat_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="sidebar" id="private_chat_sidebar">
+        <div class="sidebar_cont">
+            <div class="top_menu">
+                <div class="sidebar_name">المحادثات الخاصه</div>
+                <div class="close" id="private_chat_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="sidebar" id="groups_sidebar">
+        <div class="sidebar_cont">
+            <div class="top_menu">
+                <div class="sidebar_name">غرف الدردشه</div>
+                <div class="close" id="groups_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="groups_list">
+                <div class="new_room">
+                    <button id="create_room_btn"><i class="fa-solid fa-plus"></i> <span>غرفة جديدة</span></button>
+                        
+                </div>
+
+                <div class="room current_room">
+                    <div class="left">
+                        <div><img src="./imgs/prv1.png" width="36" height="36" alt="Room photo"></div>
+                        <div class="txts">
+                            <div class="room_name">
+                                ROOM || 1 العامه
+                            </div>
+                            <div class="room_desc" style="color: gray;">
+                                غرفة عامة
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right">
+                        <div class="card">
+                            <div><i class="fa-solid fa-user"></i></div>
+                            <div><span>1</span>/20</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <div class="sidebar " id="wall_sidebar">
+        <div class="sidebar_cont wall_sidebar">
+            <div class="top_menu">
+                <div class="sidebar_name">الحائط</div>
+                <div class="close" id="wall_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+
+            <div class="wall_grid">
+                <div class="upper">
+                    <div class="wall_card" style="border: 1px solid lightgray; margin-left: 3px;">
+                        <div class="left">
+                            <div class="img"><img src="./imgs/1eKy4m.jpeg.jpg" width="44" height="44" alt="profile card photo"></div>
+                            <div class="card_info" style="margin-left: 5px;display: flex; flex-direction: column; justify-content: center;">
+                                <div class="wall_card_name">ي مـْـْْـُْنـِِـِـيتـٌـٌٌـي</div>
+                                <div class="msg">up/1amefb.MOV</div>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div>
+                                <div class="time">
+                                    1د
+                                </div>
+                                <div class="wall_like"><i class="fa-solid fa-heart"></i><span>1</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom">
+                    <div class="msg_input">
+                        <div class="exit_btn"><i class="fa-solid fa-share-nodes"></i></div>
+                        <div><img width="24" height="23" src="./imgs/emoii.gif" alt="emoji photo"></div>
+                        <div class="input"><input type="text" placeholder="اكتب رسالتك هنا"></div>
+                        <div class="exit_btn add_wall"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="sidebar" id="setting_sidebar">
+        <div class="sidebar_cont">
+            <div class="top_menu">
+                <div class="sidebar_name">الإعدادات</div>
+                <div class="close" id="setting_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="profile_setting ">
+                <div class="inputs_margin_left" style="display: flex;justify-content: flex-end;">
+                    <div class="exit_btn">الملف الشخصي</div>
+                </div>
+
+                <div class="input inputs_margin_left">
+                    <div class="exit_btn" style="width: fit-content;border-bottom: none;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;">الزخرفه</div>
+                    <input style="border-radius: 5px;padding: 3px;" type="text" value="name" autocomplete="off">
+                </div>
+
+                <div class="input inputs_margin_left">
+                    <div class="exit_btn" style="width: fit-content;border-bottom: none;border-bottom-right-radius: 0px;border-bottom-left-radius: 0px;">الحاله</div>
+                    <input style="border-radius: 5px;padding: 3px;" type="text" value="name" autocomplete="off">
+                </div>
+
+                <div class="colors_input inputs_margin_left" style="display: flex;">
+                    <div class="exit_btn" style="width: fit-content;">لون الإسم</div>
+                    <input   type="color" value="name" autocomplete="off">
+                </div>
+
+                <div class="colors_input inputs_margin_left" style="display: flex;">
+                    <div class="exit_btn" style="width: fit-content;">لون الخط</div>
+                    <input   type="color" value="name" autocomplete="off">
+                </div>
+
+                <div class="colors_input inputs_margin_left" style="display: flex;justify-content: space-between;">
+                    <div style="display: flex;flex: 1;">
+                        <div class="exit_btn" style="width: fit-content;">لون الخلفيه</div>
+                        <input style="width: 30%;border-radius: 5px;" type="color" value="name" autocomplete="off">
+                    </div>
+                    <div class="exit_btn" style="width: fit-content;background-color: #5cb85c;"><i class="fa-solid fa-pen-to-square"></i> <span>حفظ</span> </div>
+                </div>
+
+
+                <div class="full_width">
+                    <select class="cont" style="background-color: #785566;font-size: 15px;color: white;">
+                        <option value="1.20">%120 - حجم الخطوط</option>
+                        <option value="1.10">%110 - حجم الخطوط</option>
+                        <option value="1.05">%105 - حجم الخطوط</option>
+                        <option selected value="1">%100 - حجم الخطوط</option>
+                        <option value="0.95">%95 - حجم الخطوط</option>
+                        <option value="0.9">%90 - حجم الخطوط</option>
+                    </select>
+                </div>
+
+                <div class="full_width">
+                    <div class="cont ">
+                        <div class="img_cont"><img src="./imgs/pic.png"  alt="profile photo"></div>
+                        <div class="flex"><div>تغير الصوره</div> </div>
+                    </div>
+                </div>
+
+                <div class="full_width ">
+                    <div class="cont red_cont">
+                        <div ><i class="fa-solid fa-user-xmark"></i></div>
+                        <div class="flex"><div>حذف الصوره</div> </div>
+                    </div>
+                </div>
+
+
+                <div class="full_width">
+                    <div class="cont ">
+                        <div  style="display: none;"><i class="fa-solid fa-check"></i></div>
+                        <div class="flex"><div>تعطيل المحادثات الخاصه</div> </div>
+                    </div>
+                </div>
+
+                <div class="full_width">
+                    <div class="cont ">
+                        <div style="display: none;"><i class="fa-solid fa-check"></i></div>
+                        <div class="flex"><div>تعطيل التنبيهات</div> </div>
+                    </div>
+                </div>
+
+
+                <div class="full_width">
+                    <div class="cont red_cont">
+                        <div ><i class="fa-solid fa-right-from-bracket"></i></div>
+                        <div class="flex"><div>تسجيل خروج</div> </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+    <div class="popup popup_middle" id="popup">
+        <input type="hidden" value="" id="popup_name">
+        <div class="popup_cont popup_profile">
+            <div class="top_menu">
+                <div class="info">
+                    <div class="img">
+                        <img width="18" height="18" src="./imgs/pic.png" alt="profile photo">
+                    </div>
+                    <div class="profile_name">name</div>
+                </div>
+                <div class="close" id="popup_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+
+            <div class="profile_img">
+                <img src="./imgs/pic.png" alt="profile photo">
+            </div>
+
+            <div class="status">
+                <div>(غير مسجل)</div>
+            </div>
+
+            <div class="user_data">
+                <div class="flag">
+                    <div><img src="https://flagcdn.com/16x12/eg.png" alt="Flag photo"></div>
+                    <div>مصر</div>
+                </div>
+                <div class="room"><img src="./imgs/prv1.png" width="24" height="24" alt=""><span>ROOM || 1 العامه</span></div>
+
+            </div>
+
+
+            <div class="btns">
+                <div>
+                    <i class="fa-solid fa-comment"></i><span>محادثه خاصه</span>
+                </div>
+
+                <div>
+                    <i class="fa-regular fa-envelope"></i><span>تنبيه</span>
+                </div>
+
+                <div class="red">
+                    <i class="fa-solid fa-heart"></i><span>0</span>
+                </div>
+
+                <div class="red">
+                    <i class="fa-solid fa-ban"></i><span>تجاهل</span>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    
+    <div class="grid">
+        <div class="chat">
+
+            <div class="join_msg">
+
+                <div class="left">
+                    <div class="img user_img" data-name="name">
+                        <img width="44" height="44" src="./imgs/pic.png" alt="profile photo">
+                    </div>
+    
+                    <div class="info">
+                        <div class="name"><%= username %></div>
+                        <div class="flex">
+                            <div class="exit_btn"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>ROOM || 1 العامه</span></div>
+                            <div style="min-width: fit-content;height: fit-content;">هذا المستخدم إنضم الى الغرفة </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right">
+                    <div class="time"><span class="time_sent">0</span>د</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="bottom">
+            <div class="msg_input">
+                <div class="exit_btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
+                <div><img width="24" height="23" src="./imgs/emoii.gif" alt="emoji photo"></div>
+                <div class="input"><input type="text" placeholder="اكتب رسالتك هنا"></div>
+                <div class="exit_btn"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
+            </div>
+
+            <div class="bg-brown">
+                <ul>
+                    <li class="exit_btn" id="available_btn"><abbr title="المتواجدين"><i class="fa-solid fa-user"></i><span class="current">1</span></abbr></li>
+                    <li class="exit_btn" id="private_chat_btn"><abbr title="المحادثات الخاصه"><i class="fa-solid fa-comment"></i></i><span class="current">0</span></abbr></li>
+                    <li class="exit_btn" id="groups_sidebar_btn"><abbr title="غرف الدردشه"><i class="fa-solid fa-users"></i><span class="current">19</span><span>الغرف</span></abbr></li>
+                    <li class="exit_btn" id="wall_sidebar_btn"><abbr title="الحائط"><i class="fa-regular fa-comment-dots"></i><span class="current">0</span><span>الحائط</span></abbr></li>
+                    <li class="exit_btn" id="setting_sidebar_btn"><abbr title="الإعدادات"><i class="fa-solid fa-gear"></i></abbr></li>     
+               
+                </ul>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="https://kit.fontawesome.com/8b8be9ae55.js" crossorigin="anonymous"></script>
+    <script src="./js/index.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شات رنات للجوال</title>
+    <link rel="icon" href="./imgs/prv1.png" ">
+    <link rel="stylesheet" href="./css/auth.css">
+</head>
+<body>
+
+
+    <div class="body">
+        <div class="cont">
+
+            <div class="flex bg-brown">
+                <div class="flex">
+                    <img width="28" height="28" src="./imgs/prv1.png" alt="">
+                    <div class="txt-white">شات رنات للجوال,شات جافا للجوال</div>
+                </div>
+
+                <button class="refresh_btn" onclick="refreshBrowser()"><i class="fa-solid fa-arrows-rotate txt-white"></i></button>
+
+            </div>
+
+            <ul class="tabs">
+                <li data-tab=".anonymous_user" class="active"><div><i class="fa-solid fa-user"></i></div> <span>دخول الزوار</span></li>
+                <li data-tab=".login_user" ><div><i class="fa-solid fa-user"></i></div> <span>دخول الاعضاء</span></li>
+                <li data-tab=".signup_user"><div><i class="fa-solid fa-user-plus"></i></div> <span>تسجيل عضويه</span></li>
+
+            </ul>
+
+            <div class="content">
+
+                <form class="anonymous_user active_anim active_tab tab_contnet" id="anonymous_user">
+                    <div>
+                        <input type="text" id="anonymous_username" placeholder="أكتب الاسم المستعار" required>
+                        <button>دخول</button>
+                    </div>
+                </form>
+                
+                <form class="login_user active_anim  tab_contnet">
+
+                    <div>
+                        <input type="text" id="login_username" placeholder="اكتب اسم العضو" required>
+                    </div>
+
+                    <div>
+                        <input type="password" id="login_password" placeholder="اكتب كلمه المرور" required>
+                        <button>دخول</button>
+                        <input type="checkbox" >
+                        <label >دخول مخفي</label>
+                    </div>
+
+
+                </form>
+
+                <form class="signup_user active_anim tab_contnet">
+                    <div>
+                        <input type="text" id="sign_username" placeholder="اكتب اسم العضو" required>
+                    </div>
+
+                    <div>
+                        <input type="password" id="sign_password" placeholder="اكتب كلمه المرور" required>
+                        <button id="sign_btn">دخول</button>
+
+                    </div>
+                </form>
+
+
+            </div>
+
+            <footer>
+                <div class="flex ">
+                    <div class="status">متصل</div>
+                    <div class="footer_stats">تصميم وبرمجة : <span style="color: #337ab7;">2022</span></div>
+                </div>
+
+                <div class="available_users">
+                    <div class="available_num"><div><i class="fa-solid fa-user"></i></div> <span>0</span></div>
+                    <div>المتواجدين الآن</div>
+
+                </div>
+
+
+            </footer>
+
+
+
+        </div>
+    </div>
+
+
+
+    <script src="https://kit.fontawesome.com/8b8be9ae55.js" crossorigin="anonymous"></script>
+    <script src="./js/auth.js"></script>
+    
+</body>
+</html>

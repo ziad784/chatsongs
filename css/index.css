@@ -1,0 +1,547 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: bold;
+    
+}
+
+abbr{
+    text-decoration: none;
+}
+
+.grid{
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 90% 10%;
+}
+
+.chat{
+
+    height: 100%;
+}
+
+.bottom > .msg_input{
+    display: flex;
+    gap: 5px;
+    padding-left: 4px;
+ 
+}
+
+.bottom > .msg_input > .input{
+
+    width: 90%;
+}
+.bottom > .msg_input > .input > input{
+    width: 100%;
+    padding: 5px;
+    border: lightgrey solid 1px;
+    border-radius: 5px;
+}
+.join_msg{
+    display: flex;
+    background-color: #004DFF14;
+    border: #e6e6fa solid 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    gap: 3px;
+}
+
+.left{
+    display: flex;
+    flex: 1;
+}
+
+.right{
+ 
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.img > img {
+    border: .5px rgba(0, 0, 0, 0.418) solid;
+   
+}
+
+
+.flex{
+    display: flex;
+}
+
+.info > .name{
+    padding: 5px;
+    background-color: white;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.exit_btn{
+    color: white;
+    background-color: #785566;
+    padding: 5px;
+    border-radius: 5px;
+    border: .5px black solid;
+    font-size: 13px;
+    cursor: pointer;
+    min-width: fit-content;
+    height: fit-content;
+}
+
+.exit_btn > abbr > span{
+    font-size: 15px;
+}
+
+.time{
+    color: grey;
+    font-size: 13px;
+    padding: 5px;
+}
+
+.bg-brown{
+    background-color: #756565;
+    margin-top: 3px;
+
+}
+
+
+.bg-brown > ul{
+    display: flex;
+    gap: 3px;
+    margin-left: 3px;
+    list-style: none;
+  
+}
+.bg-brown > ul > li > abbr > i{
+    font-size: 16px;
+}
+.current{
+    border: 1px solid black;
+    border-radius: 50%;
+    background-color: gray;
+    padding: 1px 5px 1px 5px;
+    font-size: 11px;
+    margin-left: 3px;
+}
+
+.sidebar{
+
+    position: absolute;
+    z-index: 10000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    display: none;
+  
+}
+
+
+.sidebar > .sidebar_cont{
+    background-color: white;
+    min-width: fit-content;
+    width: 23%;
+    border: 1px solid black;
+  
+    
+}
+
+
+.sidebar_cont > .top_menu{
+    background-color: #756565;
+    padding: 5px;
+    
+    
+}
+
+.sidebar_cont > .top_menu > .close > i{
+    background-color: #d9534f;
+    border-radius: 5px;
+    border: 1px black solid;
+}
+
+.sidebar_cont > .search > input{
+    width: 100%;
+    padding: 3px;
+    background-color: #756565;
+}
+
+.bg-brown-red{
+    background-color: #785566;
+    text-align: center;
+    color: white;
+}
+
+
+.available_users > .user{
+    display: flex;
+    justify-content: space-between;
+    border: 1px lightgray solid;
+
+}
+
+
+
+.bar{
+    width: 5px;
+    height: 100%;
+    background-color: green;
+    margin-left: 1px;
+}
+
+
+
+.new_room{
+    background-color: #785566;
+    padding: 2px;
+    border: 1px solid black;
+
+}
+
+.new_room > button{
+    background-color: #5cb85c;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    padding: 5px;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+.new_room > button:hover{
+    color: black;
+    cursor: pointer;
+}
+
+
+.room{
+    display: flex;
+}
+.room > .left{
+    margin: 3px;
+
+}
+
+.room > .left > .txts{
+    margin-left: 3px;
+    font-size: 14px;
+
+}
+
+.room > .right > .card{
+    background-color: #756565;
+    color: white;
+    display: flex;
+    height: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 3px;
+}
+
+.current_room{
+    border: 1px solid #1e90ff;
+}
+
+.popup{
+    background-color: rgba(0, 0, 0, 0.37);
+    position: absolute;
+    z-index: 10000;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.popup_cont{
+    background-color: white;
+    min-width: 30vw;
+    height: fit-content;
+
+}
+
+.top_menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #785566;
+    color: white;
+    padding: 3px;
+}
+.top_menu > .info{
+    display: flex;
+    color: white;
+}
+
+.close > i{
+    background-color: #756565;
+    padding: 5px 7px 5px 7px;
+    border-radius: 50%;
+    font-size: 17px;
+}
+
+
+.profile_img{
+    width: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+.profile_img > img{
+    
+    width: 100%;
+    height: 100%;
+}
+
+
+.status{
+
+    text-align: center;
+    color: #333;
+    padding: 5px;
+    margin-top: 2px;
+}
+
+.user_data{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 95%;
+    margin: auto;
+}
+
+.user_data > .flag{
+    display: flex;
+    margin-left: 5px;
+}
+
+
+.user_data > .room{
+    color: white;
+    background-color: #785566;
+    padding: 3px;
+    border-radius: 5px;
+    border: .5px black solid;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+}
+
+.btns{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.btns > div{
+    border: 1px lightgray solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+}
+
+.btns > .red{
+    color: red;
+}
+
+
+.create_room_popup{
+    background-color: rgba(0, 0, 0, 0.37);
+    position: absolute;
+    z-index: 10001;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    
+}
+
+
+.create_room_cont{
+    background-color: white;
+    width: 22vw;
+    height: fit-content;
+
+}
+
+.create_room_cont > .form{
+    padding: 5px;
+}
+
+.create_room_cont > .form > input,.create_room_cont > .form > .input > input{
+    padding: 3px;
+}
+
+.create_room_cont > .form > button{
+    background-color: #785566;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    padding: 5px;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.wall_sidebar{
+    background-color: blue;
+    display: grid;
+    grid-template-rows: 5% 95%;
+}
+
+
+.wall_grid {
+    display: grid;
+    grid-template-rows: 70% 30%;
+   
+
+
+}
+
+.wall_grid > .bottom{
+   display: flex;
+   align-items: flex-end;
+   
+  
+    
+}
+.wall_grid > .bottom > .msg_input > .add_wall{
+    min-width: fit-content;
+}
+
+.wall_grid > .bottom > .msg_input{
+    background-color: #ffff;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+
+    
+}
+
+
+
+.wall_grid > .upper > .wall_card{
+    display: flex;
+    align-items: center;
+}
+
+
+.wall_grid > .upper > .wall_card > .left > .card_info > .msg{
+    font-size: 14px;
+    color: #337ab7;
+}
+
+.wall_grid > .upper > .wall_card > .right > div > .wall_like{
+    font-size: 14px;
+    background-color: #c12e2a ;
+    border: 1px #b92c28 solid;
+    color: white;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.inputs_margin_left{
+    margin-left: 5px;
+    margin-right: 5px
+}
+
+.full_width{
+    margin-top: 3px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.full_width > .cont{
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    min-height: 35px;
+    border-radius: 5px;
+}
+
+.full_width > .cont > .flex{
+ 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.full_width > .cont > .img_cont > img{
+ 
+    width: 22px;
+    height: 22px;
+}
+
+
+.red_cont{
+    background-color: #d9534f;
+    color: white;
+}
+.colors_input{
+    font-size: 20px;
+}
+
+.colors_input > input{
+    width: 30%;
+    border-radius: 5px;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .sidebar > .sidebar_cont{
+
+        width: 50%;
+
+        
+    }
+    
+    .popup_cont{
+        width: 70vw;
+    }
+        
+  }
+  
+
+  @media screen and (min-width: 601px) and (max-width: 750px){
+    .popup_cont{
+        width: 60vw;
+    }
+      
+
+  }
+
+  @media screen and (min-width: 751px) and (max-width: 900px){
+    .popup_cont{
+        width: 50vw;
+    }
+      
+
+  }
+
+  @media screen and (min-width: 901px) and (max-width: 1100px){
+    .popup_cont{
+        width: 40vw;
+    }
+      
+
+  }
