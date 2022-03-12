@@ -45,6 +45,7 @@ signup_user_form.addEventListener("submit",(e)=>{
     const username = document.getElementById("sign_username").value;
     const password = document.getElementById("sign_password").value;
     const sign_btn = document.getElementById("sign_btn");
+    const device = window.navigator.userAgent;
 
     e.preventDefault();
 
@@ -59,7 +60,8 @@ signup_user_form.addEventListener("submit",(e)=>{
             credentials: 'include',
             body:JSON.stringify({
                 username:username,
-                password:password
+                password:password,
+                device:device
             })
         })
         .then((res)=>res.json())
@@ -90,6 +92,7 @@ signup_user_form.addEventListener("submit",(e)=>{
 login_user_form.addEventListener("submit",(e)=>{
     const username = document.getElementById("login_username").value;
     const password = document.getElementById("login_password").value;
+    const device = window.navigator.userAgent;
 
     e.preventDefault();
 
@@ -103,7 +106,8 @@ login_user_form.addEventListener("submit",(e)=>{
             credentials: 'include',
             body:JSON.stringify({
                 username:username,
-                password:password
+                password:password,
+                device:device
             })
         })
         .then((res)=>res.json())

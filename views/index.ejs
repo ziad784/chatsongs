@@ -273,9 +273,35 @@
                     </div>
                 </div>
 
+                <% if(parseInt(power) > 0){ %>
+
 
                 <div class="full_width">
-                    <div class="cont red_cont">
+                    <div class="cont ">
+                        <div ><i class="fa-solid fa-paper-plane"></i></div>
+                        <div class="flex"><div>الإعلان للأدعيه والمسابقات</div> </div>
+                    </div>
+                </div>
+
+                <div class="full_width">
+                    <div class="cont ">
+                        <div ><i class="fa-solid fa-house-chimney"></i></div>
+                        <div class="flex"><div>إداره الغرفه</div> </div>
+                    </div>
+                </div>
+
+                <div class="full_width">
+                    <div class="cont " onclick='window.open("/cp","_blank")'>
+                        <div ><i class="fa-solid fa-star"></i></div>
+                        <div class="flex"><div>لوحه التحكم</div> </div>
+                    </div>
+                </div>
+
+                <% } %>
+
+
+                <div class="full_width">
+                    <div class="cont red_cont" id="logout_btn">
                         <div ><i class="fa-solid fa-right-from-bracket"></i></div>
                         <div class="flex"><div>تسجيل خروج</div> </div>
                     </div>
@@ -373,13 +399,14 @@
             <div class="msg_input">
                 <div class="exit_btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                 <div><img width="24" height="23" src="./imgs/emoii.gif" alt="emoji photo"></div>
-                <div class="input"><input type="text" placeholder="اكتب رسالتك هنا"></div>
-                <div class="exit_btn"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
+                <div class="input"><input id="msg_input" type="text" placeholder="اكتب رسالتك هنا"></div>
+                <div class="exit_btn" id="send_btn"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
             </div>
 
             <div class="bg-brown">
                 <ul>
-                    <li class="exit_btn" id="available_btn"><abbr title="المتواجدين"><i class="fa-solid fa-user"></i><span class="current">1</span></abbr></li>
+
+                    <li class="exit_btn" id="available_btn"><abbr title="المتواجدين"><i class="fa-solid fa-user"></i><span class="current" id="current_users">1</span></abbr></li>
                     <li class="exit_btn" id="private_chat_btn"><abbr title="المحادثات الخاصه"><i class="fa-solid fa-comment"></i></i><span class="current">0</span></abbr></li>
                     <li class="exit_btn" id="groups_sidebar_btn"><abbr title="غرف الدردشه"><i class="fa-solid fa-users"></i><span class="current">19</span><span>الغرف</span></abbr></li>
                     <li class="exit_btn" id="wall_sidebar_btn"><abbr title="الحائط"><i class="fa-regular fa-comment-dots"></i><span class="current">0</span><span>الحائط</span></abbr></li>
@@ -392,7 +419,10 @@
 
     </div>
 
-
+    <script>
+        let username = "<%= username %>"
+    </script>
+    <script src="./socket.io/socket.io.js"></script>
     <script src="https://kit.fontawesome.com/8b8be9ae55.js" crossorigin="anonymous"></script>
     <script src="./js/index.js"></script>
 

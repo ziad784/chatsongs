@@ -4,16 +4,67 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شات رنات للجوال</title>
+    <title>ادارة</title>
     <link rel="icon" href="./imgs/prv1.png" ">
     <link rel="stylesheet" href="./css/cp.css">
 </head>
 <body>
+
+    
+    <div class="edit_username_popup" id="edit_username_popup">
+        <div class="edit_username_cont">
+            <div class="top_menu">
+                <div class="left">
+                    <div><span style="color: white;" id="edit_username_name">name</span></div>
+                </div>
+
+                <div class="right">
+                    <div class="close" id="edit_username_popup_close_btn"><i class="fa-solid fa-xmark"></i></div>
+                </div>
+            </div>
+
+            <div class="form" >
+
+                <div class="flex">
+                    <div class="edit_users_txt">الصلاحيه</div>
+                    <select id="edit_username_powers">
+
+                    </select>
+                    <div class="btn-green" id="powers_update_btn"><i class="fa-solid fa-floppy-disk"></i> <span>حفظ</span></div>
+                </div>
+
+
+
+                <br>
+
+                <div class="flex">
+                    <div class="edit_users_txt">الليكات</div>
+                    <input type="number" placeholder="العدد" id="edit_username_likes">
+                    <div class="btn-green" id="likes_update_btn"><i class="fa-solid fa-floppy-disk"></i> <span>حفظ</span></div>
+                </div>
+
+                <br>
+
+                <div class="flex">
+                    <div class="edit_users_txt">تغير كلمه السر</div>
+                    <input type="text" placeholder="كلمه السر الجديدة" id="edit_username_password">
+                    <div class="btn-green" id="password_update_btn"><i class="fa-solid fa-floppy-disk"></i> <span>حفظ</span></div>
+                </div>
+
+                <br>
+
+                <div class="btn-red" id="edit_user_delete_btn">حذف العضويه</div>
+
+            </div>
+
+        </div>
+    </div>
+
     
     <div class="grid">
         <div class="left">
             <ul class="lists">
-                <li class="selected" data-dataName="history">السجل</li>
+                <li data-dataName="history">السجل</li>
                 <li data-dataName="status">الحالات</li>
                 <li data-dataName="users">الأعضاء</li>
                 <li data-dataName="bans">الحظر</li>
@@ -30,7 +81,7 @@
             <div class="right_cont">
 
 
-                <div class="history data showed_data">
+                <div class="history data ">
                     <div class="search_history">
                         <input type="text" placeholder="البحث" autocomplete="off">
                     </div>
@@ -49,7 +100,7 @@
                             </tr>
                         </thead>
     
-                        <tbody >
+                        <tbody id="history_table">
                             <tr>
                                 <td>دخول العضو</td>
                                 <td>ziad</td>
@@ -61,468 +112,7 @@
                                 <td></td>
                                 <td>00:01:22:44</td>
                             </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
-                            <tr>
-                                <td>دخول العضو</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>156.192.196.200</td>
-                                <td>EG</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td></td>
-                                <td></td>
-                                <td>00:01:22:44</td>
-                            </tr>
+                           
                         </tbody>
     
                     </table>
@@ -542,30 +132,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>حذف رساله عامة</td>
-                                <td>houssem</td>
-                                <td>houssem</td>
-                                <td>ROOM || 1 العامه</td>
-                                <td>07:19:12:46</td>
-                            </tr>
+                        <tbody id="status_table">
     
-                            <tr>
-                                <td>حذف رساله عامة</td>
-                                <td>houssem</td>
-                                <td>houssem</td>
-                                <td>ROOM || 1 العامه</td>
-                                <td>07:19:12:46</td>
-                            </tr>
-    
-                            <tr>
-                                <td>حذف رساله عامة</td>
-                                <td>houssem</td>
-                                <td>houssem</td>
-                                <td>ROOM || 1 العامه</td>
-                                <td>07:19:12:46</td>
-                            </tr>
     
                         </tbody>
     
@@ -591,17 +159,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>admin</td>
-                                <td>Pi</td>
-                                <td>156.192.196.200</td>
-                                <td>Win.10.Chrome.1x0doy6.1edpxxf.1j0jvi0.1l9yrxw.1vg1lwt.1s8b6uq</td>
-                                <td>tof33</td>
-                                <td>54:00:40:35</td>
-                                <td>2021-03-13</td>
-                                <td><div class="btn"><i class="fa-solid fa-gear"></i></div></td>
-                            </tr>
+                        <tbody id="users_table">
+
     
                         </tbody>
     
@@ -611,59 +170,36 @@
     
                 <div class="bans data ">
                     <div class="search_history">
-                        <input type="text" placeholder="رقم الجهاز \\ الدوله \\ الاي بي" autocomplete="off">
-                        <div class="btn-green">إضافه</div>
+                        <input type="text" id="ban_input" placeholder="رقم الجهاز \\ الدوله \\ الاي بي" autocomplete="off">
+                        <div class="btn-green" id="add_ban_btn">إضافه</div>
                     </div>
-                    <table style="width: 70%;">
+                    <table style="width: fit-content;">
                         <thead>
                             <tr>
+                                
                                 <th>العضو</th>
-                                <th>الجهاز</th>
-                                <th>الآي بي</th>
+                                <th>الحظر</th>
                                 <th>ينتهي في</th>
     
       
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>alo</td>
-                                <td>Android.9.Chrome.u4wyup.pr4u8v.rjc05t.1n7yeru.1vg1lwt.1s8arqi</td>
-                                <td>156.192.196.200</td>
-                                <td>دائم</td>
-                              
-                                <td style="padding: 0px;"><div class="btn-red"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
-                            <tr>
-                                <td>alo</td>
-                                <td>Android.9.Chrome.u4wyup.pr4u8v.rjc05t.1n7yeru.1vg1lwt.1s8arqi</td>
-                                <td>156.192.196.200</td>
-                                <td>دائم</td>
-                               
-                                <td style="padding: 0px;"><div class="btn-red"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
-    
+                        <tbody id="bans_table">
+
                         </tbody>
     
                     </table>
                 </div>
     
-    
+
                 <div class="permissions data ">
                     <div class="permissions_grid">
                         <div class="left">
                             <div class="flex">
                                 <div  style="flex: 1">
                                     <select class="select_permission">
-                                        <option value="tof3" class="tof3">[9000] tof3</option>
-                                        <option value="ومضة" class="ومضة">[8999] ومضة</option>
-                                        <option value="Master" class="Master">[8999] Master</option>
-                                        <option value="ziad" class="ziad">[8999] ziad</option>
-                                        <option value="بهار" class="بهار">[8998] بهار</option>
-                                        <option value="تجريبي" class="تجريبي">[8998] تجريبي</option>
-                                        <option value="حمزه" class="حمزه">[500] حمزه</option>
-                                        <option value="" class="">[0] </option>
+
     
                                     </select>
                                 </div>
@@ -675,109 +211,117 @@
     
                             <div class="flex permissions_inputs">
                                 <div>الترتيب</div>
-                                <input type="number" name="" id="">
+                                <input  type="number" name="" id="power">
                             </div>
     
                             <div class=" permissions_inputs">
                                 <div>إسم المجموعه</div>
-                                <input type="text" value="tof3">
+                                <input type="text" id="power_name">
                             </div>
     
                             <div class=" permissions_inputs">
                                 <div>الإيقونه</div>
-                                <input type="text" value="1604252172995.gif">
+                                <input type="text" id="power_icon">
                             </div>
     
                             <div class="flex permissions_inputs">
                                 <div>الطرد</div>
-                                <input class="input-sm" type="number" name="" id="">
+                                <input class="input-sm" type="number" name="" id="kick">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>حذف الحائط</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="remove_wall">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>التنبيهات</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="notifications">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>تغير النك</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="change_nickname">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>تغير النكات</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="change_users_data">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>الباند</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="ban">
                             </div>
     
                             
                             <div class="flex permissions_inputs">
                                 <div>الإعلانات</div>
-                                <input class="input-sm" type="number" name="" id="">
+                                <input class="input-sm" type="number" id="ads">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>فتح الخاص</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="open_private_chat">
                             </div>
     
-                            <div class="flex permissions_inputs" style="align-items: center;">
+                            <!-- <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>نقل من الغرفة</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
-                            </div>
+                            </div> -->
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>إداره الغرف</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="manage_rooms">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>انشاء الغرف</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="create_rooms">
                             </div>
     
                                                     
                             <div class="flex permissions_inputs">
                                 <div>اقصى حد للغرف الثابته</div>
-                                <input class="input-sm" type="number" name="" id="">
+                                <input class="input-sm" type="number" id="max_static_rooms">
                             </div>
     
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>إداره العضويات</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="manage_users">
                             </div>
     
+
                             <div class="flex permissions_inputs" style="align-items: center;">
+                                <div>تعديل لايكات</div>
+                                <label >تفعيل</label>
+                                <input type="checkbox" id="edit_likes">
+                            </div>
+    
+
+                            <!-- <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>إسكات العضو</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
-                            </div>
+                            </div> -->
     
-                            <div class="flex permissions_inputs" style="align-items: center;">
+                            <!-- <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>تعديل لايكات العضو</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
@@ -811,60 +355,63 @@
                                 <div>أدارة البوتات</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
-                            </div>
+                            </div> -->
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>تعديل الصلاحيات</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="manage_subs">
                             </div>
     
                                                                             
                             <div class="flex permissions_inputs">
                                 <div>الهدايا</div>
-                                <input class="input-sm" type="number" name="" id="">
+                                <input class="input-sm" type="number" id="gifts">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>كشف النكات</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="show_users_data">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>لوحه التحكم</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="control_panel">
                             </div>
     
-                            <div class="flex permissions_inputs" style="align-items: center;">
+                            <!-- <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>المحادثات الجماعية</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
-                            </div>
+                            </div> -->
     
-                            <div class="flex permissions_inputs" style="align-items: center;">
+                            <!-- <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>حذف صورة العضو</div>
                                 <label >تفعيل</label>
                                 <input type="checkbox" checked>
-                            </div>
+                            </div> -->
     
                             <div class="flex permissions_inputs" style="align-items: center;">
-                                <div>حذف الرسائل العامة</div>
+                                <div>حذف الرسائل</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="remove_messages">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>مخفي</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" checked>
+                                <input type="checkbox" id="private">
                             </div>
     
                             <div class="flex permissions_inputs" style="align-items: center;">
                                 <div>إداره الموقع</div>
                                 <label >تفعيل</label>
-                                <input type="checkbox" >
+                                <input type="checkbox" id="site_setting">
+                            </div>
+                            <div class="flex permissions_inputs" style="justify-content: flex-end;padding-bottom: 5px;">
+                                <div id="save_permissions_btn" style="cursor: pointer;"><i class="fa-solid fa-pen-to-square"></i><span>حفظ</span></div>
                             </div>
     
                         </div>
@@ -888,92 +435,27 @@
                             </div>
                         </div>
                     </div>
+               
                 </div>
     
     
                 <div class="filter data " style="width: fit-content;">
                     <div class="search_history">
-                        <input type="text" placeholder="اضافه كلمه\موقع" autocomplete="off">
+                        <input type="text" placeholder="اضافه كلمه\موقع" autocomplete="off" id="filter_input">
                     </div>
-                    <div class="btn-green-sm"><i class="fa-solid fa-check"></i> <span>إضافه ألى الكلمات المسموحه</span></div>
-                    <div class="btn-red-sm"><i class="fa-solid fa-xmark"></i><span>إضافه ألى الكلمات الممنوعه</span></div>
-                    <div class="btn-blue-sm"><i class="fa-solid fa-triangle-exclamation"></i> <span>إضافه ألى الكلمات المراقبه</span></div>
+                    <div class="btn-green-sm" id="add_allowed_btn"><i class="fa-solid fa-check"></i> <span>إضافه ألى الكلمات المسموحه</span></div>
+                    <div class="btn-red-sm" id="add_forbidden_btn"><i class="fa-solid fa-xmark"></i><span>إضافه ألى الكلمات الممنوعه</span></div>
+                    <div class="btn-blue-sm" id="add_warn_btn"><i class="fa-solid fa-triangle-exclamation"></i> <span>إضافه ألى الكلمات المراقبه</span></div>
                     
                     <div class="txt">آخر الكلمات الممنوعه</div>
     
                     <div class="words">
     
     
-                        <div class="words_card">
-                            <div class="flex">
-                                <div class="bg-blue">الكلمه</div>
-                                <div class="remove_card"><i class="fa-solid fa-xmark"></i></div>
-                                <div class="filtered_word">chat</div>
-                            </div>
-                            <div class="info">
-                                <div>chat</div>
-                                <div>user: Pi</div>
-                                <div>IP: 37.77.68.97</div>
-                            </div>
+
     
-                        </div>
-    
-                        <div class="words_card">
-                            <div class="flex">
-                                <div class="bg-blue">الكلمه</div>
-                                <div class="remove_card"><i class="fa-solid fa-xmark"></i></div>
-                                <div class="filtered_word">chat</div>
-                            </div>
-                            <div class="info">
-                                <div>chat</div>
-                                <div>user: Pi</div>
-                                <div>IP: 37.77.68.97</div>
-                            </div>
-    
-                        </div>
-    
-                        <div class="words_card">
-                            <div class="flex">
-                                <div class="bg-blue">الكلمه</div>
-                                <div class="remove_card"><i class="fa-solid fa-xmark"></i></div>
-                                <div class="filtered_word">chat</div>
-                            </div>
-                            <div class="info">
-                                <div>chat</div>
-                                <div>user: Pi</div>
-                                <div>IP: 37.77.68.97</div>
-                            </div>
-    
-                        </div>
-    
-                        <div class="words_card">
-                            <div class="flex">
-                                <div class="bg-blue">الكلمه</div>
-                                <div class="remove_card"><i class="fa-solid fa-xmark"></i></div>
-                                <div class="filtered_word">chat</div>
-                            </div>
-                            <div class="info">
-                                <div>chat</div>
-                                <div>user: Pi</div>
-                                <div>IP: 37.77.68.97</div>
-                            </div>
-    
-                        </div>
-    
-                        <div class="words_card">
-                            <div class="flex">
-                                <div class="bg-blue">الكلمه</div>
-                                <div class="remove_card"><i class="fa-solid fa-xmark"></i></div>
-                                <div class="filtered_word">chat</div>
-                            </div>
-                            <div class="info">
-                                <div>chat</div>
-                                <div>user: Pi</div>
-                                <div>IP: 37.77.68.97</div>
-                            </div>
-    
-                        </div>
-    
+                   
+
     
                     </div>
     
@@ -987,12 +469,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>إضافة كلمة مراقبه الى الفلتر</td>
-                                <td>chat</td>
-                                <td><div class="btn-red"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
+                        <tbody id="filter_table">
+
     
                         </tbody>
     
@@ -1011,44 +489,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>ROOM || 1 العامه</td>
-                                <td>tof3</td>
-                                <td>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>الصورة</th>
-                                                <th>كلمة السر</th>
-                                                <th>الغرفه</th>
-                      
-                                            </tr>
-                                        </thead>
-                    
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="flex">
-                                                                                                       
-                                                    <div><img src="./imgs/prv1.png" alt="room photo"></div>
-                                                    <div class="flexer">
-                                                        <div class="btn-blue-sm" style="width: fit-content;"><i class="fa-solid fa-image"></i> <span>تغير</span></div>
-                                                        <div class="btn-red-sm" style="width: fit-content;"><i class="fa-solid fa-xmark"></i> <span>حذف</span></div>
-                                                    </div>
-    
-                                                    </div>
-                                                </td>
-                                                <td> <div class="btn-red-sm" style="width: fit-content;"><i class="fa-solid fa-xmark"></i> <span>حذف</span></div></td>
-                                                <td> <div class="btn-red-sm" style="width: fit-content;"><i class="fa-solid fa-xmark"></i> <span>حذف</span></div></td>
-                                            </tr>
-                    
-                                        </tbody>
-                    
-                                    </table>
-    
-                                </td>
-                            </tr>
+                        <tbody id="rooms_table">
+
     
                         </tbody>
     
@@ -1057,11 +499,11 @@
     
     
                 <div class="shortcuts data " style="width: fit-content;">
-                    <div class="search_history" style="flex-direction: column;">
-                        <input type="text" placeholder="الإختصار \ س1" autocomplete="off">
-                        <input type="text" placeholder="الزخرفه \ السلام عليكم" autocomplete="off">
+                    <div class="search_history" style="flex-direction: column;width: fit-content;">
+                        <input type="text" id="shortcut_input" placeholder="الإختصار \ س1" autocomplete="off">
+                        <input type="text" id="shortcut_word_input" placeholder="الزخرفه \ السلام عليكم" autocomplete="off">
                     </div>
-                    <div class="btn-green-sm" style="width: fit-content;"><i class="fa-solid fa-check"></i> <span>إضافه</span></div>
+                    <div class="btn-green-sm" id="add_shortcut_btn" style="width: fit-content;"><i class="fa-solid fa-check"></i> <span>إضافه</span></div>
     
                     <table>
                         <thead>
@@ -1073,12 +515,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                                <td>الشر</td>
-                                <td>آإلشششر وهـمـگ ف5</td>
-                                <td><div class="btn-red"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
+                        <tbody id="shortcuts_table">
+
     
                         </tbody>
     
@@ -1101,38 +539,11 @@
                             </tr>
                         </thead>
     
-                        <tbody>
+                        <tbody id="subs_table">
     
-                            
-                            <tr>
-                                <td> [9000] tof3</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>0</td>
-                                <td>دائم</td>
-                                <td><div class="btn"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
+
     
-    
-                            <tr>
-                                <td> [9000] tof3</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>0</td>
-                                <td>دائم</td>
-                                <td><div class="btn"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
-    
-    
-                            <tr>
-                                <td> [9000] tof3</td>
-                                <td>ziad</td>
-                                <td>ziad</td>
-                                <td>0</td>
-                                <td>دائم</td>
-                                <td><div class="btn"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
-    
+
                         </tbody>
     
                     </table>
@@ -1141,12 +552,12 @@
     
     
                 <div class="messages data " style="width: fit-content;">
-                    <div class="search_history" style="flex-direction: column;">
-                        <input type="text" placeholder="اضافه كلمه\موقع" autocomplete="off">
-                        <textarea placeholder="الرساله"></textarea>
+                    <div class="search_history" style="flex-direction: column;width: fit-content;">
+                        <input type="text" id="messages_title" placeholder="عنوان الرساله" autocomplete="off">
+                        <textarea id="messages_msg" placeholder="الرساله"></textarea>
                     </div>
-                    <div class="btn-green-sm"><i class="fa-solid fa-check"></i> <span>إضافه ألى الكلمات المسموحه</span></div>
-                    <div class="btn-red-sm"><i class="fa-solid fa-xmark"></i><span>إضافه ألى الكلمات الممنوعه</span></div>
+                    <div class="btn-green-sm" id="Add_welcome_message_btn"><i class="fa-solid fa-check"></i> <span>إضافه ألى رسائل الترحيب</span></div>
+                    <div class="btn-red-sm" id="Add_daily_message_btn"><i class="fa-solid fa-xmark"></i><span>إضافه ألى الرسائل اليوميه</span></div>
                     
                     <table >
                         <thead>
@@ -1158,14 +569,8 @@
                             </tr>
                         </thead>
     
-                        <tbody>
-                            <tr>
-                               
-                                <td>الرسائل</td>
-                                <td>الادارة</td>
-                                <td>اهلا وسهلا بكم في شات التجريبي </td>
-                                <td><div class="btn-red"><i class="fa-solid fa-xmark"></i></div></td>
-                            </tr>
+                        <tbody id="messages_table">
+
     
                         </tbody>
     
@@ -1186,87 +591,87 @@
     
                         <div class="textarea">
                             <div>إسم الموقع</div>
-                            <textarea placeholder="شات فلان الكتابي"></textarea>
+                            <textarea id="site_name" placeholder="شات فلان الكتابي"></textarea>
                         </div>
     
                         <div class="textarea">
                             <div>عنوان الصفحه</div>
-                            <textarea placeholder="شات فلان الكتابي للجوال - شات خليجي عربي"></textarea>
+                            <textarea id="site_title" placeholder="شات فلان الكتابي للجوال - شات خليجي عربي"></textarea>
                         </div>
     
                         <div class="textarea">
                             <div>وصف الموقع</div>
-                            <textarea placeholder="شات فلان الكتابي للجوال , دردشه , مسابقات , العاب , تعارف , بدون تسجيل او تحميل"></textarea>
+                            <textarea id="site_description" placeholder="شات فلان الكتابي للجوال , دردشه , مسابقات , العاب , تعارف , بدون تسجيل او تحميل"></textarea>
                         </div>
     
                         <div class="textarea">
                             <div>الكلمات الدلاليه</div>
-                            <textarea placeholder="شات فلان, شات فلان الكتابي, شات خليجي, شات بدون تسجيل, شات بدون تحميل"></textarea>
+                            <textarea id="tags" placeholder="شات فلان, شات فلان الكتابي, شات خليجي, شات بدون تسجيل, شات بدون تحميل"></textarea>
                         </div>
     
                         <div class="textarea">
                             <div>السكربت JavaScript</div>
-                            <textarea placeholder="للمبرمجين فقط"></textarea>
+                            <textarea id="javascript_code" placeholder="للمبرمجين فقط"></textarea>
                         </div>
     
                         <div class="textarea">
                             <div>لون القوالب</div>
-                            <input type="color" >
+                            <input id="theme_color" type="color" >
                         </div>
     
                         <div class="textarea">
                             <div>لون المحتوى</div>
-                            <input type="color" >
+                            <input id="content_color" type="color" >
                         </div>
     
                         <div class="textarea">
                             <div>لون الأزرار</div>
-                            <input type="color" >
+                            <input id="buttons_color" type="color" >
                         </div>
     
                         <div class="textarea">
                             <div>الرسائل</div>
-                            <input class="input-sm" type="number" >
+                            <input id="message_time" class="input-sm" type="number" >
                             <span class="input_beside_txt">المده بالدقائق للرسائل اليوميه</span>
                         </div>
     
                         <div class="textarea">
                             <div>الحائط</div>
-                            <input class="input-sm" type="number" >
+                            <input id="wall_time" class="input-sm" type="number" >
                             <span class="input_beside_txt">عدد الايكات</span>
                             <br>
-                            <input class="input-sm" type="number" >
+                            <input id="wall_messages_time" class="input-sm" type="number" >
                             <span class="input_beside_txt">المده بين رسائل الحائط بالدقيقه</span>
                         </div>
     
                         
                         <div class="textarea">
                             <div>الزوار</div>
-                            <input type="checkbox" >
+                            <input id="allow_guests" type="checkbox" >
                             <label class="input_beside_txt">السماح بدخول الزوار</label>
                             <br>
     
-                            <input type="checkbox" >
+                            <input id="allow_subs" type="checkbox" >
                             <label class="input_beside_txt">السماح بتسجيل العضويات</label>
                             <br>
     
-                            <input type="checkbox" >
+                            <input id="reconnection" type="checkbox" >
                             <label class="input_beside_txt">إستعاده الاتصال</label>
     
                             <br>
-                            <input class="input-sm" type="number" >
+                            <input id="private_chat_number" class="input-sm" type="number" >
                             <span class="input_beside_txt">عدد الايكات للمحادثات الخاصه</span>
     
                             <br>
-                            <input class="input-sm" type="number" >
+                            <input id="notifications_number" class="input-sm" type="number" >
                             <span class="input_beside_txt">عدد الايكات للتنبيهات</span>
     
                             <br>
-                            <input class="input-sm" type="number" >
+                            <input id="send_pics_number" class="input-sm" type="number" >
                             <span class="input_beside_txt">عدد الايكات لإرسال صور\فيديو</span>
                         </div>
     
-                        <div class="save">
+                        <div class="save" id="update_management_btn" style="cursor: pointer;">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>حفظ</span>
                         </div>

@@ -361,3 +361,96 @@ tbody > tr:nth-child(even){
 section{
     width: fit-content;
 }
+
+
+.top_menu{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    background-color: #337ab7;
+    border-radius: 5px;
+}
+
+.close > i{
+    background-color: #d9534f;
+    padding: 5px;
+    border: 1px solid black;
+    width: 30px;
+    text-align: center;
+    border-radius: 5px;
+    font-size: 17px;
+    color: white;
+    cursor: pointer;
+}
+
+
+.edit_username_popup{
+    background-color: rgba(0, 0, 0, 0.37);
+    position: absolute;
+    z-index: 10001;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+
+    
+}
+
+
+.edit_username_cont{
+    background-color: white;
+    width: 25vw;
+    border-radius: 5px;
+    height: fit-content;
+
+}
+
+.edit_username_cont > .form{
+    padding: 5px;
+}
+
+.edit_username_cont > .form > input,.edit_username_cont > .form > .input > input{
+    padding: 3px;
+}
+
+.edit_username_cont > .form > button{
+    background-color: #785566;
+    display: flex;
+    justify-content: center;
+    font-size: 14px;
+    padding: 5px;
+    color: white;
+    outline: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.edit_username_cont > .form > .flex{
+    margin-top: 5px;
+    gap: 5px;
+    align-items: center;
+}
+
+.edit_users_txt{
+    background-color: #265a88;
+    border-radius: 3px;
+    color: white;
+    padding: 5px;
+}
+
+
+.edit_username_cont > .form > .flex > select,.edit_username_cont > .form > .flex > input{
+    width: 50%;
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid black;
+    font-size: 15px;
+}
+
+
