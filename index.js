@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 
-const app = express();
+let app = express();
 
 const port = process.env.PORT
 const cors = require("cors");
@@ -9,7 +9,6 @@ const session = require("express-session");
 const cookie_parser = require("cookie-parser");
 const formidable = require('formidable');
 const mv = require("mv");
-const app = express();
 const fs = require("fs");
 const port = process.env.PORT
 const cors = require("cors");
