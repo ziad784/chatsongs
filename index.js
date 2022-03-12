@@ -1,12 +1,10 @@
 require("dotenv").config();
 const express = require("express");
-<<<<<<< HEAD
+
 const app = express();
 
 const port = process.env.PORT
 const cors = require("cors");
-=======
->>>>>>> 17049f1 (first push)
 const session = require("express-session");
 const cookie_parser = require("cookie-parser");
 const formidable = require('formidable');
