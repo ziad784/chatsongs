@@ -1542,7 +1542,8 @@ app.post("/login",(req,res)=>{
 
                 if(bcrypt.compareSync(password,hashed_password)){
                     const time =  new Date().toLocaleString();
-                    const ip = req.socket.remoteAddress;
+                    const ip = req.ip;
+		    console.log(ip);
                     if(device){
 
 
