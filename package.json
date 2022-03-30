@@ -23,7 +23,8 @@
     "mv": "^2.1.1",
     "mysql": "^2.18.1",
     "node-ipinfo": "^3.0.2",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

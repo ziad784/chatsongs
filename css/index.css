@@ -38,6 +38,14 @@ abbr{
     border: lightgrey solid 1px;
     border-radius: 5px;
 }
+.disconnect_msg{
+    display: flex;
+    background-color: #ff000014;
+    border: #e6e6fa solid 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+    gap: 3px;
+}
 .join_msg{
     display: flex;
     background-color: #004DFF14;
@@ -152,7 +160,7 @@ abbr{
     min-width: fit-content;
     width: 23%;
     border: 1px solid black;
-    height: 95%;
+    max-height: 95%;
   
     
 }
@@ -272,6 +280,7 @@ abbr{
 
 .popup_cont{
     background-color: white;
+    max-width: 30vw;
     min-width: 30vw;
     height: fit-content;
 
@@ -361,10 +370,53 @@ abbr{
     align-items: center;
     padding: 5px;
     width: 100%;
+    cursor: pointer;
 }
 
 .btns > .red{
     color: red;
+}
+
+.popup_form{
+    margin-top: 5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.popup_form > .flex{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 5px;
+    margin-top: 5px;
+    
+}
+
+.popup_form > .flex > .change_btn{
+    color: white;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 5px;
+}
+
+.popup_form > .flex > input,
+.popup_form > .flex > select
+{
+    border-radius: 20px;
+    text-align: center;
+    padding: 5px;
+    width: 50%;
+}
+
+.popup_form > .flex > .change_txt{
+    color: white;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    padding: 5px;
 }
 
 
@@ -517,6 +569,35 @@ abbr{
     width: 30%;
     border-radius: 5px;
 }
+
+
+.left_popup{
+    background-color: rgba(0, 0, 0, 0.37);
+    position: absolute;
+    z-index: 10001;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    display: none;
+  
+
+}
+
+.left_popup_cont{
+    background-color: white;
+    width: 40vw;
+    height: fit-content;
+    border-radius: 5px;
+}
+
+.left_popup_cont > .data > .info > .info_card{
+    background-color: #5bc0de;
+    color: white;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+}
+
 
 
 /* Extra small devices (phones, 600px and down) */

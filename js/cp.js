@@ -28,7 +28,7 @@ lists_array.forEach((ele)=>{
 
         if(e.currentTarget.dataset.dataname === "history"){
 
-            fetch("https://"+window.location.host+"/history")
+            fetch("http://"+window.location.host+"/history")
             .then((res) => res.json())
             .then((data) => {
                 const history_table = document.getElementById("history_table");
@@ -66,7 +66,7 @@ lists_array.forEach((ele)=>{
 
         } else if(e.currentTarget.dataset.dataname === "status"){
 
-            fetch("https://"+window.location.host+"/status")
+            fetch("http://"+window.location.host+"/status")
             .then((res) => res.json())
             .then((data) => {
                 const history_table = document.getElementById("status_table");
@@ -139,7 +139,7 @@ lists_array.forEach((ele)=>{
 
         } else if(e.currentTarget.dataset.dataname === "rooms"){
 
-            fetch("https://"+window.location.host+"/rooms")
+            fetch("http://"+window.location.host+"/rooms")
             .then((res) => res.json())
             .then((data) => {
                 const history_table = document.getElementById("rooms_table");
@@ -270,7 +270,7 @@ lists_array.forEach((ele)=>{
 
         }else if(e.currentTarget.dataset.dataname === "permissions"){
             const select_permission = document.querySelector(".select_permission");
-            fetch("https://"+window.location.host+"/Basicpermissions")
+            fetch("http://"+window.location.host+"/Basicpermissions")
             .then((res) => res.json())
             .then((data) => {
                
@@ -346,7 +346,7 @@ lists_array.forEach((ele)=>{
 function setPermissionData(name){
 
             
-    fetch("https://"+window.location.host+"/permissions",{
+    fetch("http://"+window.location.host+"/permissions",{
         method:"POST",
         headers:{
             'Content-Type': 'application/json'
@@ -457,7 +457,7 @@ function UpdatePermissions(name){
 
     save_permissions_btn.addEventListener("click",()=>{
 
-        fetch("https://"+window.location.host+"/Updatepermissions",{
+        fetch("http://"+window.location.host+"/Updatepermissions",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -529,7 +529,7 @@ function UpdatePower(){
 
         if(select_permission.value){
 
-            fetch("https://"+window.location.host+"/UpdateUserPowers",{
+            fetch("http://"+window.location.host+"/UpdateUserPowers",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -575,7 +575,7 @@ function UpdateLikes(){
         if(edit_username_likes.value.length > 0){
 
 
-            fetch("https://"+window.location.host+"/UpdateUserLikes",{
+            fetch("http://"+window.location.host+"/UpdateUserLikes",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -620,7 +620,7 @@ function UpdatePassword(){
         if(edit_username_password.value.length > 0){
 
 
-            fetch("https://"+window.location.host+"/UpdateUserPasswrod",{
+            fetch("http://"+window.location.host+"/UpdateUserPasswrod",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -664,7 +664,7 @@ function DeleteUser(){
 
 
 
-            fetch("https://"+window.location.host+"/DeleteUser",{
+            fetch("http://"+window.location.host+"/DeleteUser",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -699,7 +699,7 @@ function DeleteUser(){
 }
 
 function RenderUsersData(){
-    fetch("https://"+window.location.host+"/users")
+    fetch("http://"+window.location.host+"/users")
     .then((res) => res.json())
     .then((data) => {
         const history_table = document.getElementById("users_table");
@@ -756,7 +756,7 @@ function RenderUsersData(){
                 edit_username_likes.value = e.currentTarget.dataset.likes
 
            
-                fetch("https://"+window.location.host+"/Basicpermissions")
+                fetch("http://"+window.location.host+"/Basicpermissions")
                 .then((res) => res.json())
                 .then((datas) => {
                    
@@ -808,7 +808,7 @@ function Addban(){
 
         if(ban_input.value.length > 0){
 
-            fetch("https://"+window.location.host+"/Addban",{
+            fetch("http://"+window.location.host+"/Addban",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -844,7 +844,7 @@ function Addban(){
 
 function RenderBansData(){
 
-    fetch("https://"+window.location.host+"/bans")
+    fetch("http://"+window.location.host+"/bans")
     .then((res) => res.json())
     .then((data) => {
 
@@ -892,7 +892,7 @@ function RenderBansData(){
             remove_ban_btns_array.forEach((ele)=>{
                 ele.addEventListener("click",(e)=>{
                     const id = e.currentTarget.children[1].value
-                    fetch("https://"+window.location.host+"/removeBan",{
+                    fetch("http://"+window.location.host+"/removeBan",{
                         method:"POST",
                         headers:{
                             'Content-Type': 'application/json'
@@ -925,7 +925,7 @@ function RenderBansData(){
 
 function RenderFilterData(){
 
-    fetch("https://"+window.location.host+"/filter")
+    fetch("http://"+window.location.host+"/filter")
     .then((res) => res.json())
     .then((data)=>{
         const words = document.querySelector(".words");
@@ -960,7 +960,7 @@ function RenderFilterData(){
 
     })
 
-    fetch("https://"+window.location.host+"/filterWords")
+    fetch("http://"+window.location.host+"/filterWords")
     .then((res) => res.json())
     .then((data) => {
         console.log(data);
@@ -1010,7 +1010,7 @@ function AddAllowedFilter(){
 
         if(filter_input.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddFilterWord",{
+            fetch("http://"+window.location.host+"/AddFilterWord",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1050,7 +1050,7 @@ function AddForbiddenFilter(){
 
         if(filter_input.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddFilterWord",{
+            fetch("http://"+window.location.host+"/AddFilterWord",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1091,7 +1091,7 @@ function AddWarnFilter(){
 
         if(filter_input.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddFilterWord",{
+            fetch("http://"+window.location.host+"/AddFilterWord",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1134,7 +1134,7 @@ function RemoveFilterWord(){
         ele.addEventListener("click",(e)=>{
 
 
-            fetch("https://"+window.location.host+"/RemoveFilterWord",{
+            fetch("http://"+window.location.host+"/RemoveFilterWord",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1166,7 +1166,7 @@ function RemoveFilterWord(){
 
 function RenderShortcutsData(){
 
-    fetch("https://"+window.location.host+"/shortcuts")
+    fetch("http://"+window.location.host+"/shortcuts")
     .then((res) => res.json())
     .then((data) => {
         const history_table = document.getElementById("shortcuts_table");
@@ -1219,7 +1219,7 @@ function AddShortcut(){
 
         if(shortcut_input.value.length > 0 && shortcut_word_input.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddShortcut",{
+            fetch("http://"+window.location.host+"/AddShortcut",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1267,7 +1267,7 @@ function RemoveShortcut(){
             console.log(e.currentTarget.dataset.id);
 
 
-            fetch("https://"+window.location.host+"/RemoveShortcut",{
+            fetch("http://"+window.location.host+"/RemoveShortcut",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1297,7 +1297,7 @@ function RemoveShortcut(){
 
 function RenderSubsData(){
 
-    fetch("https://"+window.location.host+"/subs")
+    fetch("http://"+window.location.host+"/subs")
     .then((res) => res.json())
     .then((data) => {
         console.log(data);
@@ -1338,7 +1338,7 @@ function RenderSubsData(){
         remove_sub_btns_array.forEach((ele)=>{
             ele.addEventListener("click",(e)=>{
 
-                fetch("https://"+window.location.host+"/RemoveSub",{
+                fetch("http://"+window.location.host+"/RemoveSub",{
                     method:"POST",
                     headers:{
                         'Content-Type': 'application/json'
@@ -1375,7 +1375,7 @@ function AddWelcomeMessage(){
     Add_welcome_message_btn.addEventListener("click",()=>{
         if(messages_msg.value.length > 0 && messages_title.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddCPmessages",{
+            fetch("http://"+window.location.host+"/AddCPmessages",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1411,7 +1411,7 @@ function AddDailyMessage(){
     Add_daily_message_btn.addEventListener("click",()=>{
         if(messages_msg.value.length > 0 && messages_title.value.length > 0){
 
-            fetch("https://"+window.location.host+"/AddCPmessages",{
+            fetch("http://"+window.location.host+"/AddCPmessages",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -1444,7 +1444,7 @@ function AddDailyMessage(){
 
 function RenderMessages(){
 
-    fetch("https://"+window.location.host+"/CPmessages")
+    fetch("http://"+window.location.host+"/CPmessages")
     .then((res) => res.json())
     .then((data) => {
         const history_table = document.getElementById("messages_table");
@@ -1491,7 +1491,7 @@ function RenderMessages(){
 
 
                 
-                fetch("https://"+window.location.host+"/RemoveCPmessages",{
+                fetch("http://"+window.location.host+"/RemoveCPmessages",{
                     method:"POST",
                     headers:{
                         'Content-Type': 'application/json'
@@ -1520,7 +1520,7 @@ function RenderMessages(){
 
 
 function RenderManagement(){
-    fetch("https://"+window.location.host+"/management")
+    fetch("http://"+window.location.host+"/management")
     .then((res) => res.json())
     .then((data) => {
 
@@ -1570,7 +1570,7 @@ function UpdateManagement(){
 
     update_management_btn.addEventListener("click",()=>{
 
-        fetch("https://"+window.location.host+"/UpdateManagement",{
+        fetch("http://"+window.location.host+"/UpdateManagement",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'

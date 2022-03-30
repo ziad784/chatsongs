@@ -1,15 +1,13 @@
 require("dotenv").config();
 const express = require("express");
-
-let app = express();
-
-const port = process.env.PORT
-const cors = require("cors");
 const session = require("express-session");
 const cookie_parser = require("cookie-parser");
 const formidable = require('formidable');
 const mv = require("mv");
+const app = express();
 const fs = require("fs");
+const port = process.env.PORT
+const cors = require("cors");
 const socketio = require("socket.io");
 const http = require("http");
 const server = http.createServer(app);
@@ -17,15 +15,12 @@ const io  = socketio(server);
 const mysql = require("mysql");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-let {IPinfoWrapper} = require("node-ipinfo")
+let {IPinfoWrapper} = require("node-ipinfo");
+const path = require("path");
 let ipinfo = new IPinfoWrapper("16fbed578176de");
+const { v4: uuidv4 } = require('uuid');
 
-var db_config = {
-    host: 'eu-cdbr-west-02.cleardb.net',
-      user: 'be80ed191fa5a6',
-      password: '8c6a5f7a',
-      database: 'heroku_0e924455f0af756'
-  };
+
 
 app.set("view engine","ejs");
 app.use(express.static(__dirname))
@@ -37,11 +32,17 @@ app.use(session({
     saveUninitialized: true
 }))
 
+var db_config = {
+    host: 'eu-cdbr-west-02.cleardb.net',
+      user: 'be80ed191fa5a6',
+      password: '8c6a5f7a',
+      database: 'heroku_0e924455f0af756'
+  };
+
 app.use(cors({
     origin:["http://localhost:3001/","https://chatsongs.herokuapp.com/"],
     methods:["POST","GET"]
 }));
-
 
 let db;
 
@@ -74,55 +75,133 @@ server.listen(port,()=>{
     console.log("I am listening to ",port);
 })
 
+
 let users = []
 
 io.on('connection', (socket)=>{
+
+   
+    socket.on("join new room",(data)=>{
+
+       
+
+        const user = users.find((user)=> user.id === socket.id)
+       
+        socket.leave(user.room)
+
+        users.find((user)=> user.id === socket.id).room = data.room;
+        
+        socket.join(data.room)
+        io.to(data.room).emit("welcome message",{user:data.name,img:data.img,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+
+    })
+
+    socket.on("leave room",(data)=>{
+        const user = users.find((user)=> user.id === socket.id)
+        io.to(user.room).emit("disconnect message",{user:data.user,img:data.img,msg:"هذا المستخدم خرج من الغرفة"})
+        socket.leave(user.room)
+        users.find((user)=> user.id === socket.id).room = null;
+        
+    })
+
+
     
     socket.on("join room",(data)=>{
       
         const id = socket.id;
         const room = data.room
         const name = data.name
-        const user = {id,room,name}
-        if(users.length > 0){
+        const username = data.username
+        const img = data.img
+        const user = {id,room,name,img,username}
 
-            if(!users.find((user)=> user.name === data.name)){
-                users.push(user)
-            }
-        }else{
+        console.log("BEFORE",users);
+
+
             users.push(user)
-        }
+           
+        console.log("CONNECTED",users);
+
+        io.emit("send_connected_users",users)
        
      
         socket.join(data.room);
 
         const size = users.filter((user) => user.room === data.room).length
         io.to(data.room).emit("size",size);
-        socket.broadcast.to(data.room).emit("welcome message",{user:data.name,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
-        socket.on("message",(data)=>{
-            if(users.length > 0){
-                console.log(users);
-                const room = users.find((user)=> user.id === socket.id).room
-                io.to(room).emit("message",data)
-            }
-        })
+        socket.broadcast.to(data.room).emit("welcome message",{user:data.name,img:data.img,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+
+
+       
     })
 
-    socket.on("disconnect", () => {
+    socket.on("message",(data)=>{
+        if(users.length > 0){
 
-
-
-
-        users = users.filter((user) => user.id != socket.id)
-
-        console.log(users);
-        // if(users.length > 0){
-        //     console.log(users);
-        //     const room = users.find((user)=> user.id === socket.id).room
-        //     const name = users.find((user)=> user.id === socket.id).name
-        //     socket.broadcast.to(room).emit("welcome message",{user:name,room:room,msg:"هذا المستخدم خرج من الغرفة"})
+            const room = users.find((user)=> user.id === socket.id)
+            console.log("ONMESSAGE",users);
+            if(room){
+                io.to(room.room).emit("message",data)
+            }
            
-        // }
+        }
+    })
+
+
+    socket.on("ad",(data)=>{
+        io.emit("ad",data)
+    })
+
+    socket.on("get current room",({username})=>{
+        const room = users.find((user)=> user.usernmae === username).room
+        console.log(room);
+        socket.emit("get current room",{room:room})
+    })
+
+
+    socket.on("wall post",(data)=>{
+        console.log(data);
+
+        const sql = "INSERT INTO wall(username,msg,likes) VALUES (?,?,0)"
+
+        db.query(sql,[data.username,data.msg],(err,datas)=>{
+            if(err){
+                console.log(err);
+                res.send(err);
+            }
+
+            if(datas){
+                io.emit("wall post",{nickname:data.nickname,msg:data.msg,img:data.img,id:datas.insertId})
+            }
+
+
+        })
+
+
+        
+    })
+
+
+
+
+
+    socket.on("get_conntected_users",()=>{
+        socket.emit("send_connected_users",users)
+    })
+
+
+
+    socket.on("disconnecting", () => {
+
+        users = users.filter((user) => user.id == socket.id)
+
+        if(users.length > 0){
+
+            const room = users[0].room
+            const name = users[0].name
+            socket.broadcast.to(room).emit("disconnect message",{user:name,room:room,msg:"هذا المستخدم خرج من الغرفة"})
+           
+        }
 
       });
     
@@ -133,35 +212,92 @@ io.on('connection', (socket)=>{
 
 
 app.get("/",(req,res)=>{
+
+    const sql = "SELECT site_name,site_title,content_color,buttons_color,theme_color,site_description,tags FROM site_setting"
+
+    db.query(sql,(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+       if(data){
+
+            
+        if(isloggedin(req) === true){
+            const id = req.session.user.id;
+
+            const sql = "SELECT * FROM users WHERE id = ?"
+            db.query(sql,[id],(err,datas)=>{
+                if(err){
+                    console.log(err);
+                    res.send(err)
+                }
+
+
+                if(datas.length === 1){
+
+
+                    const sql = "SELECT name FROM rooms WHERE id = 1"
+                    
+                    db.query(sql,(err,room)=>{
+                        if(err){
+                            console.log(err);
+                            res.send(room);
+                        }
+
+                        if(room){
+
+                            const power = datas[0].power
+
+                            res.render("index",{
+
+                                roomName:room[0].name,
+                                username:datas[0].username,
+                                nickname:datas[0].nickname,
+                                country:datas[0].country,
+                                likes:datas[0].likes,
+                                bio:datas[0].bio,
+                                img:datas[0].img,
+                                power:power,           
+                                site_name:data[0].site_name,
+                                site_title:data[0].site_title,
+                                content_color:data[0].content_color,
+                                buttons_color:data[0].buttons_color,
+                                theme_color:data[0].theme_color,
+                                site_description:data[0].site_description,
+                                tags:data[0].tags
+                    
+                            })
+                            
+                        }
+
+
+                    })
+
+
+                }
+
+            })
+
+        }else{
+            return res.render("auth",{
+                site_name:data[0].site_name,
+                site_title:data[0].site_title,
+                content_color:data[0].content_color,
+                buttons_color:data[0].buttons_color,
+                theme_color:data[0].theme_color,
+                site_description:data[0].site_description,
+                tags:data[0].tags
+            })
+        }
+
+
+       }
+
+    })
     
 
-    if(isloggedin(req) === true){
-        const id = req.session.user.id;
-
-        const sql = "SELECT * FROM users WHERE id = ?"
-        db.query(sql,[id],(err,data)=>{
-            if(err){
-                console.log(err);
-                res.send(err)
-            }
-
-
-            if(data.length === 1){
-
-                const power = data[0].power
-
-                res.render("index",{
-                    username:req.session.user.username,
-                    power:power
-        
-                })
-            }
-
-        })
-
-    }else{
-       return res.render("auth")
-    }
     
     
     
@@ -173,20 +309,29 @@ app.get("/logout",(req,res)=>{
 })
 
 
-app.post("/upload",(req,res)=>{
+app.post("/UploadProfileImg",(req,res)=>{
+
+    if(req.session.user){
+
+
+        
     const form = new formidable.IncomingForm()
+  
   
     form.parse(req,(err,fields,files)=>{
       if(err){
         console.log(err);
         return
       }
-      const celebrityId = fields.celebrityId
-      const videosPath = "imgs/rooms/"
-      const oldPath = files.inputFile.filepath
-      const newPath = videosPath+files.inputFile.originalFilename
+      const ext = path.extname(files.photo.originalFilename)
+      const videosPath = "imgs/users/"
+      const oldPath = files.photo.filepath
+      const newPath = videosPath+uuidv4()+ext
+
+      
+      
      
-  
+      
    
   
   
@@ -210,24 +355,19 @@ app.post("/upload",(req,res)=>{
           console.log(err);
           return
         }
-  
-  
-        const server = process.env.SERVER
-  
-        const url = server+newPath
        
       
-        const sql = "UPDATE rooms SET photo = ? WHERE id = ?"
+        const sql = "UPDATE users SET img = ? WHERE username = ?"
   
-        db.query(sql,[photo,id],(err,vids)=>{
+        db.query(sql,[newPath,req.session.user.username],(err,data)=>{
           if(err){
             console.log(err);
             res.status(300).send(err)
           }
       
-          if(vids){
+          if(data){
   
-            res.send(JSON.stringify({res:"ok"}))
+            res.send(JSON.stringify({res:"ok",img:newPath}))
   
           }
         })
@@ -238,6 +378,12 @@ app.post("/upload",(req,res)=>{
   
   
     })
+
+    }else{
+        res.status(403)
+    }
+
+
   
   })
   
@@ -346,6 +492,89 @@ app.get("/users",(req,res)=>{
     })
 
 })
+
+app.post("/user",(req,res)=>{
+    const username = req.body.username;
+
+    const sql = "SELECT DISTINCT * FROM users WHERE username = ?"
+
+    db.query(sql,[username],(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+        if(data){
+            res.send(data)
+        }
+
+
+    })
+
+
+})
+
+app.get("/MyUser",(req,res)=>{
+    if(req.session.user){
+
+        const username = req.session.user.username;
+
+
+        const sql = "SELECT DISTINCT nickname,img,bio FROM users WHERE username = ?"
+    
+        db.query(sql,[username],(err,data)=>{
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+    
+            if(data){
+                res.send(data)
+            }
+    
+    
+        })
+
+    }else{
+        res.redirect("/")
+    }
+
+
+
+})
+
+
+app.post("/UpdateUserInfo",(req,res)=>{
+
+    if(req.session.user){
+        if(!req.session.user.guest){
+
+            const username = req.session.user.username;
+            const nickname = req.body.nickname;
+            const bio = req.body.bio;
+
+            const sql = "UPDATE users SET nickname = ?,bio = ? WHERE username = ?"
+        
+            db.query(sql,[nickname,bio,username],(err,data)=>{
+                if(err){
+                    console.log(err);
+                    res.send(err)
+                }
+        
+                if(data){
+                    res.send(JSON.stringify({res:"ok",msg:"تم التحديث"}))
+                }
+        
+        
+            })
+
+        }
+    }
+
+
+
+})
+
 
 
 app.post("/UpdateUserPowers",(req,res)=>{
@@ -623,6 +852,41 @@ app.post("/DeleteUser",(req,res)=>{
 }else{
     res.redirect(403,"/")
 }
+
+
+
+
+
+})
+
+app.post("/DeleteMyImg",(req,res)=>{
+
+    if(req.session.user){
+    
+        const username =  req.session.user.username;
+        const img = "imgs/pic.png"
+
+        const sql = "UPDATE users SET img = ? WHERE username = ?";
+
+        db.query(sql,[img,username],(err,data)=>{
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+
+            if(data){
+                res.send(JSON.stringify({res:"ok",msg:"تم مسح الصورة"}))
+            }
+
+
+        })
+
+
+
+
+    }else{
+        res.redirect(403,"/")
+    }
 
 
 
@@ -1076,13 +1340,83 @@ app.post("/RemoveFilterWord",(req,res)=>{
 app.get("/rooms",(req,res)=>{
 
 
+    
+    const sql = "SELECT * FROM rooms"
+    db.query(sql,(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+
+        if(data){
+            if(data.length > 0){
+                res.send(data)
+            }else{
+                res.send([])
+            }
+        }
+
+
+
+    })
+
+
+
+
+
+
+    
+
+
+})
+
+
+app.post("/room",(req,res)=>{
+
+    const id = req.body.id;
+    
+    const sql = "SELECT * FROM rooms WHERE id = ?"
+    db.query(sql,[id],(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+
+        if(data){
+            if(data.length > 0){
+                res.send(data)
+            }else{
+                res.send([])
+            }
+        }
+
+
+
+    })
+
+
+
+
+
+
+    
+
+
+})
+
+
+app.post("/Addroom",(req,res)=>{
+
+
 
     
     if(req.session.user){
 
 
 
-        const sql = "SELECT manage_rooms FROM powers WHERE power = ?"
+        const sql = "SELECT create_rooms FROM powers WHERE power = ?"
     
         db.query(sql,[req.session.user.power],(err,data)=>{
     
@@ -1092,13 +1426,27 @@ app.get("/rooms",(req,res)=>{
             }
     
             if(data){
-                const manage_rooms = data[0].manage_rooms
+                const create_rooms = data[0].create_rooms
                 
-                if(parseInt(manage_rooms) === 1){
+                if(parseInt(create_rooms) === 1){
+
+                    const title = req.body.title;
+                    const description = req.body.description;
+                    const welcome_msg = req.body.welcome_msg;
+                    let size = req.body.size;
+
+                    if(parseInt(size) > 40){
+                        size = 40;
+                    }else if(size === ''){
+                        size = 20
+                    }
+                    const password = req.body.password;
+                    const owner = req.session.user.username;
+                    const photo = "/imgs/room.png"
     
 
-                    const sql = "SELECT * FROM rooms"
-                    db.query(sql,(err,data)=>{
+                    const sql = "INSERT INTO rooms(name,owner,photo,password,description,welcome_message,size) VALUES (?,?,?,?,?,?)"
+                    db.query(sql,[title,owner,photo,password,description,size],(err,data)=>{
                         if(err){
                             console.log(err);
                             res.send(err)
@@ -1106,11 +1454,7 @@ app.get("/rooms",(req,res)=>{
                 
                 
                         if(data){
-                            if(data.length > 0){
-                                res.send(data)
-                            }else{
-                                res.send([])
-                            }
+                           res.send(JSON.stringify({res:"ok",msg:"تم اضافة الغرفة"}))
                         }
                 
                 
@@ -1138,6 +1482,9 @@ app.get("/rooms",(req,res)=>{
 
 
 })
+
+
+
 
 
 
@@ -1521,6 +1868,61 @@ app.post("/RemoveRoomImg",(req,res)=>{
 
 })
 
+
+app.post("/AddWallPost",(req,res)=>{
+
+    if(req.session.user){
+        const username = req.session.user.username
+        const msg = req.body.msg;
+
+        const sql = "INSERT INTO wall(username,msg,likes) VALUES (?,?,0)"
+
+        db.query(sql,[username,msg],(err,data)=>{
+            if(err){
+                console.log(err);
+                res.send(err);
+            }
+
+            if(data){
+                res.send(JSON.stringify({res:"ok",msg:"تم اضافة البوست"}))
+            }
+
+
+        })
+    }
+
+    
+
+})
+
+
+app.get("/GetWallPosts",(req,res)=>{
+
+    const sql = "SELECT DISTINCT users.nickname,users.img,wall.msg,wall.likes FROM wall INNER JOIN users ON users.username = wall.username";
+
+    db.query(sql,(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+        if(data){
+            if(data.length > 0){
+                res.send(data)
+            }else{
+                res.send([])
+            }
+        }
+
+
+    })
+
+
+
+
+})
+
+
 app.post("/login",(req,res)=>{
   
     const username = req.body.username;
@@ -1542,8 +1944,8 @@ app.post("/login",(req,res)=>{
 
                 if(bcrypt.compareSync(password,hashed_password)){
                     const time =  new Date().toLocaleString();
-                    const ip = req.ip;
-		    console.log(ip);
+                    const ip = req.body.ip;
+                
                     if(device){
 
 
@@ -1642,15 +2044,15 @@ app.post("/signup",(req,res)=>{
                     const device = req.body.device;
                     const img = "imgs/pic.png"
                     const time =  new Date().toLocaleString();
-                    const ip = req.socket.remoteAddress;
+                    const ip = req.body.ip;
                     ipinfo.lookupIp(ip).then((response)=>{
                         let country = 'unknown';
                         if(response.countryCode){
                             country = response.countryCode
                         }
 
-                        const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,date) VALUES (?,?,?,?,0,0,?,?,?,?)"
-                        db.query(sql,[img,username,username,hash,ip,device,country,time],(err,data)=>{
+                        const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,bio,date) VALUES (?,?,?,?,0,0,?,?,?,?,?)"
+                        db.query(sql,[img,username,username,hash,ip,device,country,'(عضو جديد)',time],(err,data)=>{
                             if (err) {
                                 console.log(err);
                                return res.send(err);

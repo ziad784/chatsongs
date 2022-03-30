@@ -189,3 +189,9 @@ footer{
     color: red;
     
 }
+.user{
+    display: flex;
+    justify-content: space-between;
+    border: 1px lightgray solid;
+
+}

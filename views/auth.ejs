@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شات رنات للجوال</title>
+    <title><%= site_title %></title>
     <link rel="icon" href="./imgs/prv1.png" ">
     <link rel="stylesheet" href="./css/auth.css">
 </head>
@@ -14,10 +14,10 @@
     <div class="body">
         <div class="cont">
 
-            <div class="flex bg-brown">
+            <div class="flex bg-brown" style="background-color: <%= buttons_color %>;">
                 <div class="flex">
                     <img width="28" height="28" src="./imgs/prv1.png" alt="">
-                    <div class="txt-white">شات رنات للجوال,شات جافا للجوال</div>
+                    <div class="txt-white"><%= site_name %></div>
                 </div>
 
                 <button class="refresh_btn" onclick="refreshBrowser()"><i class="fa-solid fa-arrows-rotate txt-white"></i></button>
@@ -36,7 +36,7 @@
                 <form class="anonymous_user active_anim active_tab tab_contnet" id="anonymous_user">
                     <div>
                         <input type="text" id="anonymous_username" placeholder="أكتب الاسم المستعار" required>
-                        <button>دخول</button>
+                        <button style="background-color: <%= buttons_color %>;">دخول</button>
                     </div>
                 </form>
                 
@@ -48,7 +48,7 @@
 
                     <div>
                         <input type="password" id="login_password" placeholder="اكتب كلمه المرور" required>
-                        <button>دخول</button>
+                        <button style="background-color: <%= buttons_color %>;">دخول</button>
                         <input type="checkbox" >
                         <label >دخول مخفي</label>
                     </div>
@@ -63,7 +63,7 @@
 
                     <div>
                         <input type="password" id="sign_password" placeholder="اكتب كلمه المرور" required>
-                        <button id="sign_btn">دخول</button>
+                        <button id="sign_btn" style="background-color: <%= buttons_color %>;">دخول</button>
 
                     </div>
                 </form>
@@ -77,9 +77,16 @@
                     <div class="footer_stats">تصميم وبرمجة : <span style="color: #337ab7;">2022</span></div>
                 </div>
 
-                <div class="available_users">
-                    <div class="available_num"><div><i class="fa-solid fa-user"></i></div> <span>0</span></div>
+                <div class="available_users" style="background-color: <%= buttons_color %>;">
+                    <div class="available_num"><div><i class="fa-solid fa-user"></i></div> <span id="connected_users_num">0</span></div>
                     <div>المتواجدين الآن</div>
+
+
+
+                </div>
+
+                <div class="users" id="users_list" style="height: 60vh;overflow-y: auto;">
+
 
                 </div>
 
@@ -92,7 +99,7 @@
     </div>
 
 
-
+    <script src="./socket.io/socket.io.js"></script>
     <script src="https://kit.fontawesome.com/8b8be9ae55.js" crossorigin="anonymous"></script>
     <script src="./js/auth.js"></script>
     

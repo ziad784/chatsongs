@@ -52,7 +52,13 @@ signup_user_form.addEventListener("submit",(e)=>{
     
     if(username && password){
         sign_btn.disabled = true;
-        fetch("https://"+window.location.host+"/signup",{
+
+        fetch("https://api64.ipify.org/?format=json")
+        .then((res) => res.json())
+        .then((data)=>{
+
+            
+        fetch("http://"+window.location.host+"/signup",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -61,7 +67,8 @@ signup_user_form.addEventListener("submit",(e)=>{
             body:JSON.stringify({
                 username:username,
                 password:password,
-                device:device
+                device:device,
+                ip:data.ip
             })
         })
         .then((res)=>res.json())
@@ -83,6 +90,10 @@ signup_user_form.addEventListener("submit",(e)=>{
         }).catch((e)=>{
             
         })
+
+        })
+
+
     }
     
 })
@@ -98,36 +109,124 @@ login_user_form.addEventListener("submit",(e)=>{
 
     
     if(username && password){
-        fetch("https://"+window.location.host+"/login",{
-            method:"POST",
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include',
-            body:JSON.stringify({
-                username:username,
-                password:password,
-                device:device
+
+        fetch("https://api64.ipify.org/?format=json")
+        .then((res) => res.json())
+        .then((data) =>{
+
+
+            fetch("http://"+window.location.host+"/login",{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body:JSON.stringify({
+                    username:username,
+                    password:password,
+                    device:device,
+                    ip:data.ip
+                })
             })
-        })
-        .then((res)=>res.json())
-        .then((data)=>{
-            if(data.res === 'bad'){
-                if(login_user_form.children[login_user_form.children.length - 1].className === "err"){
-                    login_user_form.removeChild(login_user_form.children[login_user_form.children.length - 1])
+            .then((res)=>res.json())
+            .then((data)=>{
+                if(data.res === 'bad'){
+                    if(login_user_form.children[login_user_form.children.length - 1].className === "err"){
+                        login_user_form.removeChild(login_user_form.children[login_user_form.children.length - 1])
+                    }
+                    const err = document.createElement("div");
+                    err.className = "err"
+                    err.textContent = data.msg
+                    login_user_form.append(err)
+                }else if(data.res === "ok"){
+                    localStorage.setItem("user",JSON.stringify(data.user))
+                    window.location.reload();
                 }
-                const err = document.createElement("div");
-                err.className = "err"
-                err.textContent = data.msg
-                login_user_form.append(err)
-            }else if(data.res === "ok"){
-                localStorage.setItem("user",JSON.stringify(data.user))
-                window.location.reload();
-            }
-        }).catch((e)=>{
-            
+            }).catch((e)=>{
+                
+            })
+
+
+
         })
+
     }
     
 })
 
+
+
+const socket = io();
+
+window.onload = ()=>{
+    socket.emit("get_conntected_users")
+}
+
+socket.on("send_connected_users",(data)=>{
+
+    if(data.length > 0 ){
+        const users_list = document.getElementById("users_list");
+        const send_connected_users = document.getElementById("connected_users_num");
+        send_connected_users.textContent = data.length
+
+        data.map((ele)=>{
+
+            fetch("http://"+window.location.host+"/user",{
+                method:"POST",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body:JSON.stringify({
+                    username:ele.name,
+    
+                })
+            })
+            .then((res)=>res.json())
+            .then((data) =>{
+
+                const div = document.createElement("div")
+                div.className = "user"
+        
+                div.innerHTML = `
+                
+                <div class="flex">
+                <div class="img user_img" style="border: lightgray 1px solid;"><img width="44" height="100%" src="${data[0].img}" alt="profile photo"></div>
+                <div style="margin-left: 5px;">
+                    <div>${data[0].nickname}</div>
+                    <div style="color: lightgray;font-size: 15px;">${data[0].bio}</div>
+               
+                </div>
+           </div>
+        
+           <div class="flag">
+                <img src="https://flagcdn.com/16x12/${data[0].country.toLowerCase()}.png" alt="Flag photo">
+                
+           </div>
+                
+                `
+
+                users_list.appendChild(div)
+
+
+
+            })
+
+        })
+
+
+
+
+
+    }
+})
+
+
+
+window.onload = () =>{
+    if(!localStorage.getItem("colors")){
+        const json_color = JSON.stringify({nameCo:"00000",fontCo:"00000",bgCo:"00000"})
+        localStorage.setItem("colors",json_color)
+    }
+
+}
