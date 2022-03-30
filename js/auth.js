@@ -58,7 +58,7 @@ signup_user_form.addEventListener("submit",(e)=>{
         .then((data)=>{
 
             
-        fetch("http://"+window.location.host+"/signup",{
+        fetch("https://"+window.location.host+"/signup",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -115,7 +115,7 @@ login_user_form.addEventListener("submit",(e)=>{
         .then((data) =>{
 
 
-            fetch("http://"+window.location.host+"/login",{
+            fetch("https://"+window.location.host+"/login",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -171,7 +171,7 @@ socket.on("send_connected_users",(data)=>{
 
         data.map((ele)=>{
 
-            fetch("http://"+window.location.host+"/user",{
+            fetch("https://"+window.location.host+"/user",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'

@@ -134,7 +134,7 @@ edit_room_btn.addEventListener("click",()=>{
         edit_room_popup.style.display = "flex"
 
 
-        fetch("http://"+window.location.host+"/room",{
+        fetch("https://"+window.location.host+"/room",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ edit_room_btn.addEventListener("click",()=>{
     
         }).then(()=>{
             save_room_btn.addEventListener("click",()=>{
-                fetch("http://"+window.location.host+"/Updateroom",{
+                fetch("https://"+window.location.host+"/Updateroom",{
                     method:"POST",
                     headers:{
                         'Content-Type': 'application/json'
@@ -208,7 +208,7 @@ profile_pic_input.addEventListener("change",(e)=>{
     const formData = new FormData();
     formData.append("photo",e.target.files[0])
 
-    fetch("http://"+window.location.host+"/UploadProfileImg",{
+    fetch("https://"+window.location.host+"/UploadProfileImg",{
         method:"POST",
         credentials: 'include',
         body:formData
@@ -246,7 +246,7 @@ exit_rooms_btn.addEventListener("click",()=>{
 
 remove_my_img_btn.addEventListener("click",()=>{
 
-    fetch("http://"+window.location.host+"/DeleteMyImg",{
+    fetch("https://"+window.location.host+"/DeleteMyImg",{
         method:"POST",
         headers:{
             'Content-Type': 'application/json'
@@ -300,7 +300,7 @@ save_user_info_btn.addEventListener("click",()=>{
 
 
     if(nickname_input.value.length > 0 && bio_input.value.length > 0){
-        fetch("http://"+window.location.host+"/UpdateUserInfo",{
+        fetch("https://"+window.location.host+"/UpdateUserInfo",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -341,7 +341,7 @@ user_img_array.forEach((ele)=>{
         const username = e.currentTarget.dataset.name
         popup_name_input.value = username;
 
-        fetch("http://"+window.location.host+"/user",{
+        fetch("https://"+window.location.host+"/user",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
@@ -429,7 +429,7 @@ function SideBarToggle(btn,closeBtn,SideBar){
         
         add_room_btn.addEventListener("click",()=>{
             if(room_title_input.value.length > 0){
-                fetch("http://"+window.location.host+"/Addroom",{
+                fetch("https://"+window.location.host+"/Addroom",{
                     method:"POST",
                     headers:{
                         'Content-Type': 'application/json'
@@ -548,7 +548,7 @@ window.onload = ()=>{
     }
 
     
-fetch("http://"+window.location.host+"/rooms")
+fetch("https://"+window.location.host+"/rooms")
 .then((res) => res.json())
 .then((data)=>{
 
@@ -632,7 +632,7 @@ rooms_array.forEach((ele)=>{
         localStorage.setItem("colors",json_color)
     }
 
-    fetch("http://"+window.location.host+"/MyUser")
+    fetch("https://"+window.location.host+"/MyUser")
     .then((res) => res.json())
     .then((data) =>{
         nickname_input.value = data[0].nickname;
@@ -645,7 +645,7 @@ rooms_array.forEach((ele)=>{
 
     })
 
-    fetch("http://"+window.location.host+"/GetWallPosts")
+    fetch("https://"+window.location.host+"/GetWallPosts")
     .then((res) => res.json())
     .then((data) =>{
 
@@ -891,7 +891,7 @@ function AddMessage(data){
 
 
 logout_btn.addEventListener("click",()=>{
-    fetch("http://"+window.location.host+"/logout")
+    fetch("https://"+window.location.host+"/logout")
     .then((res) => {if(res.status === 200){window.location.reload()}})
   
 })
@@ -906,7 +906,7 @@ function closeIt(){
 
 function Logout(){
 
-    fetch("http://"+window.location.host+"/logout")
+    fetch("https://"+window.location.host+"/logout")
     .then((res) => res.json())
     .then((data)=>{
         console.log(data);
@@ -940,7 +940,7 @@ function getUserImg(){
                 ele.src = e.currentTarget.dataset.img
             })
 
-            fetch("http://"+window.location.host+"/user",{
+            fetch("https://"+window.location.host+"/user",{
                 method:"POST",
                 headers:{
                     'Content-Type': 'application/json'
@@ -986,7 +986,7 @@ show_user_info_btn.addEventListener("click",()=>{
     if(currnet_name_popup.value.length > 0){
 
         const username = currnet_name_popup.value
-        fetch("http://"+window.location.host+"/user",{
+        fetch("https://"+window.location.host+"/user",{
             method:"POST",
             headers:{
                 'Content-Type': 'application/json'
