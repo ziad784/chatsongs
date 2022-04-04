@@ -1284,7 +1284,7 @@ socket.on("private message",(data)=>{
 socket.on("wall post",(data)=>{
     wall_sidebar_btn.style.backgroundColor = "#E1C16E"
     const wall_new_posts = document.getElementById("wall_new_posts")
-    wall_new_posts.textContent = parseInt(wall_new_posts) + 1;
+    wall_new_posts.textContent = parseInt(wall_new_posts.textContent) + 1;
     AddToWall(data);
 })
 
@@ -1294,9 +1294,6 @@ function AddToWall(data){
 
     const wall_posts = document.getElementById('wall_posts');
 
-
-
-  
 
         const div = document.createElement("div");
         div.className = "wall_card"
@@ -1615,6 +1612,7 @@ function openProfilePopup(username){
         socket.emit("get current room",({username}))
     
         socket.on("get current room",({room,rooms})=>{
+            rooms_select.innerHTML = ''
             
   
             const popup_room_data_childern = document.getElementById("popup_room_data").children
@@ -1709,10 +1707,13 @@ function openProfilePopup(username){
                             if(data.res === "ok"){
                                 alert(data.msg)
                                 return
+                                
                             }else if(data.res === "bad"){
                                 alert(data.msg)
                                 return
+                                
                             }
+                            return
                         })
     
                     }
@@ -1744,6 +1745,7 @@ function openProfilePopup(username){
                                 alert(data.msg)
                                 return
                             }
+                            return
                         })
     
                     }
@@ -1775,6 +1777,8 @@ function openProfilePopup(username){
                             alert(data.msg)
                             return
                         }
+
+                        return
                     })
     
                 })
@@ -1805,6 +1809,7 @@ function openProfilePopup(username){
                             alert(data.msg);
                             return
                         }
+                        return
                     })
 
                 })
@@ -1981,6 +1986,7 @@ function openProfilePopup(username){
                             socket.emit("private notify",{msg:ad_prompt,uCo:uCo,bgCO:bgCO,to:currnet_name_popup.value,from:username})
                         }
                     }
+                    return
 
 
                 })

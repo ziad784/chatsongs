@@ -3110,7 +3110,7 @@ app.post("/signup",(req,res)=>{
 
                                 }else{
 
-                                    const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,bio,date) VALUES (?,?,?,?,0,0,?,?,?,?,?)"
+                                    const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,bio,date,isconnected,isprivate,isnotify) VALUES (?,?,?,?,0,0,?,?,?,?,?,1,0,0)"
                                     db.query(sql,[img,username,username,hash,ip,device,country,'(عضو جديد)',time],(err,data)=>{
                                         if (err) {
                                             console.log(err);

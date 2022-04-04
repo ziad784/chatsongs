@@ -195,3 +195,9 @@ footer{
     border: 1px lightgray solid;
 
 }
+
+@media only screen and (max-width: 500px) {
+    .cont{
+        width: 100%;
+    }
+}
