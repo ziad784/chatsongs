@@ -196,7 +196,7 @@ socket.on("send_connected_users",(data)=>{
             </div>
             
             <div class="flag">
-                    <img src="httpss://flagcdn.com/16x12/${ele.country.toLowerCase()}.png" alt="Flag photo">
+                    <img src="https://flagcdn.com/16x12/${ele.country.toLowerCase()}.png" alt="Flag photo">
                     
             </div>
             
