@@ -821,7 +821,7 @@ window.onload = ()=>{
 
         nickname_input.value = data[0].nickname;
         bio_input.value = data[0].bio;
-        user_flag.src = `httpss://flagcdn.com/16x12/${country.toLowerCase()}.png`
+        user_flag.src = `https://flagcdn.com/16x12/${country.toLowerCase()}.png`
         user_country.textContent = data[0].country
 
         user_photo_array.forEach((ele)=>{
@@ -1001,7 +1001,7 @@ socket.on("size",(users)=>{
 
             <div class="flag">
              <span style="color: gray;font-size: 11px;">#${lastPos}</span>
-                 <img src="httpss://flagcdn.com/16x12/${ele.country.toLowerCase()}.png" alt="Flag photo">
+                 <img src="https://flagcdn.com/16x12/${ele.country.toLowerCase()}.png" alt="Flag photo">
                  
             </div>
 
@@ -1677,7 +1677,7 @@ function openProfilePopup(username){
                 popup_likes_input.value = data[0].likes
                 popup_likes_count.textContent = data[0].likes
                 popup_bio.textContent = data[0].bio
-                user_flag.src = `httpss://flagcdn.com/16x12/${(data[0].country).toLowerCase()}.png`
+                user_flag.src = `https://flagcdn.com/16x12/${(data[0].country).toLowerCase()}.png`
                 user_country.textContent = data[0].country;
                 popup_pics_array.forEach((ele)=>{
                     ele.src = data[0].img
