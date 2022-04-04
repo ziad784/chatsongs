@@ -1831,7 +1831,7 @@ function openProfilePopup(username){
                     .then((data) =>{
                         if(data.res === "ok"){
 
-                            fetch("httpss://api64.ipify.org/?format=json")
+                            fetch("https://api64.ipify.org/?format=json")
                             .then((res) => res.json())
                             .then((ip_data) =>{
 

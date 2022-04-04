@@ -54,7 +54,7 @@ signup_user_form.addEventListener("submit",(e)=>{
     if(username && password){
         sign_btn.disabled = true;
 
-        fetch("httpss://api64.ipify.org/?format=json")
+        fetch("https://api64.ipify.org/?format=json")
         .then((res) => res.json())
         .then((data)=>{
 
@@ -113,7 +113,7 @@ login_user_form.addEventListener("submit",(e)=>{
     
     if(username && password){
 
-        fetch("httpss://api64.ipify.org/?format=json")
+        fetch("https://api64.ipify.org/?format=json")
         .then((res) => res.json())
         .then((data) =>{
 
