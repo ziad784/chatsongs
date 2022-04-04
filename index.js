@@ -2995,9 +2995,9 @@ app.post("/login",(req,res)=>{
                                         res.status(403).send(JSON.stringify({res:"bad",msg:"لقد تم حظرك"}))
                                     }else{
 
-                                        const sql = "UPDATE users SET ip = ?,country = ?,device = ?"
+                                        const sql = "UPDATE users SET ip = ?,country = ?,device = ? WHERE username = ?"
 
-                                        db.query(sql,[ip,country,device],(err,data)=>{
+                                        db.query(sql,[ip,country,device,username],(err,data)=>{
                                             if(err){
                                                 console.log(err);
                                                 res.send(err);
@@ -3117,11 +3117,25 @@ app.post("/signup",(req,res)=>{
                                            return res.send(err);
                                         }
                                         if(data){
+
+                                            const sql = "INSERT INTO history (status,username,time) VALUES (?,?,?)"
+                                            db.query(sql,['دخول عضو',username,time],(err,data)=>{
+                                                if(err){
+                                                    console.log(err);
+                                                    res.send(err)
+                                                }
+        
+                                                if(data){
+        
+                                                    const id = data.insertId
+                                                    const user = {username:username,id:id,power:'0'}
+                                                    req.session.user = user;
+                                                   return res.status(200).send(JSON.stringify({res:"ok",user:user}))
+                                                }
+        
+                                            })
                 
-                                            const id = data.insertId
-                                            const user = {username:username,id:id,power:'0'}
-                                            req.session.user = user;
-                                           return res.status(200).send(JSON.stringify({res:"ok",user:user}))
+
                             
                 
                                             
