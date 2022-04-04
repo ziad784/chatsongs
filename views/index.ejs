@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
+    
+
+
+
+
 
     
 <div class="left_popup" id="user_info_popup">
@@ -48,35 +53,38 @@
 </div>
     
 <div class="left_popup" id="private_chat_popup" >
-        <div class="left_popup_cont">
+        <div class="left_popup_cont" style="min-height: fit-content;">
             <div class="top_menu" style="background-color: <%= theme_color %>;">
-                <div class="left">
-                    <div style="border: 1px solid black;padding: 5px;display: flex;justify-content: center;align-items: center;background-color: <%= buttons_color %>"><i class="fa-solid fa-user"></i></div>
+                <input type="text" hidden id="private_chat_name_input">
+                <div class="left" style="align-items: center;gap: 10px;">
+                    <div id="private_chat_profile" style="border-radius: 5px;border: 1px solid black;padding: 5px;display: flex;justify-content: center;align-items: center;background-color: <%= buttons_color %>"><i class="fa-solid fa-user"></i></div>
+                    <div ><img id="private_chat_profile_img" style="border: 1px solid black;" width="20" height="20" alt="profile img"></div>
+                    <div><div id="private_chat_nickname"></div></div>
                 </div>
 
                 <div class="right">
-                    <div style="border: 1px black solid;background-color: #c12e2a;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-minus"></i></div>
-                    <div style="border: 1px black solid;background-color: #c12e2a;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-arrows-maximize"></i></div>
+                    <div style="border: 1px black solid;background-color: #5bc0de;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-up-right-and-down-left-from-center"></i></div>
+                    <div id="private_chat_popup_close_btn" style="border: 1px black solid;background-color: #c12e2a;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-minus"></i></div>
                 </div>
             </div>
 
-            <div class="data">
-                <div class="info">
-                    <div class="info_card">العضو</div>
-                    <div id="username_info">ziad</div>
+            <div class="chat_body" >
+                
+                <div class="private_chat_cont" id="private_chats" style="min-height: 40vh;">
+
+
+
                 </div>
-                <div class="info">
-                    <div class="info_card">الزخرفه</div>
-                    <div id="nickname_info">ziad</div>
+
+                <div class="chat_input flex" style="gap: 5px;padding: 5px;">
+                    <div style="border: 1px black solid;background-color: #5CB85B;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-phone"></i></div>
+                    <div style="border: 1px black solid;background-color: <%= buttons_color %>;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-share-nodes"></i></div>
+                    <div><img src="./imgs/emoii.gif" width="23" height="23" alt="emoji img"></div>
+                    <div class="input" style="width: 100%;"><input style="width: 100%;padding: 3px;border: 1px solid black;border-radius: 5px;" id="private_msg_input" type="text" placeholder="اكتب رسالتك هنا"></div>
+                    <div class="exit_btn" id="private_send_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
+                
                 </div>
-                <div class="info">
-                    <div class="info_card">الآي بي</div>
-                    <div id="ip_info">156.192.222.119</div>
-                </div>
-                <div class="info">
-                    <div class="info_card">الجهاز</div>
-                    <div id="device_info">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36 Edg/99.0.1150.46</div>
-                </div>
+               
 
             </div>
 
@@ -108,7 +116,7 @@
                     <label >تثبيت الغرفه</label>
                 </div>
 
-                <button style="cursor: pointer;" id="add_room_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-plus"></i> <span>(20)إنشاء الغرفه</span></button>
+                <button style="cursor: pointer;background-color: <%= buttons_color %>;" id="add_room_btn" ><i class="fa-solid fa-plus"></i> <span>(20)إنشاء الغرفه</span></button>
             </div>
 
         </div>
@@ -138,7 +146,7 @@
                     <input type="number" placeholder="حجم الغرفه من 2 ألى 40" id="edit_room_size_input">
                 </div>
 
-                <button style="cursor: pointer;" id="save_room_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-plus"></i> <span>حفظ التعديلات</span></button>
+                <button style="cursor: pointer;background-color: <%= buttons_color %>;" id="save_room_btn" ><i class="fa-solid fa-plus"></i> <span>حفظ التعديلات</span></button>
             </div>
 
         </div>
@@ -161,7 +169,7 @@
                     
             </div>
 
-            <div class="available_users">
+            <div class="available_users" id="available_users">
                 <div class="user">
                    <div class="flex">
                         <div class="bar"></div>
@@ -186,6 +194,27 @@
                     
             </div>
 
+            <div class="available_users" id="all_users">
+                <div class="user">
+                   <div class="flex">
+                        <div class="bar"></div>
+                        <div class="img user_img" data-name="name"><img width="44" height="100%" src="./imgs/pic.png" alt="profile photo"></div>
+                        <div style="margin-left: 5px;">
+                            <div>name</div>
+                            <div class="status-gray" style="color: gray;font-size: 14px;">(غير مسجل)</div>
+                        </div>
+                   </div>
+
+                   <div class="flag">
+                    <span style="color: gray;font-size: 11px;">#477</span>
+                        <img src="https://flagcdn.com/16x12/eg.png" alt="Flag photo">
+                        
+                   </div>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
 
@@ -194,6 +223,10 @@
             <div class="top_menu" style="background-color: <%= theme_color %>;">
                 <div class="sidebar_name">المحادثات الخاصه</div>
                 <div class="close" id="private_chat_sidebar_close_btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="private_chats" id="private_chats_sider">
+              
             </div>
 
 
@@ -210,7 +243,7 @@
 
             <div class="groups_list" id="groups_list" style="overflow-y: auto;height: 93%;">
                 <div class="new_room" style="background-color: <%= buttons_color %>;">
-                    <button id="create_room_btn"><i class="fa-solid fa-plus"></i> <span>غرفة جديدة</span></button>
+                    <div id="create_room_btn" onclick=""><i class="fa-solid fa-plus"></i> <span>غرفة جديدة</span></div>
                         
                 </div>
 
@@ -345,15 +378,26 @@
 
 
                 <div class="full_width">
-                    <div class="cont " >
-                        <div  style="display: none;"><i class="fa-solid fa-check"></i></div>
+                    <div class="cont " id="disable_private_chat">
+                        <% if(parseInt(isprivate) === 1){ %>
+                            <div  style="display: none;"><i class="fa-solid fa-check"></i></div>
+                        <% }else{ %>
+                            <div  style="display: block;"><i class="fa-solid fa-check"></i></div>
+                        <% } %>
                         <div class="flex"><div>تعطيل المحادثات الخاصه</div> </div>
+                        
+
                     </div>
                 </div>
 
                 <div class="full_width">
-                    <div class="cont ">
-                        <div style="display: none;"><i class="fa-solid fa-check"></i></div>
+                    <div class="cont " id="disable_notify">
+                        <% if(parseInt(isnotify) === 1){ %>
+                            <div style="display: none;"><i class="fa-solid fa-check"></i></div>
+                        <% }else{ %>
+                            <div style="display: block;"><i class="fa-solid fa-check"></i></div>
+                        <% } %>
+
                         <div class="flex"><div>تعطيل التنبيهات</div> </div>
                     </div>
                 </div>
@@ -415,8 +459,8 @@
             </div>
 
 
-            <div class="profile_img">
-                <img src="<%= img %>"  class="popup_pic user_photo"  alt="profile photo">
+            <div class="profile_img" >
+                <img src="<%= img %>"  class="popup_pic user_photo"  alt="profile photo" style="border-radius: 50%;width: 200px;height: 200px;object-fit: cover;">
             </div>
 
             <div class="status">
@@ -426,29 +470,27 @@
             <div class="user_data">
                 <div class="flag">
                     <div><img src="https://flagcdn.com/16x12/eg.png" id="user_flag" alt="Flag photo"></div>
-                    <div>مصر</div>
+                    <div id="user_country">مصر</div>
                 </div>
-                <div class="room" style="background-color: <%= buttons_color %>;"><img src="./imgs/prv1.png" width="24" height="24" alt=""><span>ROOM || 1 العامه</span></div>
+                <div class="room" style="background-color: <%= buttons_color %>;" id="popup_room_data"><img src="./imgs/prv1.png"  width="24" height="24" alt=""><span>ROOM || 1 العامه</span></div>
 
             </div>
 
 
             <div class="btns">
-                <div>
+                <div id="private_chat_popup_btn">
                     <i class="fa-solid fa-comment"></i><span>محادثه خاصه</span>
                 </div>
 
-                <div>
+                <div id="private_notify_btn">
                     <i class="fa-regular fa-envelope"></i><span>تنبيه</span>
                 </div>
 
-                <div class="red">
+                <div class="red" id="add_like">
                     <i class="fa-solid fa-heart"></i><span id="popup_likes_count">0</span>
                 </div>
 
-                <div class="red">
-                    <i class="fa-solid fa-ban"></i><span>تجاهل</span>
-                </div>
+
 
                 <% if(parseInt(power) > 0){ %>
 
@@ -459,23 +501,17 @@
                     <i class="fa-solid fa-magnifying-glass"></i><span>كشف النكات</span>
                 </div>
 
-                <div class="red">
+                <div class="red" id="delete_user_info_img_btn">
                     <i class="fa-solid fa-ban"></i><span>حذف الصوره</span>
                 </div>
 
-                <div class="red">
-                    <i class="fa-solid fa-ban"></i><span>اسكات</span>
-                </div>
 
-                <div style="color: darkorchid;">
+                <div style="color: darkorchid;" id="kick_room_btn">
                     <i class="fa-solid fa-user-xmark"></i><span>طرد من الغرفه</span>
                 </div>
 
-                <div class="red">
-                    <i class="fa-solid fa-ban"></i><span>طرد</span>
-                </div>
 
-                <div class="red">
+                <div class="red" id="ban_btn">
                     <i class="fa-solid fa-ban"></i><span>باند</span>
                 </div>
 
@@ -486,29 +522,29 @@
 
 
 
-            <div class="popup_form">
+            <div class="popup_form" id="admin_popup">
 
 
                 <div class="flex">
-                    <div class="change_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>تغير</span></div>
-                    <input type="text" autocomplete="off" style="border: 1px solid <%= buttons_color %>;">
+                    <div class="change_btn" id="update_popup_nickname_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>تغير</span></div>
+                    <input type="text" id="popup_nickname" autocomplete="off" style="border: 1px solid <%= buttons_color %>;">
                     <div class="change_txt" style="background-color: <%= buttons_color %>;">الزخرفه</div>
                 </div>
 
                 <div class="flex">
-                    <div class="change_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>تغير</span></div>
-                    <input type="text" autocomplete="off" style="border: 1px solid <%= buttons_color %>;">
+                    <div class="change_btn" id="update_popup_likes_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>تغير</span></div>
+                    <input type="number" id="popup_likes_input" autocomplete="off" style="border: 1px solid <%= buttons_color %>;">
                     <div class="change_txt" style="background-color: <%= buttons_color %>;">الاعجابات</div>
                 </div>
 
                 <div class="flex">
-                    <div class="change_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>نقل</span></div>
+                    <div class="change_btn" id="transfer_room_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>نقل</span></div>
                     <select id="rooms_select" style="border: 1px solid <%= buttons_color %>;"></select>
                     <div class="change_txt" style="background-color: <%= buttons_color %>;">الغرفه</div>
                 </div>
 
                 <div class="flex">
-                    <div class="change_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>حفظ</span></div>
+                    <div class="change_btn" id="change_power_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-floppy-disk"></i> <span>حفظ</span></div>
                     <select id="subs_select" style="border: 1px solid <%= buttons_color %>;"></select>
                     <div class="change_txt" style="background-color: <%= buttons_color %>;">المجموعه</div>
                 </div>
@@ -523,17 +559,17 @@
     </div>
     
     <div class="grid">
-        <div class="chat">
+        <div class="chat" style="height: 100%;overflow-y: auto;">
 
             <div class="join_msg">
 
                 <div class="left">
-                    <div class="img user_img" data-name="<%= username %>" data-img="<%= img %>">
+                    <div class="img user_img" data-name="<%= username %>" data-img="<%= img %>" onclick="openProfilePopup('<%= username %>')">
                         <img width="44" height="44" class="user_photo" src="<%= img %>" alt="profile photo">
                     </div>
     
                     <div class="info">
-                        <div class="name"><%= username %></div>
+                        <div class="name"><%= nickname %></div>
                         <div class="flex">
                             <div class="exit_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>ROOM || 1 العامه</span></div>
                             <div style="min-width: fit-content;height: fit-content;">هذا المستخدم إنضم الى الغرفة </div>
@@ -563,7 +599,7 @@
                 <ul>
 
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="available_btn"><abbr title="المتواجدين"><i class="fa-solid fa-user"></i><span class="current" id="current_users">1</span></abbr></li>
-                    <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="private_chat_btn"><abbr title="المحادثات الخاصه"><i class="fa-solid fa-comment"></i></i><span class="current">0</span></abbr></li>
+                    <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="private_chat_btn"><abbr title="المحادثات الخاصه"><i class="fa-solid fa-comment"></i></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="groups_sidebar_btn"><abbr title="غرف الدردشه"><i class="fa-solid fa-users"></i><span class="current" id="rooms_count_number">1</span><span>الغرف</span></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="wall_sidebar_btn"><abbr title="الحائط"><i class="fa-regular fa-comment-dots"></i><span class="current" id="wall_new_posts">0</span><span>الحائط</span></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="setting_sidebar_btn"><abbr title="الإعدادات"><i class="fa-solid fa-gear"></i></abbr></li>     

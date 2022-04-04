@@ -275,7 +275,7 @@ lists_array.forEach((ele)=>{
             .then((data) => {
                
 
-                console.log(data);
+               
 
                 
 
@@ -320,7 +320,7 @@ lists_array.forEach((ele)=>{
                 setPermissionData(select_permission.value);
 
                 select_permission.addEventListener("change",(e)=>{
-                    console.log(e);
+                    
                     setPermissionData(e.target.value)
                 })
 
@@ -963,7 +963,7 @@ function RenderFilterData(){
     fetch("https://"+window.location.host+"/filterWords")
     .then((res) => res.json())
     .then((data) => {
-        console.log(data);
+        
         const history_table = document.getElementById("filter_table");
 
         history_table.innerHTML = `
@@ -1023,7 +1023,7 @@ function AddAllowedFilter(){
                 })
             }).then((res) => res.json())
             .then((data) => {
-                console.log(data);
+               
                 if(data.res === 'ok'){
 
                     RenderFilterData();
@@ -1064,7 +1064,7 @@ function AddForbiddenFilter(){
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+               
                 if(data.res === 'ok'){
                     filter_input.value = ''
                     RenderFilterData();
@@ -1105,7 +1105,7 @@ function AddWarnFilter(){
             })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                
                 if(data.res === 'ok'){
 
                     RenderFilterData();
@@ -1264,7 +1264,7 @@ function RemoveShortcut(){
 
     remove_shortcut_btns_array.forEach((ele)=>{
         ele.addEventListener("click",(e)=>{
-            console.log(e.currentTarget.dataset.id);
+      
 
 
             fetch("https://"+window.location.host+"/RemoveShortcut",{
@@ -1300,7 +1300,7 @@ function RenderSubsData(){
     fetch("https://"+window.location.host+"/subs")
     .then((res) => res.json())
     .then((data) => {
-        console.log(data);
+     
         const history_table = document.getElementById("subs_table");
 
         history_table.innerHTML = `
@@ -1599,7 +1599,7 @@ function UpdateManagement(){
         })
         .then((res) => res.json())
         .then((data) =>{
-            console.log(data);
+            
             if(data.res === "ok"){
                 RenderManagement();
                 alert(data.msg);

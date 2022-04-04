@@ -161,6 +161,7 @@ abbr{
     width: 23%;
     border: 1px solid black;
     max-height: 95%;
+    overflow-y: auto;
   
     
 }
@@ -341,6 +342,10 @@ abbr{
     margin-left: 5px;
 }
 
+.user_img > img{
+    object-fit: cover;
+}
+
 
 .user_data > .room{
     color: white;
@@ -401,6 +406,7 @@ abbr{
     border-bottom-left-radius: 10px;
     border-top-right-radius: 10px;
     padding: 5px;
+    cursor: pointer;
 }
 
 .popup_form > .flex > input,
@@ -436,13 +442,16 @@ abbr{
 
 .create_room_cont{
     background-color: white;
-    width: 22vw;
+    min-width: 22vw;
+    
     height: fit-content;
 
 }
 
 .create_room_cont > .form{
     padding: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .create_room_cont > .form > input,.create_room_cont > .form > .input > input{
@@ -599,6 +608,39 @@ abbr{
 }
 
 
+.chat_body{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.notify,.err{
+    position: absolute;
+    left: 2%;
+    top: 40%;
+    background-color: gainsboro;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: .7%;
+    min-width: 200px;
+    z-index: 999999;
+}
+
+
+.private_chat{
+    flex: 1;
+    width: 100%;
+   
+}
+
+.private_chats{
+    height: 40vh;
+    overflow-y: auto;
+}
+
+.private_chat_cont{
+    max-height: 40vh;
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -610,7 +652,8 @@ abbr{
     }
     
     .popup_cont{
-        width: 70vw;
+        max-width: 80vw;
+        min-width: 80vw;
     }
         
   }
@@ -618,15 +661,18 @@ abbr{
 
   @media screen and (min-width: 601px) and (max-width: 750px){
     .popup_cont{
-        width: 60vw;
+        max-width: 60vw;
+        min-width: 60vw;
     }
+        
       
 
   }
 
   @media screen and (min-width: 751px) and (max-width: 900px){
     .popup_cont{
-        width: 50vw;
+        max-width: 50vw;
+        min-width: 50vw;
     }
       
 
@@ -634,7 +680,8 @@ abbr{
 
   @media screen and (min-width: 901px) and (max-width: 1100px){
     .popup_cont{
-        width: 40vw;
+        max-width: 45vw;
+        min-width: 45vw;
     }
       
 

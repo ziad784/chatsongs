@@ -21,17 +21,6 @@ let ipinfo = new IPinfoWrapper("16fbed578176de");
 const { v4: uuidv4 } = require('uuid');
 
 
-
-app.set("view engine","ejs");
-app.use(express.static(__dirname))
-app.use(express.json())
-app.use(cookie_parser());
-app.use(session({
-    secret: 'O6&&Z^22Ktt^arG#4rke!Z!vA',
-    resave: false,
-    saveUninitialized: true
-}))
-
 var db_config = {
     host: 'eu-cdbr-west-02.cleardb.net',
       user: 'be80ed191fa5a6',
@@ -39,10 +28,21 @@ var db_config = {
       database: 'heroku_0e924455f0af756'
   };
 
+app.set("view engine","ejs");
+app.use(express.static(__dirname))
+app.use(express.json())
+app.use(cookie_parser());
+app.use(session({
+    secret: 'O6&&Z^22Ktt^arG#4rke!Z!vA',
+    resave: true,
+    saveUninitialized: true
+}))
+
 app.use(cors({
     origin:["http://localhost:3001/","https://chatsongs.herokuapp.com/"],
     methods:["POST","GET"]
 }));
+
 
 let db;
 
@@ -76,75 +76,474 @@ server.listen(port,()=>{
 })
 
 
-let users = []
+
 
 io.on('connection', (socket)=>{
 
    
     socket.on("join new room",(data)=>{
 
-       
+        const id = socket.id;
 
-        const user = users.find((user)=> user.id === socket.id)
-       
-        socket.leave(user.room)
+        const sql = "SELECT room FROM users WHERE socket_id = ?"
+        db.query(sql,[id],(err,roomName)=>{
+            if(err){
+                console.log(err);
+                return
+            }
 
-        users.find((user)=> user.id === socket.id).room = data.room;
+            if(roomName && roomName.length > 0){
+                
+
+                socket.leave(roomName[0].room)
+                const sql = "UPDATE users SET room = ? WHERE socket_id = ?"
+                db.query(sql,[data.room,id],(err,res) =>{
+                    if(err){
+                        console.log(err);
+                        return
+                    }
+                    
+                    if(res){
+    
+                        socket.join(data.room)
+                        io.to(data.room).emit("welcome message",{user:data.name,username:data.username,img:data.img,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+            
+                    }
+    
+                
+                })
+
+            }
+
+
+
+
+
+        })
+
+
         
-        socket.join(data.room)
-        io.to(data.room).emit("welcome message",{user:data.name,img:data.img,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+
+           
+        
+       
+
+
+    })
+   
+    socket.on("transfer new room",(data)=>{
+
+        const username = data.username;
+        const room = data.room;
+
+        const sql = "SELECT socket_id FROM users WHERE username = ?"
+        db.query(sql,[username],(err,userData)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+
+            if(userData){
+
+                socket.join(userData[0].socket_id);
+                    io.to(userData[0].socket_id).emit("transfer new room",{my_username:username,room:room})
+            
+                    socket.leave(userData[0].socket_id);
+            }
+
+
+
+
+
+        })
+
+
+        
+
+           
+        
+       
+
 
     })
 
+
+    socket.on("kick room",({username})=>{
+   
+        const sql = "SELECT socket_id FROM users WHERE username = ?"
+        db.query(sql,[username],(err,data)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+
+            if(data){
+                if(data.length > 0){
+                   
+
+                    socket.join(data[0].socket_id);
+                    io.to(data[0].socket_id).emit("kick room",{my_username:username})
+            
+                    socket.leave(data[0].socket_id);
+                    
+                }
+            }
+
+
+
+        })
+    })
+
+    socket.on("add ban",({username})=>{
+   
+        const sql = "SELECT socket_id FROM users WHERE username = ?"
+        db.query(sql,[username],(err,data)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+
+            if(data){
+                if(data.length > 0){
+                   
+
+                    socket.join(data[0].socket_id);
+                    io.to(data[0].socket_id).emit("add ban",{my_username:username})
+            
+                    socket.leave(data[0].socket_id);
+                    
+                }
+            }
+
+
+
+        })
+    })
+
+
     socket.on("leave room",(data)=>{
-        const user = users.find((user)=> user.id === socket.id)
-        io.to(user.room).emit("disconnect message",{user:data.user,img:data.img,msg:"هذا المستخدم خرج من الغرفة"})
-        socket.leave(user.room)
-        users.find((user)=> user.id === socket.id).room = null;
+
+        const sql = "SELECT room,nickname,img FROM users WHERE socket_id = ?"
+        db.query(sql,[socket.id],(err,data)=>{
+            if(err){
+                console.log(err);
+            }
+
+            if(data){
+                if(data.length > 0){
+
+
+                    const sql = "UPDATE users SET room = null WHERE socket_id = ?"
+                    db.query(sql,[socket.id],(err,res) =>{
+                        if(err){
+                            console.log(err);
+                            return
+                        }
+            
+                        if(res){
+                           
+                            io.to(data[0].room).emit("disconnect message",{user:data[0].nickname,img:data[0].img,msg:"هذا المستخدم خرج من الغرفة"})
+                            socket.leave(data[0].room)
+            
+                        }
+            
+                    })
+
+
+
+                }
+            }
+
+        })
+
+
+
+
+
         
     })
 
 
     
-    socket.on("join room",(data)=>{
+    socket.on("join room",(info)=>{
+
       
         const id = socket.id;
-        const room = data.room
-        const name = data.name
-        const username = data.username
-        const img = data.img
-        const user = {id,room,name,img,username}
+        const room = info.room
+        const username = info.username
+        
 
-        console.log("BEFORE",users);
+        const sql = "UPDATE users SET isconnected = 1,room = ?,socket_id = ? WHERE username = ?"
+        db.query(sql,[room,id,username],(err,data) =>{
+            if(err){
+                console.log(err);
+            }
 
+            if(data){
 
-            users.push(user)
-           
-        console.log("CONNECTED",users);
+                socket.join(info.room);
 
-        io.emit("send_connected_users",users)
-       
-     
-        socket.join(data.room);
+                const sql = "SELECT * FROM users WHERE isconnected = 1"
+                db.query(sql,[data.room],(err,room_size)=>{
+                    if(err){
+                        console.log(err);
+                    }
 
-        const size = users.filter((user) => user.room === data.room).length
-        io.to(data.room).emit("size",size);
-        socket.broadcast.to(data.room).emit("welcome message",{user:data.name,img:data.img,room:data.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+                    if(room_size){
+
+                        io.emit("size",room_size);
+                        socket.to(info.room).emit("welcome message",{user:info.name,username:info.username,img:info.img,room:info.room,msg:"هذا المستخدم إنضم الى الغرفة"})
+        
+                    }
+                })
+
+            }
+
+        })
 
 
        
     })
 
     socket.on("message",(data)=>{
-        if(users.length > 0){
+        
+     
 
-            const room = users.find((user)=> user.id === socket.id)
-            console.log("ONMESSAGE",users);
-            if(room){
-                io.to(room.room).emit("message",data)
-            }
+            const id = socket.id
+            const sql = "SELECT room,ip,username FROM users WHERE socket_id = ?"
+            db.query(sql,[id],(err,room)=>{
+                if(err){
+                    console.log(err);
+                    return
+                }
+
+
+
+                if(room){
+
+                    const sql = "SELECT * FROM filter_words"
+                    db.query(sql,(err,filters)=>{
+                        if(err){
+                            console.log(err);
+                            return
+                        }
+
+                        if(filters){
+                            if(filters.length > 0){
+                                const msg = data.msg
+                                
+                                const words = msg.split(" ")
+
+                                let iscont = true;
+                                
+                                filters.forEach((e)=>{
+                                    words.forEach((word)=>{
+                                        if(e.word === word){
+
+                                            if(e.category === "ممنوعة"){
+                                                iscont = false;
+                                                const sql = "INSERT INTO filter(word,username,ip) VALUES (?,?,?)"
+                                                db.query(sql,[word,room[0].username,room[0].ip],(err,result)=>{
+                                                    if(err){
+                                                        console.log(err);
+                                                        return
+
+                                                    }
+
+                                                    if(result){
+                                                        socket.emit("err",{to:room[0].username,msg:"هناك كلمة ممنوعة"})
+                                                    }
+
+
+                                                })
+                                                
+                                            }else{
+                                                const sql = "INSERT INTO filter(word,username,ip) VALUES (?,?,?)"
+                                                db.query(sql,[word,room[0].username,room[0].ip],(err,result)=>{
+                                                    if(err){
+                                                        console.log(err);
+                                                        return
+
+                                                    }
+
+                                                    if(result){
+                                                       io.to(room[0].room).emit("message",data)
+                                                       return
+                                                    }
+
+
+                                                })
+                                                
+                                            }
+                                        }
+                                    })
+                                })
+
+                              
+                                if(iscont){
+                                    io.to(room[0].room).emit("message",data)
+                                }
+                                
+                                
+
+                                
+
+                            }else{
+                                io.to(room[0].room).emit("message",data)
+                            }
+                        }
+
+
+                    })
+
+
+                    
+                }
+
+            })
+
            
-        }
+        
+    })
+
+    socket.on("private message",(data)=>{
+
+
+
+            const sql = "SELECT socket_id,isprivate,likes,img FROM users WHERE username = ?"
+            db.query(sql,[data.to],(err,to_info)=>{
+                if(err){
+                    console.log(err);
+                    return
+                }
+
+                if(to_info){
+
+                    const sql = "SELECT private_chat_number FROM site_setting WHERE id = 1"
+                    db.query(sql,(err,need_likes)=>{
+                        if(err){
+                            console.log(err);
+                            return
+                        }
+
+                        if(need_likes){
+                            const sql = "SELECT likes,img,nickname FROM users WHERE socket_id = ?"
+                            db.query(sql,[socket.id],(err,likes_count)=>{
+                                if(err){
+                                    console.log(err);
+                                    return
+                                }
+
+                                if(likes_count){
+
+                                    if(parseInt(need_likes[0].private_chat_number) <= parseInt(likes_count[0].likes)){
+                                        const isprivate = to_info[0].isprivate;
+                                        if(parseInt(isprivate) === 1){
+                                            const to_id = to_info[0].socket_id
+                                            socket.join(to_id);
+                                            io.to(to_id).emit("private message",{from:likes_count[0].nickname,from_img:likes_count[0].img,to_img:to_info[0].img,uCo:data.uCo,bgCO:data.bgCO,to:data.to,msg:data.msg,user:data.user})
+                                    
+                                            socket.leave(to_id);
+                    
+                                        }else{
+                                            socket.emit("err",{to:data.from,msg:"هذا المستخدم قام بقفل الخاص"})
+                                        }
+        
+                                    }else{
+                                        socket.emit("err",{to:data.from,msg:"لايك"+need_likes[0].private_chat_number+"يجب ان يكون لديك"})
+                                    }
+
+                                }
+
+
+                            })
+
+                        }
+
+
+                    })
+
+
+
+
+                }
+
+            })
+
+           
+        
+    })
+
+    socket.on("private notify",(data)=>{
+
+
+
+            const sql = "SELECT socket_id,isnotify FROM users WHERE username = ?"
+            db.query(sql,[data.to],(err,to_info)=>{
+                if(err){
+                    console.log(err);
+                    return
+                }
+
+                if(to_info){
+
+                    const sql = "SELECT notifications_number FROM site_setting WHERE id = 1"
+                    db.query(sql,(err,need_likes)=>{
+                        if(err){
+                            console.log(err);
+                            return
+                        }
+
+                        if(need_likes){
+                            const sql = "SELECT likes,img,nickname FROM users WHERE socket_id = ?"
+                            db.query(sql,[socket.id],(err,from_info)=>{
+                                if(err){
+                                    console.log(err);
+                                    return
+                                }
+
+                                if(from_info){
+                                   
+
+                                    if(parseInt(need_likes[0].notifications_number) <= parseInt(from_info[0].likes)){
+
+                                        if(parseInt(to_info[0].isnotify) === 1){
+        
+                                            const to_id = to_info[0].socket_id
+                                            socket.join(to_id);
+                                            
+                                            io.to(to_id).emit("private notify",{from:from_info[0].nickname,img:from_info[0].img,uCo:data.uCo,bgCO:data.bgCO,to:data.to,msg:data.msg})
+                                    
+                                            socket.leave(to_id);
+                    
+                                        }else{
+                                            socket.emit("err",{to:data.from,msg:"هذا المستخدم قام بقفل التنبيهات"})
+                                        }
+                                    }else{
+                                      
+                                        socket.emit("err",{to:data.from,msg:"لايك"+need_likes[0].notifications_number+"يجب ان يكون لديك"})
+                                    }
+
+
+                                }
+
+
+                            })
+
+                        }
+
+
+                    })
+
+
+
+
+                }
+
+            })
+
+           
+        
     })
 
 
@@ -153,14 +552,39 @@ io.on('connection', (socket)=>{
     })
 
     socket.on("get current room",({username})=>{
-        const room = users.find((user)=> user.usernmae === username).room
-        console.log(room);
-        socket.emit("get current room",{room:room})
+        const sql = "SELECT room FROM users WHERE username = ?"
+        db.query(sql,[username],(err,current_room)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+
+            if(current_room && current_room.length > 0){
+                const room = current_room[0].room
+                const sql = "SELECT name,photo FROM rooms"
+                db.query(sql,(err,data)=>{
+                    if(err){
+                        console.log(err);
+                        return;
+                    }
+        
+                    if(data){
+                        io.to(socket.id).emit("get current room",{room:room,rooms:data})
+                    }
+        
+                })
+
+            }
+
+
+        })
+
+        
     })
 
 
     socket.on("wall post",(data)=>{
-        console.log(data);
+  
 
         const sql = "INSERT INTO wall(username,msg,likes) VALUES (?,?,0)"
 
@@ -182,26 +606,73 @@ io.on('connection', (socket)=>{
     })
 
 
-
+    socket.on("get all rooms",()=>{
+        io.emit("get all rooms")
+    })
 
 
     socket.on("get_conntected_users",()=>{
-        socket.emit("send_connected_users",users)
+        const sql = "SELECT * FROM users WHERE isconnected = ?"
+        db.query(sql,[1],(err,data)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+ 
+
+            if(data){
+                io.emit("send_connected_users",data)
+            }
+
+
+
+        })
+ 
     })
 
 
 
     socket.on("disconnecting", () => {
+        const id = socket.id
 
-        users = users.filter((user) => user.id == socket.id)
+        const sql = "SELECT room,nickname,img FROM users WHERE socket_id = ?"
+        db.query(sql,[id],(err,data)=>{
+            if(err){
+                console.log(err);
+                return
+            }
+            
 
-        if(users.length > 0){
+            if(data){
+                if(data.length > 0 ){
+                    const sql = "UPDATE users SET isconnected = 0,room = null,socket_id = null WHERE socket_id = ?"
+                    db.query(sql,[socket.id],(err,res) =>{
+                        if(err){
+                            console.log(err);
+                            return
+                        }
+            
+                        if(res){
+            
+                                socket.broadcast.to(data[0].room).emit("disconnect message",{user:data[0].nickname,img:data[0].img,room:data[0].room,msg:"هذا المستخدم خرج من الغرفة"})
+                               
+                            
+                        }
+            
+            
+                    })
 
-            const room = users[0].room
-            const name = users[0].name
-            socket.broadcast.to(room).emit("disconnect message",{user:name,room:room,msg:"هذا المستخدم خرج من الغرفة"})
-           
-        }
+                }
+
+
+
+            }
+
+
+
+        })
+
+
 
       });
     
@@ -256,6 +727,8 @@ app.get("/",(req,res)=>{
                                 username:datas[0].username,
                                 nickname:datas[0].nickname,
                                 country:datas[0].country,
+                                isprivate:datas[0].isprivate,
+                                isnotify:datas[0].isnotify,
                                 likes:datas[0].likes,
                                 bio:datas[0].bio,
                                 img:datas[0].img,
@@ -303,9 +776,29 @@ app.get("/",(req,res)=>{
     
 })
 
-app.get("/logout",(req,res)=>{
-    req.session.destroy();
-    res.redirect("/")
+app.post("/logout",(req,res)=>{
+
+    const sql = "UPDATE users SET isconnected = 0,room = null,socket_id = null WHERE username = ?"
+    if(req.session.user){
+        db.query(sql,[req.session.user.username],(err,result) =>{
+            if(err){
+                console.log(err);
+                return
+            }
+    
+            if(result){
+    
+                req.session.destroy();
+                res.redirect("/")
+            }
+    
+    
+        })
+        
+    }
+
+
+
 })
 
 
@@ -544,6 +1037,44 @@ app.get("/MyUser",(req,res)=>{
 })
 
 
+app.post("/CanPower",(req,res)=>{
+
+
+    const username = req.body.username;
+
+
+
+    const sql = "SELECT power FROM users WHERE username = ?"
+
+    db.query(sql,[username],(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+
+        if(data){
+            if(data.length === 1){
+
+
+                const current_power = data[0].power;
+
+
+                if(parseInt(current_power) < parseInt(req.session.user.power)){
+                
+                    res.send(JSON.stringify({res:"ok"}))
+                }else{
+                    res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك التعديل علي صلاحية اعلي منك"}))
+                }
+
+            }
+        }
+
+    })
+
+
+
+})
+
+
 app.post("/UpdateUserInfo",(req,res)=>{
 
     if(req.session.user){
@@ -598,7 +1129,7 @@ app.post("/UpdateUserPowers",(req,res)=>{
                 const current_power = data[0].power;
 
 
-                if(parseInt(current_power) < parseInt(req.session.user.power) || parseInt(current_power) === parseInt(req.session.user.power)){
+                if(parseInt(current_power) < parseInt(req.session.user.power)){
             
               
             
@@ -634,6 +1165,23 @@ app.post("/UpdateUserPowers",(req,res)=>{
 
 })
 
+app.get("/PowersNames",(req,res)=>{
+    const sql = "SELECT name,power FROM powers"
+
+    db.query(sql,(err,data)=>{
+        if(err){
+            console.log(err);
+            res.send(err)
+        }
+
+        if(data){
+            res.send(data)
+        }
+
+    })
+
+})
+
 
 app.post("/UpdateUserLikes",(req,res)=>{
 
@@ -658,7 +1206,7 @@ app.post("/UpdateUserLikes",(req,res)=>{
 
 
 
-                if(parseInt(current_power) < parseInt(req.session.user.power) || parseInt(current_power) === parseInt(req.session.user.power)){
+                if(parseInt(current_power) < parseInt(req.session.user.power) ){
             
               
             
@@ -673,6 +1221,170 @@ app.post("/UpdateUserLikes",(req,res)=>{
                 
                         if(data){
                             res.send(JSON.stringify({res:"ok",msg:"تم تحديث الليكات"}))
+                        }
+                
+                
+                
+                    })
+                
+            
+            
+                }else{
+                    res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك التعديل علي صلاحية اعلي منك"}))
+                }
+
+            }
+        }
+
+    })
+
+
+
+
+
+})
+
+
+app.post("/AddLike",(req,res)=>{
+
+
+    const username = req.body.username;
+  
+
+    if(req.session.user){
+
+        if(req.session.user.like_time){
+
+            if(req.session.user.like_time < new Date().getTime()){
+
+                if(username !== req.session.user.username){
+                    const sql = "SELECT likes FROM users WHERE username = ?"
+                    db.query(sql,[username],(err,data)=>{
+                        if(err){
+                            console.log(err);
+                            res.send(err);
+                        }
+        
+                        if(data){
+                            if(data.length > 0){
+                                const likes = parseInt(data[0].likes) + 1;
+                                const sql = "UPDATE users SET likes = ? WHERE username = ?"
+                                db.query(sql,[likes,username],(err,res)=>{
+                                    if(err){
+                                        console.log(err);
+                                        return
+                                    }
+        
+                                    if(res){
+                                        req.session.user.like_time = new Date().getTime() + 5*60000
+                                        
+                                        res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
+                                    }
+        
+                                })
+                            }
+                        }
+        
+        
+                    })
+        
+                }else{
+                     res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك اضافة لايك لنفسك"}))
+                }
+    
+            }else {
+                res.status(403).send(JSON.stringify({res:"bad",msg:" يمكنك اضافة لايك كل 5 د"}))
+            }
+
+        }else{
+            
+            if(username !== req.session.user.username){
+                const sql = "SELECT likes FROM users WHERE username = ?"
+                db.query(sql,[username],(err,data)=>{
+                    if(err){
+                        console.log(err);
+                        res.send(err);
+                    }
+    
+                    if(data){
+                        if(data.length > 0){
+                            const likes = parseInt(data[0].likes) + 1;
+                            const sql = "UPDATE users SET likes = ? WHERE username = ?"
+                            db.query(sql,[likes,username],(err,result)=>{
+                                if(err){
+                                    console.log(err);
+                                    return
+                                }
+    
+                                if(result){
+                                    req.session.user.like_time = new Date().getTime() + 5*60000
+
+                                    res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
+                                }
+    
+                            })
+                        }
+                    }
+    
+    
+                })
+    
+            }else{
+                 res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك اضافة لايك لنفسك"}))
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+})
+
+app.post("/UpdateUserNickname",(req,res)=>{
+
+
+    const username = req.body.username;
+    const nickname = req.body.nickname;
+
+
+
+    const sql = "SELECT power FROM users WHERE username = ?"
+
+    db.query(sql,[username],(err,data)=>{
+        if(err){
+            console.log(err);
+        }
+
+        if(data){
+            if(data.length === 1){
+
+
+                const current_power = data[0].power;
+
+
+
+
+                if(parseInt(current_power) < parseInt(req.session.user.power) ){
+            
+              
+            
+                    const sql = "UPDATE users SET nickname = ? WHERE username = ?"
+
+
+                    db.query(sql,[nickname,username],(err,data)=>{
+                        if(err){
+                            console.log(err);
+                            res.send(err)
+                        }
+                
+                        if(data){
+                            res.send(JSON.stringify({res:"ok",msg:"تم تحديث الزخرفة"}))
                         }
                 
                 
@@ -718,7 +1430,7 @@ app.post("/UpdateUserPasswrod",(req,res)=>{
                 const current_power = data[0].power;
 
 
-                if(parseInt(current_power) < parseInt(req.session.user.power) || parseInt(current_power) === parseInt(req.session.user.power)){
+                if(parseInt(current_power) < parseInt(req.session.user.power) ){
             
               
             
@@ -768,6 +1480,43 @@ app.post("/UpdateUserPasswrod",(req,res)=>{
 })
 
 
+app.post("/TogglePrivateChat",(req,res)=>{
+    if(req.session.user){
+        const toggle = req.body.toggle;
+        const sql = "UPDATE users SET isprivate = ? WHERE username = ?"
+        db.query(sql,[toggle,req.session.user.username],(err,data)=>{
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+
+            if(data){
+                res.send(JSON.stringify({res:"ok",msg:"تم التحديث"}))
+            }
+
+        })
+    }
+
+})
+
+app.post("/ToggleNotify",(req,res)=>{
+    if(req.session.user){
+        const toggle = req.body.toggle;
+        const sql = "UPDATE users SET isnotify = ? WHERE username = ?"
+        db.query(sql,[toggle,req.session.user.username],(err,data)=>{
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+
+            if(data){
+                res.send(JSON.stringify({res:"ok",msg:"تم التحديث"}))
+            }
+
+        })
+    }
+
+})
 
 
 app.post("/DeleteUser",(req,res)=>{
@@ -807,7 +1556,7 @@ app.post("/DeleteUser",(req,res)=>{
                             const current_power = data[0].power;
             
             
-                            if(parseInt(current_power) < parseInt(req.session.user.power) || parseInt(current_power) === parseInt(req.session.user.power)){
+                            if(parseInt(current_power) < parseInt(req.session.user.power) ){
                         
                           
                         
@@ -880,6 +1629,78 @@ app.post("/DeleteMyImg",(req,res)=>{
 
 
         })
+
+
+
+
+    }else{
+        res.redirect(403,"/")
+    }
+
+
+
+
+
+})
+
+app.post("/DeleteImg",(req,res)=>{
+
+    if(req.session.user){
+
+        
+        
+        const username =  req.body.username;
+
+        const sql = "SELECT power FROM users WHERE username = ?"
+
+        db.query(sql,[username],(err,data)=>{
+            if(err){
+                console.log(err);
+            }
+    
+            if(data){
+                if(data.length === 1){
+    
+    
+                    const current_power = data[0].power;
+    
+    
+    
+    
+                    if(parseInt(current_power) < parseInt(req.session.user.power) ){
+                
+                  
+                        const img = "imgs/pic.png"
+
+                        const sql = "UPDATE users SET img = ? WHERE username = ?";
+                
+                        db.query(sql,[img,username],(err,data)=>{
+                            if(err){
+                                console.log(err);
+                                res.send(err)
+                            }
+                
+                            if(data){
+                                res.send(JSON.stringify({res:"ok",msg:"تم مسح الصورة"}))
+                            }
+                
+                
+                        })
+
+                    
+                
+                
+                    }else{
+                        res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك التعديل علي صلاحية اعلي منك"}))
+                    }
+    
+                }
+            }
+    
+        })
+
+
+
 
 
 
@@ -1005,6 +1826,91 @@ app.post("/Addban",(req,res)=>{
                 
                 
                     })
+    
+
+                
+    
+    
+                }else{
+                    res.status(401).send(JSON.stringify({res:"bad",msg:'ليس لديك الصلاحيات'}))
+                }
+            }
+    
+        })
+    
+    
+    }else{
+        res.redirect(403,"/")
+    }
+
+
+
+
+
+})
+
+
+
+app.post("/AddClientban",(req,res)=>{
+
+
+    if(req.session.user){
+
+
+
+        const sql = "SELECT ban FROM powers WHERE power = ?"
+    
+        db.query(sql,[req.session.user.power],(err,data)=>{
+    
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+    
+            if(data){
+                const ban = data[0].ban
+                if(parseInt(ban) === 1){
+    
+
+                    
+                
+                    const username = req.body.username
+                    const sql = "SELECT device FROM users WHERE username = ?"
+
+                    db.query(sql,[username],(err,data)=>{
+                        if(err){
+                            console.log(err);
+                            res.send(err);
+                        }
+
+                        if(data){
+                            if(data.length > 0){
+                                const device = data[0].device
+
+                                const sql = "INSERT INTO bans(username,ban,ban_time) VALUES(?,?,?)"
+                                db.query(sql,[username,device,'دائم'],(err,data)=>{
+                                    if(err){
+                                        console.log(err);
+                                        res.send(err)
+                                    }
+                            
+                            
+                                    if(data){
+                            
+                                        res.send(JSON.stringify({res:'ok',msg:'تم اضافة الباند'}))
+                                    }
+                            
+                            
+                            
+                                })
+
+                            }
+                        }
+
+
+                    })
+    
+
     
 
                 
@@ -1374,10 +2280,10 @@ app.get("/rooms",(req,res)=>{
 
 app.post("/room",(req,res)=>{
 
-    const id = req.body.id;
+    const name = req.body.name;
     
-    const sql = "SELECT * FROM rooms WHERE id = ?"
-    db.query(sql,[id],(err,data)=>{
+    const sql = "SELECT * FROM rooms WHERE name = ?"
+    db.query(sql,[name],(err,data)=>{
         if(err){
             console.log(err);
             res.send(err)
@@ -1431,35 +2337,58 @@ app.post("/Addroom",(req,res)=>{
                 if(parseInt(create_rooms) === 1){
 
                     const title = req.body.title;
-                    const description = req.body.description;
-                    const welcome_msg = req.body.welcome_msg;
-                    let size = req.body.size;
-
-                    if(parseInt(size) > 40){
-                        size = 40;
-                    }else if(size === ''){
-                        size = 20
-                    }
-                    const password = req.body.password;
-                    const owner = req.session.user.username;
-                    const photo = "/imgs/room.png"
-    
-
-                    const sql = "INSERT INTO rooms(name,owner,photo,password,description,welcome_message,size) VALUES (?,?,?,?,?,?)"
-                    db.query(sql,[title,owner,photo,password,description,size],(err,data)=>{
+                    const sql = "SELECT name FROM rooms WHERE name = ?"
+                    db.query(sql,[title],(err,data)=>{
+                        
                         if(err){
                             console.log(err);
-                            res.send(err)
+                            res.send(res);
                         }
-                
-                
+
                         if(data){
-                           res.send(JSON.stringify({res:"ok",msg:"تم اضافة الغرفة"}))
+
+                            if(data.length === 0){
+
+                                const description = req.body.description;
+                                const welcome_msg = req.body.welcome_msg;
+                                let size = req.body.size;
+            
+                                if(parseInt(size) > 40){
+                                    size = 40;
+                                }else if(size === ''){
+                                    size = 20
+                                }
+                                const password = req.body.password;
+                                const owner = req.session.user.username;
+                                const photo = "/imgs/room.png"
+                
+            
+                                const sql = "INSERT INTO rooms(name,owner,photo,password,description,welcome_message,size) VALUES (?,?,?,?,?,?,?)"
+                                db.query(sql,[title,owner,photo,password,description,welcome_msg,size],(err,data)=>{
+                                    if(err){
+                                        console.log(err);
+                                        res.send(err)
+                                    }
+                            
+                            
+                                    if(data){
+                                       res.send(JSON.stringify({res:"ok",msg:"تم اضافة الغرفة"}))
+                                    }
+                            
+                            
+                            
+                                })
+
+                            }else{
+                                res.send(JSON.stringify({res:"bad",msg:"الاسم مستخدم"}))
+                            }
+
                         }
-                
-                
-                
+
+
+
                     })
+
     
 
                 
@@ -1484,7 +2413,102 @@ app.post("/Addroom",(req,res)=>{
 })
 
 
+app.post("/Updateroom",(req,res)=>{
 
+
+    if(req.session.user){
+
+
+
+        const sql = "SELECT manage_rooms FROM powers WHERE power = ?"
+    
+        db.query(sql,[req.session.user.power],(err,data)=>{
+    
+            if(err){
+                console.log(err);
+                res.send(err)
+            }
+    
+            if(data){
+                const manage_rooms = data[0].manage_rooms
+                
+                if(parseInt(manage_rooms) === 1){
+
+                    const title = req.body.title;
+                    const sql = "SELECT name FROM rooms WHERE name = ?"
+                    db.query(sql,[title],(err,data)=>{
+                        
+                        if(err){
+                            console.log(err);
+                            res.send(res);
+                        }
+
+                        if(data){
+
+                            if(data.length === 0){
+
+                                const description = req.body.description;
+                                const welcome_msg = req.body.welcome_msg;
+                                let size = req.body.size;
+                                const room_name = req.body.name;
+            
+                                if(parseInt(size) > 40){
+                                    size = 40;
+                                }else if(size === ''){
+                                    size = 20
+                                }
+                                const password = req.body.password;
+
+                
+            
+                                const sql = "UPDATE rooms SET name = ?,description = ?,welcome_message = ?,password = ?,size = ? WHERE name = ?"
+                                db.query(sql,[title,description,welcome_msg,password,size,room_name],(err,data)=>{
+                                    if(err){
+                                        console.log(err);
+                                        res.send(err)
+                                    }
+                            
+                            
+                                    if(data){
+                                       res.send(JSON.stringify({res:"ok",msg:"تم اضافة الغرفة"}))
+                                    }
+                            
+                            
+                            
+                                })
+
+                            }else{
+                                res.send(JSON.stringify({res:"bad",msg:"الاسم مستخدم"}))
+                            }
+
+                        }
+
+
+
+                    })
+
+    
+
+                
+    
+    
+                }else{
+                    res.status(401).send(JSON.stringify({res:"bad",msg:'ليس لديك الصلاحيات'}))
+                }
+            }
+    
+        })
+    
+    
+    }else{
+        res.redirect(403,"/")
+    }
+
+
+    
+
+
+})
 
 
 
@@ -1589,7 +2613,7 @@ app.post("/RemoveShortcut",(req,res)=>{
 
 app.get("/subs",(req,res)=>{
 
-    console.log("SUBS");
+    
     
     const sql = "SELECT DISTINCT subs.id,subs.username,subs.period,subs.days_left,users.nickname,powers.power,powers.name FROM subs INNER JOIN users ON subs.username = users.username INNER JOIN powers ON powers.power = users.power"
     db.query(sql,(err,data)=>{
@@ -1601,7 +2625,7 @@ app.get("/subs",(req,res)=>{
 
         if(data){
             if(data.length > 0){
-                console.log(data);
+               
                 res.send(data)
             }else{
                 res.send([])
@@ -1958,33 +2982,55 @@ app.post("/login",(req,res)=>{
                             const power = data[0].power
                             const user = {username:username,id:id,power:power}
 
-                            
-                            const sql = "UPDATE users SET ip = ?,country = ?,device = ?"
-
-                            db.query(sql,[ip,country,device],(err,data)=>{
+                            const sql = "SELECT * FROM bans WHERE ban = ? OR ban = ? OR ban = ?"
+                            db.query(sql,[ip,country,device],(err,result)=>{
                                 if(err){
                                     console.log(err);
                                     res.send(err);
                                 }
 
-                                if(data){
-                                    const sql = "INSERT INTO history (status,username,time) VALUES (?,?,?)"
-                                    db.query(sql,['دخول عضو',username,time],(err,data)=>{
-                                        if(err){
-                                            console.log(err);
-                                            res.send(err)
-                                        }
 
-                                        if(data){
+                                if(result){
+                                    if(result.length > 0){
+                                        res.status(403).send(JSON.stringify({res:"bad",msg:"لقد تم حظرك"}))
+                                    }else{
 
-                                            req.session.user = user;
-                                            res.status(200).send(JSON.stringify({res:"ok",user:user}))
-                                        }
+                                        const sql = "UPDATE users SET ip = ?,country = ?,device = ?"
 
-                                    })
+                                        db.query(sql,[ip,country,device],(err,data)=>{
+                                            if(err){
+                                                console.log(err);
+                                                res.send(err);
+                                            }
+            
+                                            if(data){
+                                                const sql = "INSERT INTO history (status,username,time) VALUES (?,?,?)"
+                                                db.query(sql,['دخول عضو',username,time],(err,data)=>{
+                                                    if(err){
+                                                        console.log(err);
+                                                        res.send(err)
+                                                    }
+            
+                                                    if(data){
+            
+                                                        req.session.user = user;
+                                                        res.status(200).send(JSON.stringify({res:"ok",user:user}))
+                                                    }
+            
+                                                })
+                                            }
+            
+                                        })
+
+
+                                    }
                                 }
 
+
                             })
+
+                            
+
 
     
     
@@ -2051,26 +3097,48 @@ app.post("/signup",(req,res)=>{
                             country = response.countryCode
                         }
 
-                        const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,bio,date) VALUES (?,?,?,?,0,0,?,?,?,?,?)"
-                        db.query(sql,[img,username,username,hash,ip,device,country,'(عضو جديد)',time],(err,data)=>{
-                            if (err) {
+                        const sql = "SELECT * FROM bans WHERE ban = ? OR ban = ? OR ban = ?"
+                        db.query(sql,[ip,country,device],(err,result)=>{
+                            if(err){
                                 console.log(err);
-                               return res.send(err);
+                                res.send(err);
                             }
-                            if(data){
-    
-                                const id = data.insertId
-                                const user = {username:username,id:id,power:'0'}
-                                req.session.user = user;
-                               return res.status(200).send(JSON.stringify({res:"ok",user:user}))
+
+                            if(result){
+                                if(result.length > 0){
+                                    res.status(403).send(JSON.stringify({res:"bad",msg:"لقد تم حظرك"}))
+
+                                }else{
+
+                                    const sql = "INSERT INTO users(img,username,nickname,password,likes,power,ip,device,country,bio,date) VALUES (?,?,?,?,0,0,?,?,?,?,?)"
+                                    db.query(sql,[img,username,username,hash,ip,device,country,'(عضو جديد)',time],(err,data)=>{
+                                        if (err) {
+                                            console.log(err);
+                                           return res.send(err);
+                                        }
+                                        if(data){
                 
-    
-                                
-                            }else{
-                               return res.status(500).send(JSON.stringify({res:"bad",msg:"حدث خطا ما اثناء التسجيل"}))
+                                            const id = data.insertId
+                                            const user = {username:username,id:id,power:'0'}
+                                            req.session.user = user;
+                                           return res.status(200).send(JSON.stringify({res:"ok",user:user}))
+                            
+                
+                                            
+                                        }else{
+                                           return res.status(500).send(JSON.stringify({res:"bad",msg:"حدث خطا ما اثناء التسجيل"}))
+                                        }
+                
+                                    })
+
+
+                                }
                             }
-    
+
+
                         })
+
+
 
                     })
 
@@ -2100,7 +3168,7 @@ app.post("/signup",(req,res)=>{
 
 
 function isloggedin(req){
-    console.log(req.session);
+    
     if(req.session.user){
         return true;
     }else {

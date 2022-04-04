@@ -9,8 +9,8 @@ const user_img_array = Array.from(user_img);
 
 const popup_name_input = document.getElementById('popup_name');
 
+const socket = io();
 
-const create_room_btn = document.getElementById('create_room_btn');
 const create_room_popup = document.getElementById('create_room_popup');
 const create_room_popup_close_btn = document.getElementById('create_room_popup_close_btn');
 
@@ -43,7 +43,7 @@ const msg_input = document.getElementById("msg_input");
 const current_users = document.getElementById("current_users");
 
 const logout_btn = document.getElementById('logout_btn');
-
+const user_country = document.getElementById("user_country")
 
 const add_room_btn = document.getElementById("add_room_btn");
 
@@ -113,6 +113,203 @@ const user_info_popup_close_btn = document.getElementById("user_info_popup_close
 const popup_likes_count = document.getElementById("popup_likes_count");
 const popup_bio = document.getElementById("popup_bio");
 
+const private_chat_popup = document.getElementById("private_chat_popup");
+const private_chat_popup_close_btn = document.getElementById("private_chat_popup_close_btn");
+const private_chat_popup_btn = document.getElementById("private_chat_popup_btn");
+
+const private_chat_profile_img = document.getElementById("private_chat_profile_img")
+const private_chat_name_input = document.getElementById("private_chat_name_input")
+const private_chat_nickname = document.getElementById("private_chat_nickname")
+const private_chat_profile = document.getElementById("private_chat_profile")
+
+const private_msg_input = document.getElementById("private_msg_input");
+const private_send_btn = document.getElementById("private_send_btn");
+
+
+
+const private_chats_cont  = document.getElementById("private_chats")
+
+const popup_nickname = document.getElementById("popup_nickname");
+const popup_likes_input = document.getElementById("popup_likes_input");
+
+const delete_user_info_img_btn = document.getElementById("delete_user_info_img_btn");
+
+const disable_private_chat = document.getElementById("disable_private_chat")
+const disable_notify = document.getElementById("disable_notify")
+
+disable_private_chat.addEventListener("click",()=>{
+
+    let toggle = 0;
+
+    if(disable_private_chat.children[0].style.display === "none"){
+        toggle = 0;
+    }else if(disable_private_chat.children[0].style.display === "block"){
+        toggle = 1;
+
+    }
+
+    fetch("https://"+window.location.host+"/TogglePrivateChat",{
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body:JSON.stringify({
+            toggle:toggle
+            
+
+        })
+    })
+    .then((res) => res.json())
+    .then((data) =>{
+        if(data.res === "ok"){
+            if(disable_private_chat.children[0].style.display === "none"){
+                disable_private_chat.children[0].style.display = "block"
+            }else if(disable_private_chat.children[0].style.display === "block"){
+                disable_private_chat.children[0].style.display = "none"
+        
+            }
+        }
+    })
+
+
+})
+
+disable_notify.addEventListener("click",()=>{
+
+    let toggle = 0;
+
+    if(disable_notify.children[0].style.display === "none"){
+        toggle = 0;
+    }else if(disable_notify.children[0].style.display === "block"){
+        toggle = 1;
+
+    }
+
+    fetch("https://"+window.location.host+"/ToggleNotify",{
+        method:"POST",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body:JSON.stringify({
+            toggle:toggle
+            
+
+        })
+    })
+    .then((res) => res.json())
+    .then((data) =>{
+        if(data.res === "ok"){
+            if(disable_notify.children[0].style.display === "none"){
+                disable_notify.children[0].style.display = "block"
+            }else if(disable_notify.children[0].style.display === "block"){
+                disable_notify.children[0].style.display = "none"
+        
+            }
+        }
+    })
+
+
+})
+
+
+
+
+
+
+private_chat_popup_btn.addEventListener("click",()=>{
+
+
+
+    if(currnet_name_popup.value.length > 0){
+        private_chat_popup.style.display = "flex";
+        popup.style.display = "none"
+
+
+        const username = currnet_name_popup.value
+
+
+
+        if(private_chats_cont.children.length === 0){
+            const div = document.createElement("div");
+            div.id = username+"_chat"
+            div.className = "private_chats"
+            private_chats_cont.appendChild(div);
+        }else{
+
+            const private_chats_array = Array.from(private_chats_cont.children)
+
+            if(private_chats_array.find((cont) => cont.id === username+"_chat")){
+                private_chats_array.forEach((ele)=>{
+                     
+                    if(ele.id !== username+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+            }else{
+                const div = document.createElement("div");
+                div.id = username+"_chat"
+                div.className = "private_chats"
+                private_chats_cont.appendChild(div);
+
+                private_chats_array.forEach((ele)=>{
+                    
+                    if(ele.id !== username+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+
+            }
+
+
+        }
+
+        fetch("https://"+window.location.host+"/user",{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body:JSON.stringify({
+                username:username
+                
+
+            })
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+            if(data){
+
+                private_chat_name_input.value = data[0].username;
+                private_chat_profile_img.src = data[0].img
+                private_chat_nickname.textContent = data[0].nickname
+
+                private_chat_profile.addEventListener("click",()=>{
+                    private_chat_popup.style.display = "none"
+                    openProfilePopup(data[0].username)
+                })
+                
+
+            }
+        })
+
+
+
+
+
+    }
+
+})
+
+private_chat_popup_close_btn.addEventListener("click",()=>{
+    private_chat_popup.style.display = "none";
+})
+
 
 
 edit_room_popup_close_btn.addEventListener("click",()=>{
@@ -142,7 +339,7 @@ edit_room_btn.addEventListener("click",()=>{
             credentials: 'include',
     
             body:JSON.stringify({
-                id:currnet_room_id.value
+                name:currnet_room_id.value
             })
         
         })
@@ -167,11 +364,12 @@ edit_room_btn.addEventListener("click",()=>{
                     },
                     credentials: 'include',
                     body:JSON.stringify({
-                        title:room_title_input.value,
-                        description:room_desc_input.value.length <= 0?null:room_desc_input.value,
-                        size:room_size_input.value,
-                        password:room_password_input.value.length <= 0?null:room_password_input.value,
-                        welcome_msg:room_welcome_msg_input.value.length <= 0?null: room_welcome_msg_input.value
+                        title:edit_room_title_input.value,
+                        description:edit_room_desc_input.value.length <= 0?null:edit_room_desc_input.value,
+                        size:edit_room_size_input.value,
+                        password:edit_room_password_input.value.length <= 0?null:edit_room_password_input.value,
+                        welcome_msg:edit_room_welcome_msg_input.value.length <= 0?null: edit_room_welcome_msg_input.value,
+                        name:currnet_room_id.value
                         
         
                     })
@@ -180,6 +378,7 @@ edit_room_btn.addEventListener("click",()=>{
                 .then((data) =>{
                     if(data.res === "ok"){
                         edit_room_popup.style.display = "none"
+                        getAllRooms();
                     }
                 })
             
@@ -223,6 +422,7 @@ profile_pic_input.addEventListener("change",(e)=>{
                 ele.src = data.img
             })
             img = data.img
+
 
 
         }
@@ -396,7 +596,9 @@ SideBarToggle(setting_sidebar_btn,setting_sidebar_close_btn,setting_sidebar);
 
 
 
-PopupToggle(create_room_popup,create_room_popup_close_btn,create_room_btn);
+
+
+
 
 
 function PopupToggle(popup,popupCloseBtn,Openbtn){
@@ -456,6 +658,8 @@ function SideBarToggle(btn,closeBtn,SideBar){
                         create_room_popup.style.display = "none";
         
                         alert(data.msg);
+                        socket.emit("get all rooms")
+                        return
         
                     }
         
@@ -466,6 +670,17 @@ function SideBarToggle(btn,closeBtn,SideBar){
     }
 
 
+    if(private_chat_btn === btn){
+        btn.addEventListener("click",()=>{
+            private_chat_btn.style.backgroundColor = buttons_color
+            const SideBars = document.querySelectorAll('.sidebar');
+            const SideBars_array = Array.from(SideBars);
+            SideBars_array.map((ele)=>{
+                ele.style.display = 'none'
+            })
+            SideBar.style.display = "flex"
+        })
+    }
 
     btn.addEventListener("click",()=>{
         const SideBars = document.querySelectorAll('.sidebar');
@@ -499,7 +714,7 @@ setInterval(() => {
     })
 }, 60000);
 
-const socket = io();
+
 
 send_btn.addEventListener("click",()=>{
     if(msg_input.value.length > 0){
@@ -516,7 +731,7 @@ send_btn.addEventListener("click",()=>{
             bgCO = "#"+json.bgCo
 
         }
-        socket.emit("message",{user:nickname,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
+        socket.emit("message",{user:nickname,username:username,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
         msg_input.value = '';
 
     }
@@ -524,13 +739,49 @@ send_btn.addEventListener("click",()=>{
 
 
 
+private_send_btn.addEventListener("click",()=>{
+    const to = currnet_name_popup.value
+
+    if(private_msg_input.value.length > 0 && to.length > 0){
+        
+        const msg = private_msg_input.value;
+        let uCo = "#00000";
+        let bgCO = "#fffff";
+        let fontCO = "#00000";
+        if(localStorage.getItem("colors")){
+
+            const json  = JSON.parse(localStorage.getItem("colors"));
+
+            fontCO = "#"+json.fontCo;
+            uCo = "#"+json.nameCo;
+            bgCO = "#"+json.bgCo
+
+        }
+        socket.emit("private message",{to:to,from:username,user:private_chat_nickname.innerText,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
+        private_msg_input.value = '';
+
+    }
+})
+
+
+socket.on("get all rooms",()=>{
+
+    getAllRooms()
+
+
+
+
+})
+
 
 
 window.onload = ()=>{
  
     socket.emit("join room",{name:nickname,username:username,room:roomName,img:img})
+    socket.emit("get_conntected_users")
 
-    currnet_room_id.value = "1"
+    currnet_room_id.value = roomName
+   
 
     if(document.getElementById("send_ad_btn")){
         const send_ad_btn = document.getElementById("send_ad_btn");
@@ -539,7 +790,7 @@ window.onload = ()=>{
     
             if(ad_prompt){
                 if(ad_prompt.length > 0){
-                    console.log(nickname);
+                  
                     
                     socket.emit("ad",{name:nickname,msg:ad_prompt,img:img})
                 }
@@ -547,78 +798,10 @@ window.onload = ()=>{
         })
     }
 
+
+    getAllRooms();
     
-fetch("https://"+window.location.host+"/rooms")
-.then((res) => res.json())
-.then((data)=>{
 
-    rooms_count_number.textContent = data.length
-
-    groups_list.innerHTML = `
-        
-    <div class="new_room" style="background-color: ${theme_color};">
-    <button id="create_room_btn" ><i class="fa-solid fa-plus"></i> <span>غرفة جديدة</span></button>
-        
-    </div>
-
-`
-
-    data.map((ele)=>{
-
-        const div = document.createElement("div");
-        div.className = "room ";
-        div.innerHTML = `
-        
-        <div class="left" data-id="${ele.id}">
-        <div><img src="${ele.photo}" width="36" height="36" alt="Room photo"></div>
-        <div class="txts">
-            <div class="room_name">
-                ${ele.name}
-            </div>
-            <div class="room_desc" style="color: gray;">
-                ${ele.description== null?'':ele.description}
-            </div>
-        </div>
-    </div>
-
-    <div class="right">
-        <div class="card" style="background-color: ${buttons_color}">
-            <div><i class="fa-solid fa-user"></i></div>
-            <div><span>1</span>/${ele.size}</div>
-        </div>
-    </div>
-        
-        `
-
-        groups_list.appendChild(div)
-
-
-    })
-
-
-    const rooms = document.querySelectorAll(".room");
-const rooms_array = Array.from(rooms);
-
-
-rooms_array.forEach((ele)=>{
-    ele.addEventListener("click",(e)=>{
-
-        const room_name = e.currentTarget.querySelector(".room_name").innerText;
-        const room_id = 
-        socket.emit("join new room",{name:nickname,room:room_name,img:img})
-        send_btn.disabled = false
-        msg_input.readOnly = false;
-        exit_rooms_btn.disabled = false
-        msg_input.style.backgroundColor = ""
-        exit_rooms_btn.style.backgroundColor = ""
-        send_btn.style.backgroundColor = ""
-
-
-    })
-})
-
-
-})
 
     if(localStorage.getItem("colors")){
         const json  = JSON.parse(localStorage.getItem("colors"));
@@ -635,9 +818,11 @@ rooms_array.forEach((ele)=>{
     fetch("https://"+window.location.host+"/MyUser")
     .then((res) => res.json())
     .then((data) =>{
+
         nickname_input.value = data[0].nickname;
         bio_input.value = data[0].bio;
-        user_flag.src = `https://flagcdn.com/16x12/${country.toLowerCase()}.png`
+        user_flag.src = `httpss://flagcdn.com/16x12/${country.toLowerCase()}.png`
+        user_country.textContent = data[0].country
 
         user_photo_array.forEach((ele)=>{
             ele.src = data[0].img
@@ -690,8 +875,150 @@ rooms_array.forEach((ele)=>{
 
 }
 
-socket.on("size",(size)=>{
-    current_users.textContent = parseInt(size);
+
+socket.on("err",({to,msg})=>{
+
+    if(username === to){
+        const div = document.createElement("div");
+        div.className = "notify";
+        div.innerHTML = `
+        
+        <div>${msg}</div>
+        
+        `
+
+        document.body.prepend(div)
+        const notify = document.querySelectorAll(".notify");
+
+        Array.from(notify).forEach((ele)=>{
+            ele.addEventListener("click",(e)=>{
+                ele.remove()
+            })
+        })
+    }
+})
+
+socket.on("private notify",({to,from,msg,img,uCo,bgCO})=>{
+
+    if(username === to){
+        const div = document.createElement("div");
+        div.className = "notify";
+        div.innerHTML = `
+        
+        <div class="flex" style="align-items: center;">
+        <div><img width="20" height="20" src="${img}" alt="profile pic"></div>
+        <div style="color: ${uCo};background-color: ${bgCO};height: fit-content;">${from}</div>
+    </div>
+    <div>${msg}</div>
+        
+        `
+
+        document.body.prepend(div)
+        const notify = document.querySelectorAll(".notify");
+
+        Array.from(notify).forEach((ele)=>{
+            ele.addEventListener("click",(e)=>{
+                ele.remove()
+            })
+        })
+    }
+})
+
+
+
+
+socket.on("kick room",({my_username})=>{
+  
+    if(username === my_username){
+        socket.emit("leave room")
+    }
+})
+
+
+socket.on("add ban",({my_username})=>{
+  
+    if(username === my_username){
+        fetch("https://"+window.location.host+"/logout",{method:"POST"})
+        .then((res) => {if(res.status === 200){window.location.reload()}})
+    }
+})
+
+socket.on("transfer new room",({my_username,room})=>{
+  
+    if(username === my_username){
+        socket.emit("join new room",{name:nickname,room:room,img:img})
+        currnet_room_id.value = room
+    }
+})
+
+
+socket.on("send_connected_users",(data)=>{
+    if(data.length > 0){
+        
+        Array.from(document.querySelectorAll(".room_size_txt")).forEach((ele)=>{
+            ele.textContent = 0
+        })
+        data.forEach((ele)=>{
+            
+            if(document.getElementById(ele.room+"_room")){
+                document.getElementById(ele.room+"_room").textContent = parseInt(document.getElementById(ele.room+"_room").textContent ) + 1
+
+            }
+
+            
+            
+        })
+    }
+})
+
+socket.on("size",(users)=>{
+    current_users.textContent = users.length
+
+    if(users.length > 0){
+        const available_users = document.getElementById("available_users");
+        const all_users = document.getElementById("all_users");
+        all_users.innerHTML = ``
+        available_users.innerHTML = ``
+        let lastPos = 0;
+        users.forEach((ele)=>{
+            lastPos = lastPos + 1
+
+            const user_div = document.createElement("div");
+            user_div.className = "user"
+
+            user_div.innerHTML =
+
+            `
+
+            <div class="flex">
+                 <div class="bar"></div>
+                 <div class="img user_img" data-name="${ele.username}" onclick="openProfilePopup('${ele.username}')"><img width="44" height="100%" src="${ele.img}" alt="profile photo"></div>
+                 <div style="margin-left: 5px;">
+                     <div>${ele.nickname}</div>
+                     <div class="status-gray" style="color: gray;font-size: 14px;">${ele.bio}</div>
+                 </div>
+            </div>
+
+            <div class="flag">
+             <span style="color: gray;font-size: 11px;">#${lastPos}</span>
+                 <img src="httpss://flagcdn.com/16x12/${ele.country.toLowerCase()}.png" alt="Flag photo">
+                 
+            </div>
+
+
+            
+            
+            `;
+
+            if(ele.room === roomName){
+                available_users.appendChild(user_div)
+            }else{
+                all_users.appendChild(user_div)
+            }
+            
+
+        })
+    }
 })
 
 socket.on("ad",(data)=>{
@@ -700,6 +1027,7 @@ socket.on("ad",(data)=>{
 })
 
 socket.on("welcome message",(data) =>{
+
 
     AddWelcomeMessage(data)
     getUserImg()
@@ -712,11 +1040,243 @@ socket.on("disconnect message",(data) =>{
 
 })
 socket.on("message",(data) =>{
+   
 
     AddMessage(data)
 
     getUserImg();
     
+
+})
+
+socket.on("private message",(data)=>{
+    
+
+    if(data.from === username){
+
+        if(private_chats_cont.children.length === 0){
+            const div = document.createElement("div");
+            div.id = data.to+"_chat"
+            div.className = "private_chats"
+            private_chats_cont.appendChild(div);
+        }else{
+    
+            const private_chats_array = Array.from(private_chats_cont.children)
+    
+            if(private_chats_array.find((cont) => cont.id === data.to+"_chat")){
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== data.to+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+            }else{
+                const div = document.createElement("div");
+                div.id = data.to+"_chat"
+                div.className = "private_chats"
+                private_chats_cont.appendChild(div);
+    
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== data.to+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+    
+            }
+    
+    
+        }
+
+        const chat = document.getElementById(data.to+"_chat")
+
+        const join_msg = document.createElement("div")
+        join_msg.className = 'msg'
+        join_msg.innerHTML = `
+        <div class="left">
+        <div class="img user_img" data-name="${data.to}" data-img="${data.from_img}">
+            <img width="44" height="44" src="${data.from_img}" alt="profile photo">
+        </div>
+    
+        <div class="info">
+            <div class="name" style="color:${data.uCo};background-color:${data.bgCO};">${data.from}</div>
+            <div class="flex">
+                <div style="min-width: fit-content;height: fit-content;color:${data.fontCO};">${data.msg}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="right">
+        <div class="time"><span class="time_sent">0</span>د</div>
+    </div>
+        
+        `;
+
+        chat.appendChild(join_msg)
+
+        const private_chats_sider = document.getElementById("private_chats_sider");
+        let isexist = false;
+
+        Array.from(private_chats_sider.children).forEach((ele)=>{
+            if(ele.dataset.name === data.to){
+                isexist = true;
+            }
+        })
+
+       
+
+        if(!isexist){
+
+            const private_chat = document.createElement("div");
+            private_chat.className = "delete_private_chat flex";
+            private_chat.style = "justify-content: space-between;padding: 3px;";
+            private_chat.id = data.to+"_chat_sider"
+            private_chat.dataset.name = data.to
+    
+            private_chat.innerHTML = `
+            
+            <div class="flex private_chat" data-name="${data.to}">
+            <div><img style="border: 1px solid black;" src="${data.to_img}" width="30" height="30" alt=""></div>
+            <div style="color:${data.uCo};background-color:${data.bgCO};height: fit-content;padding: 3px;">${data.to}</div>
+            </div>
+            <div data-name="${data.to}" style="background-color: #c12e2a;color: white;height: fit-content;padding: 3px;border-radius: 3px;"><i class="fa-solid fa-xmark"></i><span>حذف</span></div>
+    
+            `
+            private_chats_sider.appendChild(private_chat);
+        }
+
+
+    }else if(data.to === username){
+
+        
+        if(private_chats_cont.children.length === 0){
+            const div = document.createElement("div");
+            div.id = data.from+"_chat"
+            div.className = "private_chats"
+            private_chats_cont.appendChild(div);
+        }else{
+    
+            const private_chats_array = Array.from(private_chats_cont.children)
+    
+            if(private_chats_array.find((cont) => cont.id === data.from+"_chat")){
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== data.from+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+            }else{
+                const div = document.createElement("div");
+                div.id = data.from+"_chat"
+                div.className = "private_chats"
+                private_chats_cont.appendChild(div);
+    
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== data.from+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+    
+            }
+    
+    
+        }
+
+        
+        const chat = document.getElementById(data.from+"_chat")
+
+        const join_msg = document.createElement("div")
+        join_msg.className = 'msg'
+        join_msg.innerHTML = `
+        <div class="left">
+        <div class="img user_img" data-name="${data.from}" data-img="${data.to_img}">
+            <img width="44" height="44" src="${data.to_img}" alt="profile photo">
+        </div>
+    
+        <div class="info">
+            <div class="name" style="color:${data.uCo};background-color:${data.bgCO};">${data.to}</div>
+            <div class="flex">
+                <div style="min-width: fit-content;height: fit-content;color:${data.fontCO};">${data.msg}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="right">
+        <div class="time"><span class="time_sent">0</span>د</div>
+    </div>
+        
+        `;
+
+        chat.appendChild(join_msg)
+
+        const private_chats_sider = document.getElementById("private_chats_sider");
+        let isexist = false;
+
+        Array.from(private_chats_sider.children).forEach((ele)=>{
+            if(ele.dataset.name === data.from){
+                isexist = true;
+            }
+        })
+
+       
+
+        if(!isexist){
+
+            const private_chat = document.createElement("div");
+            private_chat.className = "delete_private_chat flex";
+            private_chat.style = "justify-content: space-between;padding: 3px;";
+            private_chat.id = data.from+"_chat_sider"
+            private_chat.dataset.name = data.from
+            private_chat.innerHTML =  `
+            
+            <div class="flex private_chat" data-name="${data.from}">
+            <div><img style="border: 1px solid black;" src="${data.from_img}" width="30" height="30" alt=""></div>
+            <div style="height: fit-content;padding: 3px;">${data.from}</div>
+            </div>
+            <div data-name="${data.from}" style="background-color: #c12e2a;color: white;height: fit-content;padding: 3px;border-radius: 3px;"><i class="fa-solid fa-xmark"></i><span>حذف</span></div>
+    
+            `
+            private_chats_sider.appendChild(private_chat);
+        }
+
+
+
+
+        private_chat_btn.style.backgroundColor = "#FFC300"
+
+
+
+
+    }
+
+    Array.from(document.querySelectorAll(".private_chat")).forEach((ele)=>{
+        ele.addEventListener("click",(e)=>{
+            
+            openPrivateChat(e.currentTarget.dataset.name);
+        })
+    })
+
+
+    Array.from(document.querySelectorAll(".delete_private_chat")).forEach((ele)=>{
+        ele.children[1].addEventListener("click",(e)=>{
+            
+            if(document.getElementById(e.currentTarget.dataset.name+"_chat")){
+                document.getElementById(e.currentTarget.dataset.name+"_chat").remove();
+                ele.remove();
+                
+            }
+        })
+    })
+
 
 })
 
@@ -769,12 +1329,13 @@ function AddToWall(data){
 
 
 function AddWelcomeMessage(data){
+    
     const chat = document.querySelector(".chat");
     const join_msg = document.createElement("div")
     join_msg.className = 'join_msg'
     join_msg.innerHTML = `
     <div class="left">
-    <div class="img user_img" data-name="${data.user}" data-img="${data.img}">
+    <div class="img user_img" data-name="${data.username}" data-img="${data.img}">
         <img width="44" height="44" src="${data.img}" alt="profile photo">
     </div>
 
@@ -797,6 +1358,7 @@ function AddWelcomeMessage(data){
     chat.appendChild(join_msg)
 
 }
+
 
 function AddAd(data){
     const chat = document.querySelector(".chat");
@@ -834,7 +1396,7 @@ function AddDisconnectMessage(data){
     join_msg.className = 'disconnect_msg'
     join_msg.innerHTML = `
     <div class="left">
-    <div class="img user_img" data-name="${data.user}" data-img="${data.img}">
+    <div class="img user_img" data-name="${data.username}" data-img="${data.img}">
         <img width="44" height="44" src="${data.img}" alt="profile photo">
     </div>
 
@@ -857,13 +1419,15 @@ function AddDisconnectMessage(data){
     chat.appendChild(join_msg)
 
 }
+
+
 function AddMessage(data){
     const chat = document.querySelector(".chat");
     const join_msg = document.createElement("div")
     join_msg.className = 'msg'
     join_msg.innerHTML = `
     <div class="left">
-    <div class="img user_img" data-name="${data.user}" data-img="${data.img}">
+    <div class="img user_img" data-name="${data.username}" data-img="${data.img}">
         <img width="44" height="44" src="${data.img}" alt="profile photo">
     </div>
 
@@ -891,7 +1455,7 @@ function AddMessage(data){
 
 
 logout_btn.addEventListener("click",()=>{
-    fetch("https://"+window.location.host+"/logout")
+    fetch("https://"+window.location.host+"/logout",{method:"POST"})
     .then((res) => {if(res.status === 200){window.location.reload()}})
   
 })
@@ -900,16 +1464,16 @@ function closeIt(){
 
   return Logout();
 }
-// window.onbeforeunload = closeIt;
+window.onbeforeunload = closeIt;
 
 
 
 function Logout(){
 
-    fetch("https://"+window.location.host+"/logout")
+    fetch("https://"+window.location.host+"/logout",{method:"POST"})
     .then((res) => res.json())
     .then((data)=>{
-        console.log(data);
+      
     })
 }
 
@@ -929,46 +1493,52 @@ function getUserImg(){
         ele.addEventListener("click",(e)=>{
 
 
+
+
+
             const username = e.currentTarget.dataset.name
-            currnet_name_popup.value = username;
-            popup_name_input.value = username;
-            popup_profile_name.textContent = username;
 
-            const popup_pics = document.querySelectorAll(".popup_pic");
-            const popup_pics_array = Array.from(popup_pics);
-            popup_pics_array.forEach((ele)=>{
-                ele.src = e.currentTarget.dataset.img
-            })
+            openProfilePopup(username)
 
-            fetch("https://"+window.location.host+"/user",{
-                method:"POST",
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body:JSON.stringify({
-                    username:username
+            // currnet_name_popup.value = username;
+            // popup_name_input.value = username;
+            // popup_profile_name.textContent = username;
+
+            // const popup_pics = document.querySelectorAll(".popup_pic");
+            // const popup_pics_array = Array.from(popup_pics);
+            // popup_pics_array.forEach((ele)=>{
+            //     ele.src = e.currentTarget.dataset.img
+            // })
+
+            // fetch("https://"+window.location.host+"/user",{
+            //     method:"POST",
+            //     headers:{
+            //         'Content-Type': 'application/json'
+            //     },
+            //     credentials: 'include',
+            //     body:JSON.stringify({
+            //         username:username
                     
     
-                })
-            })
-            .then((res) => res.json())
-            .then((data) =>{
+            //     })
+            // })
+            // .then((res) => res.json())
+            // .then((data) =>{
 
-                if(data){
+            //     if(data){
     
     
     
-                    popup_likes_count.textContent = data[0].likes
-                    popup_bio.textContent = data[0].bio
+            //         popup_likes_count.textContent = data[0].likes
+            //         popup_bio.textContent = data[0].bio
 
     
-                    popup.style.display = "flex"
+            //         popup.style.display = "flex"
 
                     
     
-                }
-            })
+            //     }
+            // })
     
            
 
@@ -1029,4 +1599,653 @@ show_user_info_btn.addEventListener("click",()=>{
 
     }
 })
+}
+
+function openProfilePopup(username){
+ 
+
+    if(document.getElementById("admin_popup")){
+
+        currnet_name_popup.value = username;
+        popup_name_input.value = username;
+        popup_profile_name.textContent = username;
+        const rooms_select = document.getElementById("rooms_select");
+        const subs_select = document.getElementById("subs_select");
+    
+        const popup_pics = document.querySelectorAll(".popup_pic");
+        const popup_pics_array = Array.from(popup_pics);
+    
+        socket.emit("get current room",({username}))
+    
+        socket.on("get current room",({room,rooms})=>{
+            
+  
+            const popup_room_data_childern = document.getElementById("popup_room_data").children
+            rooms.forEach((ele)=>{
+                const option = document.createElement("option");
+                option.value = ele.name
+                option.textContent = ele.name;
+                if(ele.name === room){
+                    option.selected = true;
+                    popup_room_data_childern[0].src = ele.photo
+                    popup_room_data_childern[1].textContent = ele.name
+                }
+                rooms_select.appendChild(option)
+            })
+    
+        })
+    
+    
+    
+    
+        fetch("https://"+window.location.host+"/user",{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body:JSON.stringify({
+                username:currnet_name_popup.value
+                
+    
+            })
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+
+    
+            if(data){
+    
+    
+                fetch("https://"+window.location.host+"/PowersNames")
+                .then((res) => res.json())
+                .then((powers)=>{
+                    subs_select.innerHTML = ''
+
+                    powers.forEach((ele)=>{
+                        const option = document.createElement("option");
+                        option.value = ele.power
+                        option.textContent = `[${ele.power}] ${ele.name}`
+    
+                        if(parseInt(ele.power) === data[0].power){
+                            option.selected = true;
+                        }
+                        subs_select.appendChild(option)
+                    })
+                })
+
+                
+    
+                popup_nickname.value = data[0].nickname
+                popup_likes_input.value = data[0].likes
+                popup_likes_count.textContent = data[0].likes
+                popup_bio.textContent = data[0].bio
+                user_flag.src = `httpss://flagcdn.com/16x12/${(data[0].country).toLowerCase()}.png`
+                user_country.textContent = data[0].country;
+                popup_pics_array.forEach((ele)=>{
+                    ele.src = data[0].img
+                })
+    
+    
+                popup.style.display = "flex"
+    
+    
+                const update_popup_nickname_btn = document.getElementById("update_popup_nickname_btn");
+                update_popup_nickname_btn.addEventListener("click",()=>{
+                    if(popup_nickname.value.length > 0){
+    
+                        fetch("https://"+window.location.host+"/UpdateUserNickname",{
+                            method:"POST",
+                            headers:{
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body:JSON.stringify({
+                                username:currnet_name_popup.value,
+                                nickname:popup_nickname.value
+                                
+                    
+                            })
+                        })
+                        .then((res) => res.json())
+                        .then((data) =>{
+                            if(data.res === "ok"){
+                                alert(data.msg)
+                                return
+                            }else if(data.res === "bad"){
+                                alert(data.msg)
+                                return
+                            }
+                        })
+    
+                    }
+                })
+    
+                const update_popup_likes_btn = document.getElementById("update_popup_likes_btn");
+                update_popup_likes_btn.addEventListener("click",()=>{
+                    if(popup_nickname.value.length > 0){
+    
+                        fetch("https://"+window.location.host+"/UpdateUserLikes",{
+                            method:"POST",
+                            headers:{
+                                'Content-Type': 'application/json'
+                            },
+                            credentials: 'include',
+                            body:JSON.stringify({
+                                username:currnet_name_popup.value,
+                                likes:popup_likes_input.value
+                                
+                    
+                            })
+                        })
+                        .then((res) => res.json())
+                        .then((data) =>{
+                            if(data.res === "ok"){
+                                alert(data.msg)
+                                return
+                            }else if(data.res === "bad"){
+                                alert(data.msg)
+                                return
+                            }
+                        })
+    
+                    }
+                })
+
+                delete_user_info_img_btn.addEventListener("click",()=>{
+                    fetch("https://"+window.location.host+"/DeleteImg",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value,
+                            
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data)=>{
+                        if(data.res === "ok"){
+                            popup.style.display = "none"
+                            alert(data.msg);
+                            return
+                            
+
+                        }else if(data.res === "bad"){
+                            alert(data.msg)
+                            return
+                        }
+                    })
+    
+                })
+
+                const add_like = document.getElementById("add_like");
+                add_like.addEventListener("click",()=>{
+
+                    fetch("https://"+window.location.host+"/AddLike",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value,
+                            
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+ 
+                        if(data.res === "bad"){
+                            alert(data.msg);
+                            return
+                        }else if(data.res === "ok"){
+                            alert(data.msg);
+                            return
+                        }
+                    })
+
+                })
+
+                const ban_btn = document.getElementById("ban_btn");
+                ban_btn.addEventListener("click",()=>{
+
+                    fetch("https://"+window.location.host+"/CanPower",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+                        if(data.res === "ok"){
+
+                            fetch("httpss://api64.ipify.org/?format=json")
+                            .then((res) => res.json())
+                            .then((ip_data) =>{
+
+                                fetch("https://"+window.location.host+"/Addban",{
+                                    method:"POST",
+                                    headers:{
+                                        'Content-Type': 'application/json'
+                                    },
+                                    credentials: 'include',
+                                    body:JSON.stringify({
+                                        ban:ip_data.ip,
+                    
+                        
+                                    })
+                                })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if(data.res){
+                                        if(data.res === "ok"){
+                                            
+                                            popup.style.display = "none"
+                                            
+                                            socket.emit("add ban",{username:currnet_name_popup.value})
+                                            
+                    
+                                        }else if(data.res === "bad"){
+                                            alert(data.msg)
+                                            return
+                                            
+                                        }
+                                    }
+                                })
+
+                            })
+
+                        }else if(data.res === "bad"){
+                            alert(data.msg);
+                            return
+                        }
+                    })
+
+                })
+
+                const kick_room_btn = document.getElementById("kick_room_btn");
+                kick_room_btn.addEventListener("click",()=>{
+                    fetch("https://"+window.location.host+"/CanPower",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+                        if(data.res === "ok"){
+                            socket.emit("kick room",{username:currnet_name_popup.value})
+                        }else if(data.res === "bad"){
+                            alert(data.msg);
+                            return
+                        }
+                    })
+                    
+                })
+
+                const transfer_room_btn = document.getElementById("transfer_room_btn");
+                transfer_room_btn.addEventListener("click",()=>{
+
+                    fetch("https://"+window.location.host+"/CanPower",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+                        if(data.res === "ok"){
+                            socket.emit("transfer new room",{username:currnet_name_popup.value,room:rooms_select.value})
+                        }else if(data.res === "bad"){
+                            alert(data.msg);
+                            return
+                        }
+                    })
+
+                })
+    
+                const change_power_btn = document.getElementById("change_power_btn");
+                change_power_btn.addEventListener("click",()=>{
+
+                    fetch("https://"+window.location.host+"/UpdateUserPowers",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value,
+                            power: subs_select.value
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+                        if(data.msg){
+                            alert(data.msg);
+                            return
+        
+                        }
+        
+                        if(data.res === "ok"){
+                            popup.style.display = 'none'
+                            
+                        }
+                    })
+
+                })
+
+                const private_notify_btn = document.getElementById("private_notify_btn");
+                private_notify_btn.addEventListener("click",()=>{
+
+                    let ad_prompt = prompt("اكتب رسالتك")
+                    
+                    if(ad_prompt){
+                        if(ad_prompt.length > 0){
+                        
+                            let uCo = "#00000";
+                            let bgCO = "#fffff";
+                            let fontCO = "#00000";
+                            if(localStorage.getItem("colors")){
+                    
+                                const json  = JSON.parse(localStorage.getItem("colors"));
+                    
+                                fontCO = "#"+json.fontCo;
+                                uCo = "#"+json.nameCo;
+                                bgCO = "#"+json.bgCo
+                    
+                            }
+                          
+                            socket.emit("private notify",{msg:ad_prompt,uCo:uCo,bgCO:bgCO,to:currnet_name_popup.value,from:username})
+                        }
+                    }
+
+
+                })
+                
+    
+            }
+        })
+
+    }else{
+
+        currnet_name_popup.value = username;
+        popup_name_input.value = username;
+        popup_profile_name.textContent = username;
+    
+        const popup_pics = document.querySelectorAll(".popup_pic");
+        const popup_pics_array = Array.from(popup_pics);
+    
+
+    
+    
+    
+    
+        fetch("https://"+window.location.host+"/user",{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body:JSON.stringify({
+                username:username
+                
+    
+            })
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+    
+            if(data){
+    
+    
+                popup_likes_count.textContent = data[0].likes
+                popup_bio.textContent = data[0].bio
+                popup_pics_array.forEach((ele)=>{
+                    ele.src = data[0].img
+                })
+    
+    
+                popup.style.display = "flex"
+
+                const add_like = document.getElementById("add_like");
+                add_like.addEventListener("click",()=>{
+
+                    fetch("https://"+window.location.host+"/AddLike",{
+                        method:"POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'include',
+                        body:JSON.stringify({
+                            username:currnet_name_popup.value,
+                            
+                            
+                
+                        })
+                    })
+                    .then((res) => res.json())
+                    .then((data) =>{
+
+                        if(data){
+                            if(data.res === "bad"){
+                                alert(data.msg);
+                                return
+                            }else if(data.res === "ok"){
+                                alert(data.msg);
+                                return
+                            }
+                        }
+ 
+ 
+                    })
+
+                })
+                
+    
+            }
+        })
+
+    }
+
+   
+
+}
+
+function getAllRooms(){
+
+    fetch("https://"+window.location.host+"/rooms")
+    .then((res) => res.json())
+    .then((data)=>{
+    
+        rooms_count_number.textContent = data.length
+    
+        groups_list.innerHTML = `
+            
+        <div class="new_room" style="background-color: ${theme_color};">
+        <button id="create_room_btn" ><i class="fa-solid fa-plus"></i> <span>غرفة جديدة</span></button>
+            
+        </div>
+    
+    `
+    
+        data.map((ele)=>{
+    
+            const div = document.createElement("div");
+            div.className = "room ";
+
+            div.innerHTML = `
+            
+            <div class="left" data-id="${ele.id}">
+            <div><img src="${ele.photo}" width="36" height="36" alt="Room photo"></div>
+            <div class="txts">
+                <div class="room_name">
+                    ${ele.name}
+                </div>
+                <div class="room_desc" style="color: gray;">
+                    ${ele.description== null?'':ele.description}
+                </div>
+            </div>
+        </div>
+    
+        <div class="right">
+            <div class="card" style="background-color: ${buttons_color}">
+                <div><i class="fa-solid fa-user"></i></div>
+                <div><span id = "${ele.name+"_room"}" class="room_size_txt">0</span>/${ele.size}</div>
+            </div>
+        </div>
+            
+            `
+    
+            groups_list.appendChild(div)
+    
+    
+        })
+    
+    
+    
+    const rooms = document.querySelectorAll(".room");
+    const rooms_array = Array.from(rooms);
+    
+    
+    rooms_array.forEach((ele)=>{
+        ele.addEventListener("click",(e)=>{
+    
+            const room_name = e.currentTarget.querySelector(".room_name").innerText;
+    
+            socket.emit("join new room",{name:nickname,username:username,room:room_name,img:img})
+            currnet_room_id.value = room_name
+            setTimeout(() => {
+                socket.emit("get_conntected_users")
+            }, 500);
+            roomName = room_name
+            send_btn.disabled = false
+            msg_input.readOnly = false;
+            exit_rooms_btn.disabled = false
+            msg_input.style.backgroundColor = ""
+            exit_rooms_btn.style.backgroundColor = buttons_color
+            send_btn.style.backgroundColor = buttons_color
+    
+    
+        })
+    })
+    
+    const create_room_btn = document.getElementById('create_room_btn');
+    PopupToggle(create_room_popup,create_room_popup_close_btn,create_room_btn);
+    
+    
+    
+    
+    })
+
+}
+
+function openPrivateChat(name){
+
+    if(name.length > 0){
+        private_chat_popup.style.display = "flex";
+        popup.style.display = "none"
+
+        currnet_name_popup.value = name
+        const username = name
+
+
+
+        if(private_chats_cont.children.length === 0){
+            const div = document.createElement("div");
+            div.id = username+"_chat"
+            div.className = "private_chats"
+            private_chats_cont.appendChild(div);
+        }else{
+
+            const private_chats_array = Array.from(private_chats_cont.children)
+
+            if(private_chats_array.find((cont) => cont.id === username+"_chat")){
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== username+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+            }else{
+                const div = document.createElement("div");
+                div.id = username+"_chat"
+                div.className = "private_chats"
+                private_chats_cont.appendChild(div);
+
+                private_chats_array.forEach((ele)=>{
+                   
+                    if(ele.id !== username+"_chat"){
+                        ele.style.display = "none"
+                    }else{
+                        ele.style.display = "block"
+                    }
+                })
+
+            }
+
+
+        }
+
+        fetch("https://"+window.location.host+"/user",{
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include',
+            body:JSON.stringify({
+                username:username
+                
+
+            })
+        })
+        .then((res) => res.json())
+        .then((data) =>{
+            if(data){
+
+                private_chat_name_input.value = data[0].username;
+                private_chat_profile_img.src = data[0].img
+                private_chat_nickname.textContent = data[0].nickname
+
+                private_chat_profile.addEventListener("click",()=>{
+                    private_chat_popup.style.display = "none"
+                    openProfilePopup(data[0].username)
+                })
+                
+
+            }
+        })
+
+
+
+
+
+    }
 }
