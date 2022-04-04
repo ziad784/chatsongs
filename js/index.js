@@ -1460,11 +1460,6 @@ logout_btn.addEventListener("click",()=>{
   
 })
 
-function closeIt(){
-
-  return Logout();
-}
-window.onbeforeunload = closeIt;
 
 
 
@@ -1477,6 +1472,11 @@ function Logout(){
 
 
 
+function closeIt(){
+
+  return Logout();
+}
+window.onbeforeunload = closeIt;
 
 
 function getUserImg(){
