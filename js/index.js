@@ -1470,11 +1470,8 @@ window.onbeforeunload = closeIt;
 
 function Logout(){
 
-    fetch("https://"+window.location.host+"/logout",{method:"POST"})
-    .then((res) => res.json())
-    .then((data)=>{
-      
-    })
+ fetch("https://"+window.location.host+"/logout",{method:"POST"})
+    .then((res) => {if(res.status === 200){window.location.reload()}})
 }
 
 
