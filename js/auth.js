@@ -2,7 +2,6 @@ function refreshBrowser(){
     window.location.reload()
 }
 
-
 const tabs = document.querySelector(".tabs").children;
 
 const tabs_array = Array.from(tabs)
