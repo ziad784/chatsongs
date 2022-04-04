@@ -642,8 +642,14 @@ abbr{
     max-height: 40vh;
 }
 
-/* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+    .bottom_btns{
+        height: fit-content;
+    }
+
+    .left_popup_cont{
+        width: 90vw;
+    }
     .sidebar > .sidebar_cont{
 
         width: 50%;
@@ -664,6 +670,10 @@ abbr{
         max-width: 60vw;
         min-width: 60vw;
     }
+
+    .left_popup_cont{
+        width: 70vw;
+    }
         
       
 
@@ -674,10 +684,12 @@ abbr{
         max-width: 50vw;
         min-width: 50vw;
     }
+    .left_popup_cont{
+        width: 60vw;
+    }
       
 
   }
-
   @media screen and (min-width: 901px) and (max-width: 1100px){
     .popup_cont{
         max-width: 45vw;
