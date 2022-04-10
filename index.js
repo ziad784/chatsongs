@@ -22,7 +22,7 @@ const { v4: uuidv4 } = require('uuid');
 let db_config = null;
 
 
-var db_config = {
+ db_config = {
     host: 'eu-cdbr-west-02.cleardb.net',
       user: 'be80ed191fa5a6',
       password: '8c6a5f7a',
