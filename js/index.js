@@ -137,6 +137,21 @@ const delete_user_info_img_btn = document.getElementById("delete_user_info_img_b
 const disable_private_chat = document.getElementById("disable_private_chat")
 const disable_notify = document.getElementById("disable_notify")
 
+const msg_form = document.getElementById("msg_form");
+
+const private_chat_form = document.getElementById("private_chat_form");
+
+private_chat_form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    sendPrivateMessage();
+})
+
+msg_form.addEventListener("submit",(e)=>{
+    e.preventDefault();
+    sendMessage();
+
+})
+
 disable_private_chat.addEventListener("click",()=>{
 
     let toggle = 0;
@@ -418,9 +433,7 @@ profile_pic_input.addEventListener("change",(e)=>{
 
         if(data.res == "ok"){
 
-            user_photo_array.forEach((ele)=>{
-                ele.src = data.img
-            })
+
             img = data.img
 
 
@@ -470,10 +483,23 @@ add_wall_post_btn.addEventListener('click',()=>{
 
     
     
-    if(wall_input.value.length > 0){
+            if(wall_input.value.length > 0){
+
+                let uCo = "#00000";
+                let bgCO = "#fffff";
+                let fontCO = "#00000";
+                if(localStorage.getItem("colors")){
+
+                    const json  = JSON.parse(localStorage.getItem("colors"));
+
+                    fontCO = json.fontCo;
+                    uCo = json.nameCo;
+                    bgCO = json.bgCo
+
+                }
 
             
-                socket.emit("wall post",{nickname:nickname,username:username,msg:wall_input.value,img:img})
+                socket.emit("wall post",{nickname:nickname,username:username,msg:wall_input.value,img:img,uco:uCo,bgco:bgCO})
                 wall_input.value = "";
 
             
@@ -488,15 +514,7 @@ add_wall_post_btn.addEventListener('click',()=>{
 
 save_user_info_btn.addEventListener("click",()=>{
 
-    const json = JSON.parse(localStorage.getItem("colors"));
 
-    json.nameCo = name_color.value.split("#")[1];
-    json.fontCo = font_color.value.split("#")[1];
-    json.bgCo = background_color.value.split("#")[1];
-
-    const colors = json
-
-    localStorage.setItem("colors",JSON.stringify(colors))
 
 
     if(nickname_input.value.length > 0 && bio_input.value.length > 0){
@@ -508,12 +526,31 @@ save_user_info_btn.addEventListener("click",()=>{
             credentials: 'include',
             body:JSON.stringify({
                 nickname:nickname_input.value,
-                bio:bio_input.value
+                bio:bio_input.value,
+                uco: name_color.value,
+                fontco:font_color.value,
+                bgco:background_color.value
 
             })
         })
         .then((res)=>res.json())
         .then((data) => {
+
+            if(data.res === "ok"){
+                nickname = nickname_input.value
+                const json = JSON.parse(localStorage.getItem("colors"));
+    
+                json.nameCo = name_color.value;
+                json.fontCo = font_color.value;
+                json.bgCo = background_color.value;
+            
+                const colors = json
+            
+                localStorage.setItem("colors",JSON.stringify(colors))
+
+            }
+
+
 
             
         })
@@ -669,6 +706,18 @@ function SideBarToggle(btn,closeBtn,SideBar){
         
     }
 
+    if(wall_sidebar_btn === btn){
+        btn.addEventListener("click",()=>{
+            wall_sidebar_btn.style.backgroundColor = buttons_color
+            const SideBars = document.querySelectorAll('.sidebar');
+            const SideBars_array = Array.from(SideBars);
+            SideBars_array.map((ele)=>{
+                ele.style.display = 'none'
+            })
+            SideBar.style.display = "flex"
+        })
+    }
+
 
     if(private_chat_btn === btn){
         btn.addEventListener("click",()=>{
@@ -717,50 +766,21 @@ setInterval(() => {
 
 
 send_btn.addEventListener("click",()=>{
-    if(msg_input.value.length > 0){
-        const msg = msg_input.value;
-        let uCo = "#00000";
-        let bgCO = "#fffff";
-        let fontCO = "#00000";
-        if(localStorage.getItem("colors")){
 
-            const json  = JSON.parse(localStorage.getItem("colors"));
+    sendMessage();
 
-            fontCO = "#"+json.fontCo;
-            uCo = "#"+json.nameCo;
-            bgCO = "#"+json.bgCo
 
-        }
-        socket.emit("message",{user:nickname,username:username,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
-        msg_input.value = '';
 
-    }
 })
 
 
 
 private_send_btn.addEventListener("click",()=>{
-    const to = currnet_name_popup.value
 
-    if(private_msg_input.value.length > 0 && to.length > 0){
-        
-        const msg = private_msg_input.value;
-        let uCo = "#00000";
-        let bgCO = "#fffff";
-        let fontCO = "#00000";
-        if(localStorage.getItem("colors")){
+    sendPrivateMessage();
+    
 
-            const json  = JSON.parse(localStorage.getItem("colors"));
 
-            fontCO = "#"+json.fontCo;
-            uCo = "#"+json.nameCo;
-            bgCO = "#"+json.bgCo
-
-        }
-        socket.emit("private message",{to:to,from:username,user:private_chat_nickname.innerText,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
-        private_msg_input.value = '';
-
-    }
 })
 
 
@@ -803,26 +823,21 @@ window.onload = ()=>{
     
 
 
-    if(localStorage.getItem("colors")){
-        const json  = JSON.parse(localStorage.getItem("colors"));
-
-        font_color.value = "#"+json.fontCo;
-        name_color.value = "#"+json.nameCo;
-        background_color.value = "#"+json.bgCo
-
-    }else{
-        const json_color = JSON.stringify({nameCo:"00000",fontCo:"00000",bgCo:"00000"})
-        localStorage.setItem("colors",json_color)
-    }
+ 
 
     fetch("https://"+window.location.host+"/MyUser")
     .then((res) => res.json())
     .then((data) =>{
+        
 
         nickname_input.value = data[0].nickname;
         bio_input.value = data[0].bio;
         user_flag.src = `https://flagcdn.com/16x12/${country.toLowerCase()}.png`
         user_country.textContent = data[0].country
+
+        font_color.value = data[0].fontco;
+        name_color.value = data[0].uco;
+        background_color.value = data[0].bgco
 
         user_photo_array.forEach((ele)=>{
             ele.src = data[0].img
@@ -846,9 +861,9 @@ window.onload = ()=>{
             div.innerHTML = `
             
                 <div class="left">
-                <div class="img"><img src="${ele.img}" width="44" height="44" alt="profile card photo"></div>
+                <div class="img"><img src="${ele.img}" style="object-fit:cover;" width="44" height="44" alt="profile card photo"></div>
                 <div class="card_info" style="margin-left: 5px;display: flex; flex-direction: column; justify-content: center;">
-                    <div class="wall_card_name">${ele.nickname}</div>
+                    <div class="wall_card_name" style="color:${ele.uco};background-color:${ele.bgco};width:fit-content;padding:3px;border-radius:3px;">${ele.nickname}</div>
                     <div class="msg">${ele.msg}</div>
                 </div>
             </div>
@@ -994,7 +1009,7 @@ socket.on("size",(users)=>{
                  <div class="bar"></div>
                  <div class="img user_img" data-name="${ele.username}" onclick="openProfilePopup('${ele.username}')"><img width="44" height="100%" src="${ele.img}" alt="profile photo"></div>
                  <div style="margin-left: 5px;">
-                     <div>${ele.nickname}</div>
+                     <div style="color:${ele.uco};background-color:${ele.bgco};width:fit-content;padding:3px;border-radius:3px;">${ele.nickname}</div>
                      <div class="status-gray" style="color: gray;font-size: 14px;">${ele.bio}</div>
                  </div>
             </div>
@@ -1250,8 +1265,10 @@ socket.on("private message",(data)=>{
 
 
 
-
-        private_chat_btn.style.backgroundColor = "#FFC300"
+        if(private_chat_btn.style.display === "none"){
+            private_chat_btn.style.backgroundColor = "#FFC300"
+        }
+      
 
 
 
@@ -1282,9 +1299,10 @@ socket.on("private message",(data)=>{
 
 
 socket.on("wall post",(data)=>{
-    wall_sidebar_btn.style.backgroundColor = "#E1C16E"
-    const wall_new_posts = document.getElementById("wall_new_posts")
-    wall_new_posts.textContent = parseInt(wall_new_posts.textContent) + 1;
+    if(wall_sidebar.style.display === "none"){
+        wall_sidebar_btn.style.backgroundColor = "#E1C16E"
+    }
+
     AddToWall(data);
 })
 
@@ -1299,11 +1317,12 @@ function AddToWall(data){
         div.className = "wall_card"
         div.style = "border: 1px solid lightgray; margin-left: 3px;";
         div.innerHTML = `
-        
+
+
             <div class="left">
-            <div class="img"><img src="${data.img}" width="44" height="44" alt="profile card photo"></div>
+            <div class="img"><img src="${data.img}" style="object-fit:cover;" width="44" height="44" alt="profile card photo"></div>
             <div class="card_info" style="margin-left: 5px;display: flex; flex-direction: column; justify-content: center;">
-                <div class="wall_card_name">${data.nickname}</div>
+                <div class="wall_card_name" style="color:${data.uco};background-color:${data.bgco};width:fit-content;padding:3px;border-radius:3px;">${data.nickname}</div>
                 <div class="msg">${data.msg}</div>
             </div>
         </div>
@@ -1319,7 +1338,7 @@ function AddToWall(data){
         `;
 
 
-        wall_posts.appendChild(div);
+        wall_posts.prepend(div);
 
 
 }
@@ -1430,8 +1449,8 @@ function AddMessage(data){
 
     <div class="info">
         <div class="name" style="color:${data.uCo};background-color:${data.bgCO};">${data.user}</div>
-        <div class="flex">
-            <div style="min-width: fit-content;height: fit-content;color:${data.fontCO};">${data.msg}</div>
+        <div style="max-width:100vw">
+            <div style="color:${data.fontCO};">${data.msg}</div>
         </div>
     </div>
 </div>
@@ -1473,7 +1492,7 @@ function closeIt(){
 
   return Logout();
 }
-window.onbeforeunload = closeIt;
+//window.onbeforeunload = closeIt;
 
 
 function getUserImg(){
@@ -1801,13 +1820,33 @@ function openProfilePopup(username){
                     })
                     .then((res) => res.json())
                     .then((data) =>{
- 
+                        
                         if(data.res === "bad"){
-                            alert(data.msg);
-                            return
+                           
+                           const div = document.createElement("div");
+                           div.className = "notify";
+                           div.innerHTML = `
+                           
+                           <div>${data.msg}</div>
+                           
+                           `
+                   
+                           document.body.prepend(div)
+                           const notify = document.querySelectorAll(".notify");
+                   
+                           Array.from(notify).forEach((ele)=>{
+                               ele.addEventListener("click",(e)=>{
+                                   ele.remove()
+                               })
+                           })
+                            
                         }else if(data.res === "ok"){
-                            alert(data.msg);
-                            return
+                            add_like.style.backgroundColor = "#8b0000"
+
+                            setTimeout(() => {
+                                add_like.style.backgroundColor = ""
+                            }, 500);
+                            
                         }
                         return
                     })
@@ -2251,4 +2290,51 @@ function openPrivateChat(name){
 
 
     }
+}
+
+function sendMessage(){
+
+    if(msg_input.value.length > 0){
+        const msg = msg_input.value;
+        let uCo = "#00000";
+        let bgCO = "#fffff";
+        let fontCO = "#00000";
+        if(localStorage.getItem("colors")){
+
+            const json  = JSON.parse(localStorage.getItem("colors"));
+
+            fontCO = json.fontCo;
+            uCo = json.nameCo;
+            bgCO = json.bgCo
+
+        }
+        socket.emit("message",{user:nickname,username:username,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
+        msg_input.value = '';
+
+    }
+
+}
+
+function sendPrivateMessage(){
+    const to = currnet_name_popup.value
+    if(private_msg_input.value.length > 0 && to.length > 0){
+    
+        const msg = private_msg_input.value;
+        let uCo = "#00000";
+        let bgCO = "#fffff";
+        let fontCO = "#00000";
+        if(localStorage.getItem("colors")){
+
+            const json  = JSON.parse(localStorage.getItem("colors"));
+
+            fontCO = json.fontCo;
+            uCo = json.nameCo;
+            bgCO = json.bgCo
+
+        }
+        socket.emit("private message",{to:to,from:username,user:private_chat_nickname.innerText,img:img,msg:msg,uCo:uCo,bgCO:bgCO,fontCO:fontCO})
+        private_msg_input.value = '';
+
+    }
+
 }

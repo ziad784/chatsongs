@@ -142,6 +142,8 @@ login_user_form.addEventListener("submit",(e)=>{
                     login_user_form.append(err)
                 }else if(data.res === "ok"){
                     localStorage.setItem("user",JSON.stringify(data.user))
+                    const json_color = JSON.stringify({nameCo:data.uco,fontCo:"00000",bgCo:data.bgco})
+                    localStorage.setItem("colors",json_color)
                     window.location.reload();
                     socket.emit("get_conntected_users")
                 }
@@ -187,9 +189,9 @@ socket.on("send_connected_users",(data)=>{
             div.innerHTML = `
             
             <div class="flex">
-            <div class="img user_img" style="border: lightgray 1px solid;"><img width="44" height="100%" src="${ele.img}" alt="profile photo"></div>
+            <div class="img user_img" ><img style="border: lightgray 1px solid;object-fit:cover;" width="44" height="44"  src="${ele.img}" alt="profile photo"></div>
             <div style="margin-left: 5px;">
-                <div>${ele.nickname}</div>
+                <div style="color:${ele.uco};background-color:${ele.bgco};width:fit-content;padding:3px;border-radius:3px">${ele.nickname}</div>
                 <div style="color: lightgray;font-size: 15px;">${ele.bio}</div>
            
             </div>

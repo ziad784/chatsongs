@@ -76,14 +76,14 @@
 
                 </div>
 
-                <div class="chat_input flex" style="gap: 5px;padding: 5px;">
+                <form id="private_chat_form" class="chat_input flex" style="gap: 5px;padding: 5px;">
                     <div style="border: 1px black solid;background-color: #5CB85B;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-phone"></i></div>
                     <div style="border: 1px black solid;background-color: <%= buttons_color %>;color: white;padding: 1%;width: 30px;border-radius: 3px;" ><i class="fa-solid fa-share-nodes"></i></div>
                     <div><img src="./imgs/emoii.gif" width="23" height="23" alt="emoji img"></div>
-                    <div class="input" style="width: 100%;"><input style="width: 100%;padding: 3px;border: 1px solid black;border-radius: 5px;" id="private_msg_input" type="text" placeholder="اكتب رسالتك هنا"></div>
+                    <div class="input" style="width: 100%;"><input style="width: 100%;padding: 3px;border: 1px solid black;border-radius: 5px;" id="private_msg_input" autocomplete="off" type="text" placeholder="اكتب رسالتك هنا"></div>
                     <div class="exit_btn" id="private_send_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
                 
-                </div>
+                </form>
                
 
             </div>
@@ -288,8 +288,8 @@
             </div>
 
 
-            <div class="wall_grid">
-                <div class="upper" id="wall_posts">
+            <div class="wall_grid" style="display: flex;flex-direction: column;">
+                <div class="upper" id="wall_posts" style="overflow-y: auto;flex: 1;">
 
 
 
@@ -588,12 +588,12 @@
         </div>
 
         <div class="bottom">
-            <div class="msg_input">
+            <form class="msg_input" id="msg_form">
                 <div class="exit_btn" style="background-color: <%= buttons_color %>;" id="exit_rooms_btn"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                 <div><img width="24" height="23" src="./imgs/emoii.gif" alt="emoji photo"></div>
-                <div class="input"><input id="msg_input" type="text" placeholder="اكتب رسالتك هنا"></div>
+                <div class="input"><input autocomplete="off" id="msg_input" type="text" placeholder="اكتب رسالتك هنا"></div>
                 <div class="exit_btn" id="send_btn" style="background-color: <%= buttons_color %>;"><i class="fa-solid fa-paper-plane"></i><span>إرسال</span></div>
-            </div>
+            </form>
 
             <div class="bg-brown" style="background-color: <%= theme_color %>;">
                 <ul>
@@ -601,7 +601,7 @@
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="available_btn"><abbr title="المتواجدين"><i class="fa-solid fa-user"></i><span class="current" id="current_users">1</span></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="private_chat_btn"><abbr title="المحادثات الخاصه"><i class="fa-solid fa-comment"></i></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="groups_sidebar_btn"><abbr title="غرف الدردشه"><i class="fa-solid fa-users"></i><span class="current" id="rooms_count_number">1</span></abbr></li>
-                    <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="wall_sidebar_btn"><abbr title="الحائط"><i class="fa-regular fa-comment-dots"></i><span class="current" id="wall_new_posts">0</span></abbr></li>
+                    <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="wall_sidebar_btn"><abbr title="الحائط"><i class="fa-regular fa-comment-dots"></i></abbr></li>
                     <li class="exit_btn" style="background-color: <%= buttons_color %>;" id="setting_sidebar_btn"><abbr title="الإعدادات"><i class="fa-solid fa-gear"></i></abbr></li>     
                
                 </ul>

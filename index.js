@@ -19,6 +19,7 @@ let {IPinfoWrapper} = require("node-ipinfo");
 const path = require("path");
 let ipinfo = new IPinfoWrapper("16fbed578176de");
 const { v4: uuidv4 } = require('uuid');
+let db_config = null;
 
 
 var db_config = {
@@ -27,6 +28,8 @@ var db_config = {
       password: '8c6a5f7a',
       database: 'heroku_0e924455f0af756'
   };
+
+
 
 app.set("view engine","ejs");
 app.use(express.static(__dirname))
@@ -595,7 +598,7 @@ io.on('connection', (socket)=>{
             }
 
             if(datas){
-                io.emit("wall post",{nickname:data.nickname,msg:data.msg,img:data.img,id:datas.insertId})
+                io.emit("wall post",{nickname:data.nickname,msg:data.msg,img:data.img,id:datas.insertId,uco:data.uco,bgco:data.bgco})
             }
 
 
@@ -1013,7 +1016,7 @@ app.get("/MyUser",(req,res)=>{
         const username = req.session.user.username;
 
 
-        const sql = "SELECT DISTINCT nickname,img,bio FROM users WHERE username = ?"
+        const sql = "SELECT DISTINCT nickname,img,bio,uco,bgco,fontco FROM users WHERE username = ?"
     
         db.query(sql,[username],(err,data)=>{
             if(err){
@@ -1083,10 +1086,13 @@ app.post("/UpdateUserInfo",(req,res)=>{
             const username = req.session.user.username;
             const nickname = req.body.nickname;
             const bio = req.body.bio;
+            const uco = req.body.uco;
+            const fontco = req.body.fontco;
+            const bgco = req.body.bgco;
 
-            const sql = "UPDATE users SET nickname = ?,bio = ? WHERE username = ?"
+            const sql = "UPDATE users SET nickname = ?,bio = ?,uco = ?,fontco = ?,bgco = ? WHERE username = ?"
         
-            db.query(sql,[nickname,bio,username],(err,data)=>{
+            db.query(sql,[nickname,bio,uco,fontco,bgco,username],(err,data)=>{
                 if(err){
                     console.log(err);
                     res.send(err)
@@ -1249,11 +1255,95 @@ app.post("/AddLike",(req,res)=>{
 
 
     const username = req.body.username;
+    
   
 
     if(req.session.user){
 
-        if(req.session.user.like_time){
+        if(req.session.user.likes){
+
+            const user_like = req.session.user.likes.find((user)=>user.username === username)
+
+            if(user_like){
+
+                if(user_like.time < new Date().getTime()){
+
+                    if(username !== req.session.user.username){
+                        const sql = "SELECT likes FROM users WHERE username = ?"
+                        db.query(sql,[username],(err,data)=>{
+                            if(err){
+                                console.log(err);
+                                res.send(err);
+                            }
+            
+                            if(data){
+                                if(data.length > 0){
+                                    const likes = parseInt(data[0].likes) + 1;
+                                    const sql = "UPDATE users SET likes = ? WHERE username = ?"
+                                    db.query(sql,[likes,username],(err,result)=>{
+                                        if(err){
+                                            console.log(err);
+                                            return
+                                        }
+            
+                                        if(result){
+                                            user_like.time = new Date().getTime() + 5*60000
+                                            
+                                            res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
+                                        }
+            
+                                    })
+                                }
+                            }
+            
+            
+                        })
+            
+                    }
+
+                }else{
+                    res.status(403).send(JSON.stringify({res:"bad",msg:" يمكنك اضافة لايك كل 2 د"}))
+                    return
+                }
+                
+            }else{
+                if(username !== req.session.user.username){
+                    const sql = "SELECT likes FROM users WHERE username = ?"
+                    db.query(sql,[username],(err,data)=>{
+                        if(err){
+                            console.log(err);
+                            res.send(err);
+                        }
+        
+                        if(data){
+                            if(data.length > 0){
+                                const likes = parseInt(data[0].likes) + 1;
+                                const sql = "UPDATE users SET likes = ? WHERE username = ?"
+                                db.query(sql,[likes,username],(err,result)=>{
+                                    if(err){
+                                        console.log(err);
+                                        return
+                                    }
+        
+                                    if(result){
+                                        
+                                        
+                                        req.session.user.likes.push({username:username,time:new Date().getTime() + 2*60000})
+                                        
+                                        res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
+                                    }
+        
+                                })
+                            }
+                        }
+        
+        
+                    })
+        
+                }else{
+                    res.status(403).send(JSON.stringify({res:"bad",msg:"لا يمكنك اضافة لايك لنفسك"}))
+               }
+            }
 
             if(req.session.user.like_time < new Date().getTime()){
 
@@ -1269,13 +1359,13 @@ app.post("/AddLike",(req,res)=>{
                             if(data.length > 0){
                                 const likes = parseInt(data[0].likes) + 1;
                                 const sql = "UPDATE users SET likes = ? WHERE username = ?"
-                                db.query(sql,[likes,username],(err,res)=>{
+                                db.query(sql,[likes,username],(err,result)=>{
                                     if(err){
                                         console.log(err);
                                         return
                                     }
         
-                                    if(res){
+                                    if(result){
                                         req.session.user.like_time = new Date().getTime() + 5*60000
                                         
                                         res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
@@ -1293,7 +1383,7 @@ app.post("/AddLike",(req,res)=>{
                 }
     
             }else {
-                res.status(403).send(JSON.stringify({res:"bad",msg:" يمكنك اضافة لايك كل 5 د"}))
+               
             }
 
         }else{
@@ -1317,7 +1407,9 @@ app.post("/AddLike",(req,res)=>{
                                 }
     
                                 if(result){
-                                    req.session.user.like_time = new Date().getTime() + 5*60000
+                                 
+                                    req.session.user.likes = new Array()
+                                    req.session.user.likes.push({username:username,time:new Date().getTime() + 2*60000})
 
                                     res.send(JSON.stringify({res:"ok",msg:"تم اضافة لايك"}))
                                 }
@@ -1336,6 +1428,10 @@ app.post("/AddLike",(req,res)=>{
 
 
     }
+
+
+    
+    
 
 
 
@@ -2922,7 +3018,7 @@ app.post("/AddWallPost",(req,res)=>{
 
 app.get("/GetWallPosts",(req,res)=>{
 
-    const sql = "SELECT DISTINCT users.nickname,users.img,wall.msg,wall.likes FROM wall INNER JOIN users ON users.username = wall.username";
+    const sql = "SELECT DISTINCT users.nickname,users.img,wall.msg,wall.likes,users.bgco,users.uco FROM wall INNER JOIN users ON users.username = wall.username ORDER BY wall.id DESC";
 
     db.query(sql,(err,data)=>{
         if(err){
@@ -2997,24 +3093,24 @@ app.post("/login",(req,res)=>{
 
                                         const sql = "UPDATE users SET ip = ?,country = ?,device = ? WHERE username = ?"
 
-                                        db.query(sql,[ip,country,device,username],(err,data)=>{
+                                        db.query(sql,[ip,country,device,username],(err,details_res)=>{
                                             if(err){
                                                 console.log(err);
                                                 res.send(err);
                                             }
             
-                                            if(data){
+                                            if(details_res){
                                                 const sql = "INSERT INTO history (status,username,time) VALUES (?,?,?)"
-                                                db.query(sql,['دخول عضو',username,time],(err,data)=>{
+                                                db.query(sql,['دخول عضو',username,time],(err,history_res)=>{
                                                     if(err){
                                                         console.log(err);
                                                         res.send(err)
                                                     }
             
-                                                    if(data){
+                                                    if(history_res){
             
                                                         req.session.user = user;
-                                                        res.status(200).send(JSON.stringify({res:"ok",user:user}))
+                                                        res.status(200).send(JSON.stringify({res:"ok",user:user,uco:data[0].uco,bgco:data[0].bgco}))
                                                     }
             
                                                 })
