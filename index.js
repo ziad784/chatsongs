@@ -3076,7 +3076,7 @@ app.post("/login",(req,res)=>{
                             }
                             const id = data[0].id
                             const power = data[0].power
-                            const user = {username:username,id:id,power:power}
+                            const user = {username:data[0].username,id:id,power:power}
 
                             const sql = "SELECT * FROM bans WHERE ban = ? OR ban = ? OR ban = ?"
                             db.query(sql,[ip,country,device],(err,result)=>{
