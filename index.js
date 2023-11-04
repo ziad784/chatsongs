@@ -47,32 +47,9 @@ app.use(cors({
 }));
 
 
-let db;
-
-function handleDisconnect(){
-    db = mysql.createPool(db_config);
-
-    db.connect((err)=>{
-        if(err){
-            console.log("Database connection error because: ", err);
-            setTimeout(handleDisconnect,2000);
-        }
-    })
-
-    db.on("error",(err)=>{
-        console.log("database Error: ",err);
-        if(err.code === 'PROTOCOL_CONNECTION_LOST'){
-            handleDisconnect();
-        }else{
-            throw err;
-        }
-    })
+let db = mysql.createPool(db_config);
 
 
-}
-
-
-handleDisconnect();
 
 server.listen(port,()=>{
     console.log("I am listening to ",port);
