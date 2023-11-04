@@ -42,7 +42,7 @@ app.use(session({
 }))
 
 app.use(cors({
-    origin:["http://localhost:3001/","https://chatsongs.herokuapp.com/"],
+    origin:["http://localhost:3001/","https://chatsongs.herokuapp.com/","https://chatsongs.onrender.com/","https://chatsongs.onrender.com"],
     methods:["POST","GET"]
 }));
 
@@ -50,7 +50,7 @@ app.use(cors({
 let db;
 
 function handleDisconnect(){
-    db = mysql.createConnection(db_config);
+    db = mysql.createPool(db_config);
 
     db.connect((err)=>{
         if(err){
